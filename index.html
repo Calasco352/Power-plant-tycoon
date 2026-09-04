@@ -2061,7 +2061,199 @@ if(document.hidden)saveGame();
 });
 
 </script>
+<!-- V6 INDUSTRIAL VISUAL PATCH -->
 
+<style>
+
+.pipe6{position:absolute;height:8px;background:linear-gradient(#b7c6ce,#536b78);border:1px solid #d4e0e5;border-radius:6px;opacity:0;transition:.4s}.pipe6.v{width:8px;height:70px}.pipe6.on,.sub6.on,.flare6.on,.switch6.on,.tag6.on{opacity:1}.p61{left:20%;bottom:105px;width:145px}.p62{left:42%;bottom:113px;width:125px}.p63{left:60%;bottom:91px;width:105px}.pv61{left:39%;bottom:83px}.pv62{left:70%;bottom:62px}
+
+.sub6{position:absolute;left:49%;bottom:52px;width:78px;height:50px;border:2px solid #6a8798;background:linear-gradient(#335b72,#173447);opacity:0;transition:.4s}.sub6:before{content:"";position:absolute;left:8px;right:8px;top:-14px;height:13px;background:repeating-linear-gradient(90deg,#879da8 0 6px,transparent 6px 12px)}
+
+.flare6{position:absolute;left:70%;bottom:48px;width:11px;height:115px;background:#4d626d;opacity:0;transition:.4s}.flare6:after{content:"🔥";position:absolute;top:-28px;left:-10px;font-size:25px;animation:flick6 .55s alternate infinite}@keyframes flick6{to{transform:scale(.8) rotate(5deg);filter:brightness(1.3)}}
+
+.switch6{position:absolute;right:1%;bottom:50px;width:120px;height:100px;border-bottom:3px solid #657f8d;opacity:0;transition:.4s}.switch6 i{position:absolute;bottom:0;width:4px;height:78px;background:#6f8794}.switch6 i:before{content:"";position:absolute;left:-15px;top:17px;width:34px;height:3px;background:#6f8794;box-shadow:0 18px #6f8794}.switch6 i:nth-child(1){left:16px}.switch6 i:nth-child(2){left:56px}.switch6 i:nth-child(3){left:96px}
+
+.tag6{position:absolute;z-index:8;padding:3px 6px;border-radius:8px;background:#06131ddd;border:1px solid #426b83;font-size:9px;font-weight:900;color:#d6e8f2;opacity:0;transition:.3s}.td6{left:4%;bottom:102px}.ts6{left:55%;bottom:151px}.tg6{left:73%;bottom:126px}.tso6{right:3%;bottom:113px}.tn6{left:10%;bottom:235px}
+
+.build6{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#040d178f;opacity:0;pointer-events:none;transition:.2s}.build6.on{opacity:1}.build6 b{background:#102b40;border:1px solid #4b7994;border-radius:15px;padding:13px 17px;color:#ffd657;box-shadow:0 10px 30px #0008;animation:pulse6 .5s alternate infinite}@keyframes pulse6{to{transform:scale(1.05)}}
+
+body.break6 .turbine,body.break6 .h1,body.break6 .h2{filter:drop-shadow(0 0 11px #ff3f3f);animation:alarm6 .55s alternate infinite}@keyframes alarm6{to{opacity:.55}}
+
+body.night .windows{box-shadow:0 29px #ffe26af2,0 0 15px #ffe26a88}
+
+</style>
+
+<script>
+
+(()=>{
+
+document.title='Power Plant Tycoon V6';
+
+const y=document.querySelector('.yard');
+
+if(!y)return;
+
+y.insertAdjacentHTML('beforeend',`
+
+<div id="p61" class="pipe6 p61"></div>
+
+<div id="p62" class="pipe6 p62"></div>
+
+<div id="p63" class="pipe6 p63"></div>
+
+<div id="pv61" class="pipe6 v pv61"></div>
+
+<div id="pv62" class="pipe6 v pv62"></div>
+
+<div id="sub6" class="sub6"></div>
+
+<div id="flare6" class="flare6"></div>
+
+<div id="switch6" class="switch6"><i></i><i></i><i></i></div>
+
+<div id="td6" class="tag6 td6"></div>
+
+<div id="ts6" class="tag6 ts6"></div>
+
+<div id="tg6" class="tag6 tg6"></div>
+
+<div id="tso6" class="tag6 tso6"></div>
+
+<div id="tn6" class="tag6 tn6"></div>
+
+`);
+
+document.querySelector('.hero').insertAdjacentHTML(
+
+'beforeend',
+
+'<div id="build6" class="build6"><b>🚧 BUILDING NEW ASSET...</b></div>'
+
+);
+
+const on=(id,v)=>{
+
+const e=document.getElementById(id);
+
+if(e)e.classList.toggle('on',!!v);
+
+};
+
+const oldUF=updateFacilityVisuals;
+
+updateFacilityVisuals=function(){
+
+oldUF();
+
+const d=g.plants.diesel||{};
+
+const s=g.plants.steam||{};
+
+const ga=g.plants.gas||{};
+
+const so=g.plants.solar||{};
+
+const n=g.plants.nuclear||{};
+
+on('p61',s.unlocked);
+
+on('pv61',s.unlocked);
+
+on('p62',ga.unlocked);
+
+on('pv62',ga.unlocked);
+
+on('p63',ga.unlocked||n.unlocked);
+
+on('sub6',s.unlocked||ga.unlocked);
+
+on('flare6',ga.unlocked);
+
+on('switch6',so.unlocked||n.unlocked);
+
+[
+
+['td6',d,'DIESEL'],
+
+['ts6',s,'STEAM'],
+
+['tg6',ga,'GAS'],
+
+['tso6',so,'SOLAR'],
+
+['tn6',n,'NUCLEAR']
+
+].forEach(([id,x,t])=>{
+
+const e=document.getElementById(id);
+
+if(e){
+
+e.classList.toggle('on',!!x.unlocked);
+
+e.textContent=t+' L'+(x.level||1);
+
+}
+
+});
+
+document.body.classList.toggle(
+
+'break6',
+
+!!(g.event&&g.event.type==='breakdown')
+
+);
+
+};
+
+const oldBuy=buyPlant;
+
+buyPlant=function(id){
+
+const first=!(
+
+g.plants[id]&&g.plants[id].unlocked
+
+);
+
+const p=PLANTS.find(x=>x.id===id);
+
+oldBuy(id);
+
+if(
+
+first&&
+
+g.plants[id]&&
+
+g.plants[id].unlocked
+
+){
+
+const b=document.getElementById('build6');
+
+b.querySelector('b').textContent=
+
+'🚧 '+p.name.toUpperCase()+' CONSTRUCTION';
+
+b.classList.add('on');
+
+setTimeout(()=>{
+
+b.classList.remove('on');
+
+},1200);
+
+}
+
+};
+
+updateFacilityVisuals();
+
+})();
+
+</script>
 </body>
 
 </html>
