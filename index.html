@@ -14,233 +14,2659 @@
 
 <meta name="theme-color" content="#06111e">
 
-<title>Power Plant Tycoon V5</title>
+<title>Power Plant Tycoon V7</title>
 
 <style>
 
 :root{
 
-  --bg:#06111e;--panel:#0b2033;--panel2:#102d46;--line:#2b5f86;--text:#fff;
+--bg:#06111e;
 
-  --muted:#9fb7ca;--yellow:#ffc928;--green:#1ed760;--blue:#2997ff;--purple:#a855f7;
+--panel:#0b2033;
 
-  --red:#ff4d4f;--cyan:#4de3ff;--orange:#ff9d2e;--steel:#7898aa
+--panel2:#102d46;
+
+--line:#2b5f86;
+
+--text:#fff;
+
+--muted:#9fb7ca;
+
+--yellow:#ffc928;
+
+--green:#1ed760;
+
+--blue:#2997ff;
+
+--purple:#a855f7;
+
+--red:#ff4d4f;
+
+--cyan:#4de3ff;
+
+--orange:#ff9d2e;
+
+--steel:#7898aa
 
 }
 
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+*{
 
-html,body{margin:0;min-height:100%;background:linear-gradient(#163d61 0,#081727 26%,#030912 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif;overscroll-behavior-y:none}
+box-sizing:border-box;
 
-body{padding:env(safe-area-inset-top) 0 calc(88px + env(safe-area-inset-bottom))}
+-webkit-tap-highlight-color:transparent
+
+}
+
+html,body{
+
+margin:0;
+
+min-height:100%;
+
+background:linear-gradient(#163d61 0,#081727 26%,#030912 100%);
+
+color:var(--text);
+
+font-family:Arial,Helvetica,sans-serif;
+
+overscroll-behavior-y:none
+
+}
+
+body{
+
+padding:env(safe-area-inset-top) 0 calc(88px + env(safe-area-inset-bottom))
+
+}
 
 button{font:inherit}
 
-.app{max-width:720px;margin:auto;min-height:100vh}
+.app{
 
-.topbar{position:sticky;top:0;z-index:30;padding:12px 16px 10px;background:linear-gradient(rgba(3,10,18,.98),rgba(3,10,18,.84),transparent);backdrop-filter:blur(12px)}
+max-width:720px;
 
-.brand{display:flex;justify-content:space-between;align-items:center;gap:10px}
+margin:auto;
 
-.logo{font-weight:1000;font-size:26px;letter-spacing:-1px}.logo span{color:var(--yellow)}
+min-height:100vh
 
-.rank{background:#122b40;border:1px solid #2d5877;border-radius:999px;padding:7px 10px;font-size:12px;color:#cce3f5;font-weight:800}
+}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.topbar{
 
-.stat{background:rgba(10,30,47,.9);border:1px solid #275879;border-radius:14px;padding:10px 11px}
+position:sticky;
 
-.stat small{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.6px}
+top:0;
 
-.stat b{display:block;margin-top:3px;font-size:18px}.cash b{color:var(--green)}.power b{color:var(--yellow)}
+z-index:30;
 
-.content{padding:6px 14px 18px}.page{display:none}.page.active{display:block}
+padding:12px 16px 10px;
 
-.hero{position:relative;overflow:hidden;border:1px solid #2d648b;border-radius:26px;min-height:520px;background:linear-gradient(180deg,#1b507a 0,#102c45 38%,#0a1f31 58%,#071019 100%);box-shadow:0 18px 44px rgba(0,0,0,.28)}
+background:linear-gradient(rgba(3,10,18,.98),rgba(3,10,18,.84),transparent);
 
-.sky{position:absolute;inset:0 0 52% 0;background:linear-gradient(#3878a9,#183b5a);transition:.4s}
+backdrop-filter:blur(12px)
 
-body.night .sky{background:linear-gradient(#081221,#10213a)}
+}
 
-.sunmoon{position:absolute;width:52px;height:52px;border-radius:50%;right:28px;top:58px;background:#ffd66b;box-shadow:0 0 28px rgba(255,214,107,.5)}
+.brand{
 
-body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)}
+display:flex;
 
-.cloud{position:absolute;background:rgba(255,255,255,.10);border-radius:40px;filter:blur(1px);animation:drift 28s linear infinite}
+justify-content:space-between;
 
-.cloud.c1{width:140px;height:28px;top:62px;left:-45px}.cloud.c2{width:100px;height:22px;top:110px;right:-20px;animation-duration:35s}
+align-items:center;
 
-@keyframes drift{from{transform:translateX(-20px)}to{transform:translateX(95px)}}
+gap:10px
 
-.hills{position:absolute;left:-5%;right:-5%;bottom:49%;height:100px;background:linear-gradient(#173f55,#0d2b3e);clip-path:polygon(0 70%,12% 46%,25% 62%,38% 35%,52% 58%,65% 30%,82% 55%,100% 40%,100% 100%,0 100%)}
+}
 
-.yard{position:absolute;left:0;right:0;bottom:95px;height:260px;background:linear-gradient(#1a3447,#0c1d2b)}
+.logo{
 
-.road{position:absolute;left:-5%;right:-5%;bottom:0;height:48px;background:#26333d;border-top:2px solid #52616b;border-bottom:2px solid #121a20}
+font-weight:1000;
 
-.road:after{content:"";position:absolute;left:0;right:0;top:21px;height:3px;background:repeating-linear-gradient(90deg,#e9cf66 0 28px,transparent 28px 55px)}
+font-size:26px;
 
-.cooling{position:absolute;bottom:48px;width:72px;background:linear-gradient(90deg,#6d7f88,#bdc7cb 48%,#667982);clip-path:polygon(17% 0,83% 0,100% 100%,0 100%)}
+letter-spacing:-1px
 
-.cooling:after{content:"";position:absolute;left:15%;right:15%;top:28%;height:6px;background:#445863;box-shadow:0 31px #445863,0 62px #445863}
+}
 
-.c1t{left:7%;height:148px}.c2t{left:18%;height:185px}
+.logo span{color:var(--yellow)}
 
-.stack{position:absolute;bottom:48px;width:34px;background:linear-gradient(90deg,#324957,#7f929e,#2f414d)}
+.rank{
 
-.s1{left:39%;height:170px}.s2{left:46%;height:142px}.stack:before{content:"";position:absolute;top:0;left:-3px;right:-3px;height:11px;background:#203440}
+background:#122b40;
 
-.smoke{position:absolute;width:44px;height:28px;border-radius:50%;background:rgba(223,236,242,.25);filter:blur(2px);animation:puff 3.6s ease-in-out infinite}
+border:1px solid #2d5877;
 
-.sm1{left:38%;bottom:218px}.sm2{left:45%;bottom:190px;animation-delay:1.1s}
+border-radius:999px;
 
-@keyframes puff{0%{transform:translate(0,0) scale(.7);opacity:.28}70%{opacity:.12}100%{transform:translate(30px,-52px) scale(1.7);opacity:0}}
+padding:7px 10px;
 
-.hall{position:absolute;bottom:48px;background:linear-gradient(#3b5b70,#1a3040);border:2px solid #5b7789}
+font-size:12px;
 
-.h1{left:55%;width:150px;height:98px}.h2{left:73%;width:90px;height:72px}
+color:#cce3f5;
 
-.windows{position:absolute;left:9px;right:9px;top:16px;height:12px;background:repeating-linear-gradient(90deg,#ffe26a 0 10px,#314c5d 10px 18px);box-shadow:0 29px rgba(255,226,106,.85)}
+font-weight:800
 
-.transformer{position:absolute;bottom:54px;left:50%;width:52px;height:45px;background:#2f5264;border:3px solid #496e82;border-radius:6px}
+}
 
-.transformer:before{content:"";position:absolute;left:7px;right:7px;top:-10px;height:10px;background:repeating-linear-gradient(90deg,#6f8794 0 6px,transparent 6px 12px)}
+.stats{
 
-.turbine{position:absolute;left:58%;bottom:82px;width:56px;height:56px;border:5px solid #7393a5;border-radius:50%;animation:spin 2.8s linear infinite}
+display:grid;
 
-.turbine:before,.turbine:after{content:"";position:absolute;left:50%;top:50%;width:42px;height:4px;background:#9ab0bd;transform-origin:center}
+grid-template-columns:repeat(3,1fr);
 
-.turbine:before{transform:translate(-50%,-50%) rotate(45deg)}.turbine:after{transform:translate(-50%,-50%) rotate(-45deg)}
+gap:8px;
 
-@keyframes spin{to{transform:rotate(360deg)}}
+margin-top:10px
 
-.truck{position:absolute;bottom:21px;left:8%;width:64px;height:24px;background:#d79d2f;border-radius:4px 8px 2px 2px;animation:truck 12s linear infinite}
+}
 
-.truck:before{content:"";position:absolute;right:-18px;top:4px;width:20px;height:20px;background:#d79d2f;border-radius:2px}
+.stat{
 
-.truck:after{content:"";position:absolute;left:8px;right:-12px;bottom:-6px;height:12px;background:radial-gradient(circle at 15% 50%,#111 0 5px,transparent 6px),radial-gradient(circle at 75% 50%,#111 0 5px,transparent 6px)}
+background:rgba(10,30,47,.9);
 
-@keyframes truck{0%{transform:translateX(-120px)}100%{transform:translateX(760px)}}
+border:1px solid #275879;
 
-.powerline{position:absolute;bottom:52px;right:8%;width:95px;height:150px;border-left:5px solid #536b79}
+border-radius:14px;
 
-.powerline:before{content:"";position:absolute;left:-30px;top:28px;width:60px;height:4px;background:#536b79;box-shadow:0 22px #536b79}
+padding:10px 11px
 
-.scene-label{position:absolute;top:18px;left:18px}.scene-label h2{margin:0;font-size:24px}.scene-label p{margin:5px 0 0;color:#c0d3df;font-size:13px}
+}
 
-.statusstrip{position:absolute;right:16px;top:18px;display:flex;gap:6px;flex-direction:column;align-items:flex-end}
+.stat small{
 
-.grid-status{background:#082112;border:1px solid #1d8b48;color:#4aff85;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:900}
+display:block;
 
-.weather{background:#14293b;border:1px solid #355971;color:#d8e9f3;padding:6px 9px;border-radius:999px;font-size:10px;font-weight:900}
+color:var(--muted);
 
-.generate-wrap{position:absolute;left:18px;right:18px;bottom:18px}
+font-size:10px;
 
-.generate{width:100%;border:0;border-radius:18px;padding:18px 16px;background:linear-gradient(#ffe15b,#efb600);color:#0c0c0c;font-size:21px;font-weight:1000;box-shadow:0 7px 0 #a97900,0 0 24px rgba(255,201,40,.22);transition:.08s}
+font-weight:800;
 
-.generate:active{transform:translateY(4px);box-shadow:0 3px 0 #a97900}
+letter-spacing:.6px
 
-.flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,234,96,.38),transparent 58%);opacity:0}.flash.on{animation:flash .28s ease-out}
+}
 
-@keyframes flash{0%{opacity:1}100%{opacity:0}}
+.stat b{
 
-.card{background:linear-gradient(180deg,#102c44,#081827);border:1px solid #2d6084;border-radius:20px;padding:16px;margin-top:12px}
+display:block;
 
-.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}.section-title h3{margin:0;font-size:19px}.section-title span{font-size:12px;color:var(--muted)}
+margin-top:3px;
 
-.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}.btn{border:0;border-radius:14px;padding:14px 12px;color:white;font-weight:900}
+font-size:18px
 
-.greenbtn{background:linear-gradient(#22e16d,#09943e)}.bluebtn{background:linear-gradient(#32a4ff,#0869c3)}.purplebtn{background:linear-gradient(#b45eff,#7432bd)}.redbtn{background:linear-gradient(#ff6668,#c92f31)}.darkbtn{background:#15324a;border:1px solid #315d7c}.orangebtn{background:linear-gradient(#ffb34a,#d66c00)}
+}
 
-.asset{display:grid;grid-template-columns:58px 1fr auto;align-items:center;gap:10px;padding:13px 0;border-top:1px solid #183a54}.asset:first-child{border-top:0}
+.cash b{color:var(--green)}
 
-.asset-icon{width:54px;height:54px;display:grid;place-items:center;border-radius:15px;background:linear-gradient(#1c4968,#0d2f47);font-size:26px;border:1px solid #35617c}
+.power b{color:var(--yellow)}
 
-.asset-name{font-weight:900}.asset-meta{font-size:12px;color:var(--muted);margin-top:4px}.asset button{min-width:106px;border:0;border-radius:12px;padding:10px 9px;color:#fff;font-weight:900;font-size:12px;background:linear-gradient(#2d9fff,#0968bf)}
+.content{
 
-.asset-detail{grid-column:2/4;margin-top:-3px;padding-bottom:8px}
+padding:6px 14px 18px
 
-.meters{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.meter{background:#07131f;border:1px solid #18384d;border-radius:10px;padding:7px;font-size:10px;color:#9fb7ca}.meter b{display:block;color:#fff;font-size:12px;margin-top:2px}
+}
 
-.progress{height:9px;border-radius:999px;background:#06111c;overflow:hidden;border:1px solid #1f4159}.progress i{display:block;height:100%;background:linear-gradient(90deg,#25dc72,#4de3ff);width:0%}
+.page{display:none}
 
-.mission,.achievement{padding:13px 0;border-top:1px solid #183a54}.mission:first-child,.achievement:first-child{border-top:0}
+.page.active{display:block}
 
-.mission-head,.ach-head{display:flex;justify-content:space-between;gap:10px;font-weight:800}.mission small,.achievement small{color:var(--muted)}
+/* MAIN FACILITY */
 
-.mapgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.hero{
 
-.region{min-height:145px;border-radius:18px;padding:14px;background:linear-gradient(145deg,#173850,#0b1b2a);border:1px solid #315e7a;position:relative;overflow:hidden}
+position:relative;
 
-.region.locked{filter:saturate(.2);opacity:.65}
+overflow:hidden;
 
-.region h4{margin:0 0 6px}.region p{margin:0;color:var(--muted);font-size:12px;max-width:80%}
+border:1px solid #406f8c;
 
-.region .emoji{font-size:46px;position:absolute;right:12px;bottom:8px;opacity:.85}
+border-radius:26px;
 
-.shopitem{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #183a54}.shopitem:first-child{border-top:0}
+min-height:610px;
 
-.shopitem b{display:block}.shopitem small{color:var(--muted)}.price{color:var(--yellow);font-weight:1000}
+background:linear-gradient(180deg,#123b5c 0,#0b2439 42%,#071521 100%);
 
-.eventbar{margin-top:12px;background:linear-gradient(90deg,#3b140f,#5c2215);border:1px solid #a9482b;border-radius:18px;padding:14px;display:none}
+box-shadow:0 22px 60px rgba(0,0,0,.42),inset 0 0 80px rgba(18,78,111,.14)
 
-.eventbar.show{display:block}.eventbar h3{margin:0 0 5px}.eventbar p{margin:0 0 10px;color:#ffd5c9;font-size:13px}
+}
 
-.log{max-height:180px;overflow:auto}
+.sky{
 
-.logline{padding:8px 0;border-top:1px solid #17364b;font-size:12px;color:#c4d5df}.logline:first-child{border-top:0}
+position:absolute;
 
-.logline time{color:#6f8da1;margin-right:6px}
+inset:0 0 43% 0;
 
-.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:#0d2537;border:1px solid #376888;border-radius:14px;padding:11px 14px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.22s;z-index:60;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}
+background:linear-gradient(#2f719c,#174b6c 58%,#102e43);
 
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+overflow:hidden;
 
-.modal{position:fixed;inset:0;background:rgba(0,0,0,.72);display:none;align-items:center;justify-content:center;padding:22px;z-index:70}
+transition:.4s
 
-.modal.show{display:flex}
+}
 
-.modalbox{width:min(520px,100%);background:linear-gradient(#12334d,#071522);border:1px solid #3b6a89;border-radius:24px;padding:22px;text-align:center}
+body.night .sky{
 
-.modalbox .big{font-size:60px}.modalbox h2{margin:8px 0}.modalbox p{color:#b8cede}
+background:linear-gradient(#050d19,#0a1a2b 58%,#0c2233)
 
-.nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(4,12,21,.94);backdrop-filter:blur(14px);border-top:1px solid #24465f;padding:8px 8px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+}
 
-.navin{width:min(720px,100%);display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+.sunmoon{
 
-.navbtn{border:0;background:transparent;color:#7894a8;font-size:10px;font-weight:900;padding:7px 2px}
+position:absolute;
 
-.navbtn span{display:block;font-size:22px;margin-bottom:3px}
+width:58px;
 
-.navbtn.active{color:#fff}.navbtn.active span{filter:drop-shadow(0 0 9px rgba(77,227,255,.7))}
+height:58px;
 
-/* V5 facility growth */
+border-radius:50%;
 
-.facility-part{transition:opacity .45s ease,transform .45s ease,filter .45s ease}
+right:34px;
 
-.facility-part.hidden{opacity:0;transform:translateY(18px) scale(.92);pointer-events:none}
+top:70px;
 
-.facility-part.level2{filter:drop-shadow(0 0 6px rgba(77,227,255,.35))}
+background:#ffd66b;
 
-.facility-part.level3{filter:drop-shadow(0 0 12px rgba(255,201,40,.42))}
+box-shadow:0 0 28px rgba(255,214,107,.5)
 
-.diesel-unit{position:absolute;left:4%;bottom:49px;width:76px;height:48px;background:linear-gradient(#566d79,#263c49);border:2px solid #77909d;border-radius:5px}
+}
 
-.diesel-unit:before{content:"";position:absolute;left:9px;right:9px;top:12px;height:7px;background:repeating-linear-gradient(90deg,#101a20 0 7px,#8095a0 7px 12px)}
+body.night .sunmoon{
 
-.diesel-unit:after{content:"";position:absolute;right:8px;top:-25px;width:11px;height:27px;background:#465c67}
+background:#dce8ff;
 
-.solar-field{position:absolute;right:2%;bottom:48px;width:126px;height:62px;transform:skewX(-12deg)}
+box-shadow:0 0 22px rgba(220,232,255,.35)
 
-.solar-field:before,.solar-field:after{content:"";position:absolute;width:58px;height:32px;background:repeating-linear-gradient(90deg,#164b77 0 13px,#6ba8ce 13px 15px),repeating-linear-gradient(0deg,transparent 0 13px,#7db2d1 13px 15px);border:2px solid #91b7c9;box-shadow:0 8px 0 -6px #8598a1}
+}
 
-.solar-field:before{left:0;top:0}.solar-field:after{right:0;top:18px}
+body.night .sunmoon:after{
 
-.reactor{position:absolute;right:8%;bottom:48px;width:92px;height:92px;border-radius:46px 46px 8px 8px;background:linear-gradient(90deg,#6b7d86,#c2cbce,#667982);border:2px solid #81939b}
+content:"";
 
-.reactor:after{content:"☢";position:absolute;inset:0;display:grid;place-items:center;font-size:34px;color:#ffe15b;text-shadow:0 2px 5px #000}
+position:absolute;
 
-.site-sign{position:absolute;left:12px;bottom:7px;font-size:10px;font-weight:900;color:#8fa7b7;letter-spacing:.6px}
+width:15px;
+
+height:15px;
+
+border-radius:50%;
+
+background:#b7c6df55;
+
+left:13px;
+
+top:11px;
+
+box-shadow:18px 12px #a8bad655,4px 28px #a8bad644
+
+}
+
+.cloud{
+
+position:absolute;
+
+background:rgba(255,255,255,.10);
+
+border-radius:40px;
+
+filter:blur(1px);
+
+animation:drift 28s linear infinite
+
+}
+
+.cloud.c1{
+
+width:140px;
+
+height:28px;
+
+top:62px;
+
+left:-45px
+
+}
+
+.cloud.c2{
+
+width:100px;
+
+height:22px;
+
+top:110px;
+
+right:-20px;
+
+animation-duration:35s
+
+}
+
+@keyframes drift{
+
+from{transform:translateX(-20px)}
+
+to{transform:translateX(95px)}
+
+}
+
+.hills{
+
+position:absolute;
+
+left:-5%;
+
+right:-5%;
+
+bottom:43%;
+
+height:125px;
+
+background:linear-gradient(#173e4a,#0b252f);
+
+clip-path:polygon(0 70%,12% 46%,25% 62%,38% 35%,52% 58%,65% 30%,82% 55%,100% 40%,100% 100%,0 100%)
+
+}
+
+.yard{
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+bottom:96px;
+
+height:365px;
+
+background:linear-gradient(#17313a 0 32%,#20363b 32% 100%);
+
+border-top:1px solid #31505b
+
+}
+
+.yard:before{
+
+content:"";
+
+position:absolute;
+
+inset:0;
+
+background:linear-gradient(90deg,transparent 0 7%,rgba(255,255,255,.025) 7% 7.5%,transparent 7.5% 18%,rgba(255,255,255,.025) 18% 18.5%,transparent 18.5%);
+
+pointer-events:none
+
+}
+
+.v7-treeline{
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+bottom:58px;
+
+height:54px;
+
+z-index:0;
+
+opacity:.85;
+
+background:
+
+radial-gradient(ellipse at 4% 100%,#081b1d 0 20px,transparent 21px),
+
+radial-gradient(ellipse at 11% 100%,#0a2022 0 31px,transparent 32px),
+
+radial-gradient(ellipse at 19% 100%,#081a1c 0 25px,transparent 26px),
+
+radial-gradient(ellipse at 29% 100%,#0a2022 0 34px,transparent 35px),
+
+radial-gradient(ellipse at 42% 100%,#091d20 0 27px,transparent 28px),
+
+radial-gradient(ellipse at 55% 100%,#081a1d 0 35px,transparent 36px),
+
+radial-gradient(ellipse at 70% 100%,#0a2022 0 28px,transparent 29px),
+
+radial-gradient(ellipse at 82% 100%,#081b1e 0 34px,transparent 35px),
+
+radial-gradient(ellipse at 94% 100%,#091e21 0 30px,transparent 31px)
+
+}
+
+.v7-fence{
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+bottom:60px;
+
+height:45px;
+
+z-index:24;
+
+border-top:2px solid #718992;
+
+background:
+
+repeating-linear-gradient(60deg,transparent 0 10px,#6f858d55 11px 12px,transparent 13px 22px),
+
+repeating-linear-gradient(-60deg,transparent 0 10px,#6f858d55 11px 12px,transparent 13px 22px)
+
+}
+
+.road{
+
+position:absolute;
+
+left:-5%;
+
+right:-5%;
+
+bottom:0;
+
+height:60px;
+
+background:linear-gradient(#303b40,#20282c);
+
+border-top:3px solid #708087
+
+}
+
+.road:after{
+
+content:"";
+
+position:absolute;
+
+left:0;
+
+right:0;
+
+top:28px;
+
+height:4px;
+
+background:repeating-linear-gradient(90deg,#f4cf42 0 34px,transparent 34px 66px)
+
+}
+
+/* LIGHTING */
+
+.v7-light{
+
+position:absolute;
+
+bottom:82px;
+
+width:3px;
+
+height:88px;
+
+background:#667b84;
+
+z-index:22
+
+}
+
+.v7-light:before{
+
+content:"";
+
+position:absolute;
+
+top:-3px;
+
+left:-6px;
+
+width:15px;
+
+height:6px;
+
+border-radius:4px;
+
+background:#e4ecee
+
+}
+
+.v7-light:after{
+
+content:"";
+
+position:absolute;
+
+left:-42px;
+
+top:-27px;
+
+width:88px;
+
+height:68px;
+
+background:radial-gradient(ellipse,#ffe79188 0,transparent 65%);
+
+opacity:.22
+
+}
+
+body.night .v7-light:after{opacity:1}
+
+.v7-l1{left:8%}
+
+.v7-l2{left:28%}
+
+.v7-l3{left:49%}
+
+.v7-l4{left:69%}
+
+.v7-l5{left:89%}
+
+/* DIESEL GENERATOR */
+
+.diesel-unit{
+
+position:absolute;
+
+left:3%;
+
+bottom:60px;
+
+width:118px;
+
+height:74px;
+
+border-radius:5px;
+
+background:linear-gradient(90deg,#243f4b,#45636f 55%,#263e49);
+
+border:2px solid #8299a2;
+
+box-shadow:0 10px 20px #0009;
+
+z-index:11;
+
+transition:.4s
+
+}
+
+.diesel-unit:before{
+
+content:"";
+
+position:absolute;
+
+left:10px;
+
+right:10px;
+
+top:18px;
+
+height:22px;
+
+background:repeating-linear-gradient(90deg,#101d22 0 9px,#b8c9cf 9px 15px);
+
+border:2px solid #182a31
+
+}
+
+.diesel-unit:after{
+
+content:"DIESEL GEN";
+
+position:absolute;
+
+right:8px;
+
+bottom:7px;
+
+color:#dce7ea;
+
+font-size:7px;
+
+font-weight:1000;
+
+letter-spacing:.9px
+
+}
+
+.diesel-unit.level2{width:138px}
+
+.diesel-unit.level3{
+
+width:158px;
+
+height:84px
+
+}
+
+/* CONTROL CENTER */
+
+.v7-control{
+
+position:absolute;
+
+left:19%;
+
+bottom:60px;
+
+width:124px;
+
+height:67px;
+
+background:linear-gradient(#38545f,#1d333b);
+
+border:2px solid #788f98;
+
+box-shadow:0 9px 18px #0009;
+
+z-index:12
+
+}
+
+.v7-control:before{
+
+content:"CONTROL CENTER";
+
+position:absolute;
+
+left:11px;
+
+top:9px;
+
+font-size:7px;
+
+font-weight:1000;
+
+letter-spacing:1px;
+
+color:#dce8eb
+
+}
+
+.v7-control:after{
+
+content:"";
+
+position:absolute;
+
+left:11px;
+
+right:11px;
+
+top:31px;
+
+height:13px;
+
+background:repeating-linear-gradient(90deg,#f2d75d 0 11px,#1d343c 11px 18px)
+
+}
+
+/* STEAM / GAS BUILDINGS */
+
+.hall{
+
+position:absolute;
+
+bottom:60px;
+
+border-radius:3px;
+
+background:linear-gradient(90deg,#344f5b,#627985 55%,#2d4651);
+
+border:2px solid #8299a4;
+
+box-shadow:0 14px 24px #0009;
+
+transition:.4s
+
+}
+
+.h1{
+
+left:37%;
+
+width:205px;
+
+height:122px
+
+}
+
+.h1:after{
+
+content:"STEAM TURBINE HALL";
+
+position:absolute;
+
+left:15px;
+
+top:10px;
+
+font-size:8px;
+
+font-weight:1000;
+
+letter-spacing:1px;
+
+color:#e2ecef
+
+}
+
+.h2{
+
+left:66%;
+
+width:142px;
+
+height:90px
+
+}
+
+.h2:after{
+
+content:"GAS TURBINE";
+
+position:absolute;
+
+left:13px;
+
+top:10px;
+
+font-size:8px;
+
+font-weight:1000;
+
+letter-spacing:1px;
+
+color:#e2ecef
+
+}
+
+.windows{
+
+position:absolute;
+
+left:14px;
+
+right:14px;
+
+top:35px;
+
+height:15px;
+
+background:repeating-linear-gradient(90deg,#f4d85e 0 14px,#243943 14px 22px);
+
+box-shadow:0 31px rgba(244,216,94,.82)
+
+}
+
+body.night .windows{
+
+box-shadow:0 31px rgba(255,226,106,.96),0 0 18px rgba(255,226,106,.42)
+
+}
+
+/* TURBINE */
+
+.turbine{
+
+position:absolute;
+
+left:43%;
+
+bottom:80px;
+
+width:118px;
+
+height:54px;
+
+border-radius:7px;
+
+border:2px solid #a8bac1;
+
+background:linear-gradient(#718a95,#314a55);
+
+box-shadow:0 7px 13px #0008;
+
+z-index:18
+
+}
+
+.turbine:before{
+
+content:"";
+
+position:absolute;
+
+left:13px;
+
+top:5px;
+
+width:42px;
+
+height:42px;
+
+border:3px solid #d8e2e5;
+
+border-radius:50%;
+
+background:conic-gradient(
+
+#e8ba30 0 12%,
+
+#657f8b 12% 24%,
+
+#e8ba30 24% 36%,
+
+#657f8b 36% 48%,
+
+#e8ba30 48% 60%,
+
+#657f8b 60% 72%,
+
+#e8ba30 72% 84%,
+
+#657f8b 84%
+
+);
+
+animation:spin 2s linear infinite
+
+}
+
+.turbine:after{
+
+content:"GENERATOR";
+
+position:absolute;
+
+right:7px;
+
+top:19px;
+
+font-size:7px;
+
+font-weight:1000;
+
+color:#dfe8eb
+
+}
+
+@keyframes spin{
+
+to{transform:rotate(360deg)}
+
+}
+
+/* STACKS */
+
+.stack{
+
+position:absolute;
+
+bottom:60px;
+
+width:36px;
+
+border:2px solid #aab8bc;
+
+background:repeating-linear-gradient(to bottom,#dce2e3 0 31px,#b94436 31px 52px);
+
+box-shadow:0 10px 18px #0008;
+
+z-index:8
+
+}
+
+.s1{
+
+left:74%;
+
+height:185px
+
+}
+
+.s2{
+
+left:30%;
+
+height:230px
+
+}
+
+.stack:before{
+
+content:"";
+
+position:absolute;
+
+left:-5px;
+
+right:-5px;
+
+top:11px;
+
+height:6px;
+
+background:#283d46;
+
+box-shadow:0 15px #283d46
+
+}
+
+.smoke{
+
+position:absolute;
+
+width:70px;
+
+height:55px;
+
+border-radius:50%;
+
+background:rgba(223,236,242,.24);
+
+filter:blur(4px);
+
+animation:puff 3.6s ease-in-out infinite
+
+}
+
+.sm1{
+
+left:72%;
+
+bottom:230px
+
+}
+
+.sm2{
+
+left:28%;
+
+bottom:292px
+
+}
+
+@keyframes puff{
+
+0%{
+
+transform:translate(0,0) scale(.7);
+
+opacity:.35
+
+}
+
+70%{opacity:.15}
+
+100%{
+
+transform:translate(30px,-52px) scale(1.7);
+
+opacity:0
+
+}
+
+}
+
+/* PIPE NETWORK */
+
+.pipe{
+
+position:absolute;
+
+height:11px;
+
+background:linear-gradient(#edf2f3,#8297a0 45%,#4d626c 52%,#a8b7bc);
+
+border:1px solid #d6e0e2;
+
+border-radius:6px;
+
+box-shadow:0 4px 7px #0008;
+
+z-index:17;
+
+transition:.4s
+
+}
+
+.pipe:after{
+
+content:"";
+
+position:absolute;
+
+left:10px;
+
+right:10px;
+
+top:2px;
+
+height:2px;
+
+background:#fff8
+
+}
+
+.pipe.p1{
+
+left:19%;
+
+bottom:126px;
+
+width:145px
+
+}
+
+.pipe.p2{
+
+left:53%;
+
+bottom:136px;
+
+width:145px
+
+}
+
+.pipe.p3{
+
+left:67%;
+
+bottom:107px;
+
+width:110px
+
+}
+
+.pipe.v{
+
+width:11px
+
+}
+
+.pipe.v1{
+
+left:35%;
+
+bottom:60px;
+
+height:100px
+
+}
+
+.pipe.v2{
+
+left:72%;
+
+bottom:60px;
+
+height:82px
+
+}
+
+/* STORAGE TANK */
+
+.v7-tank{
+
+position:absolute;
+
+left:57%;
+
+bottom:60px;
+
+width:46px;
+
+height:84px;
+
+border-radius:24px 24px 5px 5px;
+
+background:linear-gradient(90deg,#687c84,#d7dfe1 49%,#566a72);
+
+border:2px solid #95a6ac;
+
+z-index:14
+
+}
+
+.v7-tank:after{
+
+content:"";
+
+position:absolute;
+
+left:-7px;
+
+right:-7px;
+
+bottom:18px;
+
+height:5px;
+
+background:#40545d
+
+}
+
+/* TRANSFORMERS */
+
+.transformer{
+
+position:absolute;
+
+left:78%;
+
+bottom:64px;
+
+width:82px;
+
+height:55px;
+
+background:linear-gradient(#3e5d69,#1d3540);
+
+border:2px solid #758f9a;
+
+box-shadow:0 8px 15px #0009;
+
+z-index:12
+
+}
+
+.transformer:before{
+
+content:"";
+
+position:absolute;
+
+left:8px;
+
+right:8px;
+
+top:-22px;
+
+height:23px;
+
+background:repeating-linear-gradient(90deg,#1f2e34 0 7px,transparent 7px 18px)
+
+}
+
+.substation{
+
+position:absolute;
+
+left:58%;
+
+bottom:62px;
+
+width:86px;
+
+height:61px;
+
+background:linear-gradient(#314f5d,#172d37);
+
+border:2px solid #6f8792;
+
+z-index:11;
+
+transition:.4s
+
+}
+
+/* SWITCHYARD */
+
+.switchyard{
+
+position:absolute;
+
+right:1%;
+
+bottom:61px;
+
+width:126px;
+
+height:112px;
+
+border-bottom:3px solid #657f8d;
+
+z-index:10;
+
+transition:.4s
+
+}
+
+.switchyard i{
+
+position:absolute;
+
+bottom:0;
+
+width:4px;
+
+height:90px;
+
+background:#748991
+
+}
+
+.switchyard i:before{
+
+content:"";
+
+position:absolute;
+
+left:-15px;
+
+top:17px;
+
+width:34px;
+
+height:3px;
+
+background:#6f8794;
+
+box-shadow:0 18px #6f8794
+
+}
+
+.switchyard i:nth-child(1){left:16px}
+
+.switchyard i:nth-child(2){left:56px}
+
+.switchyard i:nth-child(3){left:96px}
+
+/* GAS FLARE */
+
+.flare{
+
+position:absolute;
+
+left:83%;
+
+bottom:60px;
+
+height:152px;
+
+width:10px;
+
+background:#485e69;
+
+z-index:13;
+
+transition:.4s
+
+}
+
+.flare:after{
+
+content:"🔥";
+
+position:absolute;
+
+top:-29px;
+
+left:-10px;
+
+font-size:28px;
+
+filter:drop-shadow(0 0 9px #ff8429);
+
+animation:flicker .55s alternate infinite
+
+}
+
+@keyframes flicker{
+
+to{
+
+transform:scale(.8) rotate(4deg);
+
+filter:brightness(1.25)
+
+}
+
+}
+
+/* COOLING TOWERS */
+
+.cooling{
+
+position:absolute;
+
+bottom:60px;
+
+width:104px;
+
+background:linear-gradient(90deg,#66777d,#cbd3d5 28%,#e5e9e9 50%,#a4b1b4 72%,#65767a);
+
+clip-path:polygon(23% 0,77% 0,68% 100%,32% 100%);
+
+filter:drop-shadow(0 10px 8px #0008);
+
+z-index:5;
+
+transition:.4s
+
+}
+
+.c1t{
+
+left:7%;
+
+height:205px
+
+}
+
+.c2t{
+
+left:18%;
+
+height:242px
+
+}
+
+.cooling:before{
+
+content:"";
+
+position:absolute;
+
+left:15%;
+
+right:15%;
+
+top:-78px;
+
+height:95px;
+
+background:
+
+radial-gradient(circle at 35% 70%,rgba(231,240,241,.58) 0 21px,transparent 22px),
+
+radial-gradient(circle at 61% 47%,rgba(238,245,245,.52) 0 29px,transparent 30px),
+
+radial-gradient(circle at 41% 18%,rgba(220,232,233,.45) 0 34px,transparent 35px);
+
+animation:v7cool 4.4s ease-in-out infinite alternate
+
+}
+
+@keyframes v7cool{
+
+to{
+
+transform:translate(18px,-20px) scale(1.16);
+
+opacity:.45
+
+}
+
+}
+
+/* REACTOR */
+
+.reactor{
+
+position:absolute;
+
+left:27%;
+
+bottom:60px;
+
+width:104px;
+
+height:126px;
+
+border-radius:52px 52px 8px 8px;
+
+background:linear-gradient(90deg,#6d7d82,#d5dcdd 50%,#67797e);
+
+border:2px solid #a6b4b8;
+
+box-shadow:0 10px 20px #0009;
+
+z-index:6;
+
+transition:.4s
+
+}
+
+.reactor:after{
+
+content:"☢";
+
+position:absolute;
+
+inset:0;
+
+display:grid;
+
+place-items:center;
+
+font-size:36px;
+
+color:#ffe15b;
+
+text-shadow:0 2px 5px #000
+
+}
+
+/* SOLAR FIELD */
+
+.solar-field{
+
+position:absolute;
+
+right:1%;
+
+bottom:60px;
+
+width:170px;
+
+height:98px;
+
+transform:skewX(-11deg);
+
+z-index:7;
+
+transition:.4s
+
+}
+
+.solar-field:before,
+
+.solar-field:after{
+
+content:"";
+
+position:absolute;
+
+width:78px;
+
+height:43px;
+
+background:
+
+repeating-linear-gradient(90deg,#123a62 0 16px,#4f86aa 16px 18px),
+
+repeating-linear-gradient(0deg,transparent 0 17px,#75a9c7 17px 19px);
+
+border:2px solid #91b6c7
+
+}
+
+.solar-field:before{
+
+left:0;
+
+top:0
+
+}
+
+.solar-field:after{
+
+right:0;
+
+top:25px
+
+}
+
+/* TRANSMISSION TOWER */
+
+.v7-pylon{
+
+position:absolute;
+
+right:3%;
+
+bottom:58px;
+
+width:84px;
+
+height:190px;
+
+z-index:4
+
+}
+
+.v7-pylon:before{
+
+content:"";
+
+position:absolute;
+
+left:34px;
+
+bottom:0;
+
+width:5px;
+
+height:186px;
+
+background:#4d626b;
+
+transform:skew(-8deg);
+
+box-shadow:15px 0 #4d626b
+
+}
+
+.v7-pylon:after{
+
+content:"";
+
+position:absolute;
+
+left:4px;
+
+top:37px;
+
+width:74px;
+
+height:4px;
+
+background:#586f78;
+
+box-shadow:8px 32px #586f78,16px 64px #586f78
+
+}
+
+/* TRUCK + WORKERS */
+
+.v7-truck{
+
+position:absolute;
+
+left:27%;
+
+bottom:30px;
+
+width:55px;
+
+height:22px;
+
+background:#e1ae2b;
+
+border-radius:4px 6px 3px 3px;
+
+z-index:29;
+
+box-shadow:0 5px 8px #0009;
+
+animation:v7truck 16s linear infinite
+
+}
+
+.v7-truck:before{
+
+content:"";
+
+position:absolute;
+
+right:3px;
+
+top:-12px;
+
+width:18px;
+
+height:14px;
+
+background:#cc9b22;
+
+border-radius:4px 4px 0 0
+
+}
+
+.v7-truck:after{
+
+content:"";
+
+position:absolute;
+
+left:7px;
+
+right:3px;
+
+bottom:-7px;
+
+height:13px;
+
+background:
+
+radial-gradient(circle at 15% 50%,#101416 0 6px,transparent 7px),
+
+radial-gradient(circle at 82% 50%,#101416 0 6px,transparent 7px)
+
+}
+
+@keyframes v7truck{
+
+0%{transform:translateX(-220px)}
+
+100%{transform:translateX(690px)}
+
+}
+
+.v7-worker{
+
+position:absolute;
+
+bottom:34px;
+
+width:6px;
+
+height:15px;
+
+border-radius:3px;
+
+background:#efae26;
+
+z-index:30
+
+}
+
+.v7-worker:before{
+
+content:"";
+
+position:absolute;
+
+left:-1px;
+
+top:-6px;
+
+width:8px;
+
+height:8px;
+
+border-radius:50%;
+
+background:#d7b48e
+
+}
+
+.v7-w1{left:43%}
+
+.v7-w2{left:45%}
+
+.v7-w3{left:61%}
+
+/* GAME UI */
+
+.scene-label{
+
+position:absolute;
+
+top:18px;
+
+left:18px;
+
+z-index:40
+
+}
+
+.scene-label h2{
+
+margin:0;
+
+font-size:24px
+
+}
+
+.scene-label p{
+
+margin:5px 0 0;
+
+color:#c0d3df;
+
+font-size:13px
+
+}
+
+.statusstrip{
+
+position:absolute;
+
+right:16px;
+
+top:18px;
+
+display:flex;
+
+gap:6px;
+
+flex-direction:column;
+
+align-items:flex-end;
+
+z-index:40
+
+}
+
+.grid-status{
+
+background:#082112;
+
+border:1px solid #1d8b48;
+
+color:#4aff85;
+
+padding:7px 10px;
+
+border-radius:999px;
+
+font-size:11px;
+
+font-weight:900
+
+}
+
+.weather{
+
+background:#14293b;
+
+border:1px solid #355971;
+
+color:#d8e9f3;
+
+padding:6px 9px;
+
+border-radius:999px;
+
+font-size:10px;
+
+font-weight:900
+
+}
+
+.generate-wrap{
+
+position:absolute;
+
+left:18px;
+
+right:18px;
+
+bottom:18px;
+
+z-index:50
+
+}
+
+.generate{
+
+width:100%;
+
+border:0;
+
+border-radius:18px;
+
+padding:18px 16px;
+
+background:linear-gradient(#ffe15b,#efb600);
+
+color:#0c0c0c;
+
+font-size:21px;
+
+font-weight:1000;
+
+box-shadow:0 7px 0 #a97900,0 0 24px rgba(255,201,40,.22);
+
+transition:.08s
+
+}
+
+.generate:active{
+
+transform:translateY(4px);
+
+box-shadow:0 3px 0 #a97900
+
+}
+
+.flash{
+
+position:absolute;
+
+inset:0;
+
+pointer-events:none;
+
+background:radial-gradient(circle,rgba(255,234,96,.38),transparent 58%);
+
+opacity:0
+
+}
+
+.flash.on{animation:flash .28s ease-out}
+
+@keyframes flash{
+
+0%{opacity:1}
+
+100%{opacity:0}
+
+}
+
+.card{
+
+background:linear-gradient(180deg,#102c44,#081827);
+
+border:1px solid #2d6084;
+
+border-radius:20px;
+
+padding:16px;
+
+margin-top:12px
+
+}
+
+.section-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+gap:10px;
+
+margin-bottom:12px
+
+}
+
+.section-title h3{
+
+margin:0;
+
+font-size:19px
+
+}
+
+.section-title span{
+
+font-size:12px;
+
+color:var(--muted)
+
+}
+
+.btnrow{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px
+
+}
+
+.btn{
+
+border:0;
+
+border-radius:14px;
+
+padding:14px 12px;
+
+color:white;
+
+font-weight:900
+
+}
+
+.greenbtn{background:linear-gradient(#22e16d,#09943e)}
+
+.bluebtn{background:linear-gradient(#32a4ff,#0869c3)}
+
+.purplebtn{background:linear-gradient(#b45eff,#7432bd)}
+
+.redbtn{background:linear-gradient(#ff6668,#c92f31)}
+
+.darkbtn{background:#15324a;border:1px solid #315d7c}
+
+.orangebtn{background:linear-gradient(#ffb34a,#d66c00)}
+
+.asset{
+
+display:grid;
+
+grid-template-columns:58px 1fr auto;
+
+align-items:center;
+
+gap:10px;
+
+padding:13px 0;
+
+border-top:1px solid #183a54
+
+}
+
+.asset:first-child{border-top:0}
+
+.asset-icon{
+
+width:54px;
+
+height:54px;
+
+display:grid;
+
+place-items:center;
+
+border-radius:15px;
+
+background:linear-gradient(#1c4968,#0d2f47);
+
+font-size:26px;
+
+border:1px solid #35617c
+
+}
+
+.asset-name{font-weight:900}
+
+.asset-meta{
+
+font-size:12px;
+
+color:var(--muted);
+
+margin-top:4px
+
+}
+
+.asset button{
+
+min-width:106px;
+
+border:0;
+
+border-radius:12px;
+
+padding:10px 9px;
+
+color:#fff;
+
+font-weight:900;
+
+font-size:12px;
+
+background:linear-gradient(#2d9fff,#0968bf)
+
+}
+
+.asset-detail{
+
+grid-column:2/4;
+
+margin-top:-3px;
+
+padding-bottom:8px
+
+}
+
+.meters{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:6px
+
+}
+
+.meter{
+
+background:#07131f;
+
+border:1px solid #18384d;
+
+border-radius:10px;
+
+padding:7px;
+
+font-size:10px;
+
+color:#9fb7ca
+
+}
+
+.meter b{
+
+display:block;
+
+color:#fff;
+
+font-size:12px;
+
+margin-top:2px
+
+}
+
+.progress{
+
+height:9px;
+
+border-radius:999px;
+
+background:#06111c;
+
+overflow:hidden;
+
+border:1px solid #1f4159
+
+}
+
+.progress i{
+
+display:block;
+
+height:100%;
+
+background:linear-gradient(90deg,#25dc72,#4de3ff);
+
+width:0%
+
+}
+
+.mission,.achievement{
+
+padding:13px 0;
+
+border-top:1px solid #183a54
+
+}
+
+.mission:first-child,
+
+.achievement:first-child{
+
+border-top:0
+
+}
+
+.mission-head,.ach-head{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:10px;
+
+font-weight:800
+
+}
+
+.mission small,
+
+.achievement small{
+
+color:var(--muted)
+
+}
+
+.mapgrid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px
+
+}
+
+.region{
+
+min-height:145px;
+
+border-radius:18px;
+
+padding:14px;
+
+background:linear-gradient(145deg,#153d5b,#0b2235);
+
+border:1px solid #2b5c7d
+
+}
+
+.region.locked{
+
+filter:grayscale(.7);
+
+opacity:.7
+
+}
+
+.region h4{
+
+margin:0 0 6px
+
+}
+
+.region p{
+
+font-size:12px;
+
+color:#a9bfd0;
+
+min-height:42px
+
+}
+
+.storeitem{
+
+display:flex;
+
+justify-content:space-between;
+
+gap:12px;
+
+align-items:center;
+
+padding:14px 0;
+
+border-top:1px solid #173b55
+
+}
+
+.storeitem:first-child{border-top:0}
+
+.storeitem strong{
+
+display:block
+
+}
+
+.storeitem small{
+
+color:var(--muted)
+
+}
+
+.badge{
+
+display:inline-block;
+
+border-radius:999px;
+
+padding:4px 7px;
+
+font-size:10px;
+
+font-weight:900;
+
+background:#1b3b53;
+
+color:#cfe9fa
+
+}
+
+.log{
+
+font-size:12px;
+
+line-height:1.55;
+
+color:#b9ccda;
+
+max-height:165px;
+
+overflow:auto
+
+}
+
+.log div{
+
+padding:5px 0;
+
+border-bottom:1px solid #153044
+
+}
+
+.event{
+
+border:1px solid #7b3b2e;
+
+background:linear-gradient(#3d1d1a,#1e1214);
+
+border-radius:17px;
+
+padding:14px;
+
+margin-top:12px;
+
+display:none
+
+}
+
+.event.show{display:block}
+
+.event h3{
+
+margin:0 0 5px;
+
+color:#ffb05b
+
+}
+
+.event p{
+
+margin:0 0 11px;
+
+font-size:12px;
+
+color:#e6c8bf
+
+}
+
+.nav{
+
+position:fixed;
+
+left:50%;
+
+bottom:0;
+
+transform:translateX(-50%);
+
+width:min(720px,100%);
+
+display:grid;
+
+grid-template-columns:repeat(5,1fr);
+
+background:rgba(4,13,22,.97);
+
+border-top:1px solid #234963;
+
+padding:8px 5px calc(8px + env(safe-area-inset-bottom));
+
+z-index:50;
+
+backdrop-filter:blur(15px)
+
+}
+
+.nav button{
+
+border:0;
+
+background:transparent;
+
+color:#7893a7;
+
+font-size:10px;
+
+font-weight:800;
+
+padding:7px 2px
+
+}
+
+.nav button i{
+
+display:block;
+
+font-style:normal;
+
+font-size:22px;
+
+margin-bottom:3px
+
+}
+
+.nav button.active{color:#fff}
+
+.toast{
+
+position:fixed;
+
+left:50%;
+
+top:135px;
+
+transform:translate(-50%,-20px);
+
+background:#08131def;
+
+border:1px solid #3b6885;
+
+border-radius:14px;
+
+padding:11px 14px;
+
+font-weight:900;
+
+z-index:100;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.2s;
+
+text-align:center;
+
+max-width:90%
+
+}
+
+.toast.show{
+
+opacity:1;
+
+transform:translate(-50%,0)
+
+}
+
+.modal{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.72);
+
+display:none;
+
+place-items:center;
+
+padding:20px;
+
+z-index:90
+
+}
+
+.modal.show{display:grid}
+
+.modalbox{
+
+width:min(430px,100%);
+
+background:linear-gradient(#14344e,#071522);
+
+border:1px solid #376786;
+
+border-radius:24px;
+
+padding:20px;
+
+box-shadow:0 24px 70px #000
+
+}
+
+.modalbox h2{
+
+margin:0 0 8px
+
+}
+
+.modalbox p{
+
+color:#b6cad8;
+
+line-height:1.45
+
+}
+
+.bigmoney{
+
+font-size:34px;
+
+font-weight:1000;
+
+color:#37e776
+
+}
+
+.small{
+
+font-size:11px;
+
+color:var(--muted)
+
+}
+
+.hidden{
+
+opacity:0!important;
+
+pointer-events:none!important;
+
+transform:translateY(18px) scale(.92)!important
+
+}
+
+.level-tag{
+
+position:absolute;
+
+z-index:34;
+
+padding:5px 8px;
+
+border-radius:7px;
+
+border:1px solid #718b97;
+
+background:#05131ddd;
+
+font-size:8px;
+
+font-weight:900;
+
+letter-spacing:.5px;
+
+color:#d6e8f2;
+
+opacity:0;
+
+transition:.3s;
+
+box-shadow:0 5px 10px #0008
+
+}
+
+.level-tag.show{opacity:1}
+
+.tag-diesel{
+
+left:3%;
+
+bottom:140px
+
+}
+
+.tag-steam{
+
+left:42%;
+
+bottom:188px
+
+}
+
+.tag-gas{
+
+left:66%;
+
+bottom:156px
+
+}
+
+.tag-solar{
+
+right:3%;
+
+bottom:165px
+
+}
+
+.tag-nuclear{
+
+left:26%;
+
+bottom:194px
+
+}
+
+.construction{
+
+position:absolute;
+
+inset:0;
+
+z-index:60;
+
+pointer-events:none;
+
+display:grid;
+
+place-items:center;
+
+background:rgba(4,13,23,.58);
+
+opacity:0;
+
+transition:.25s
+
+}
+
+.construction.show{opacity:1}
+
+.construction div{
+
+background:#102b40;
+
+border:1px solid #4b7994;
+
+border-radius:16px;
+
+padding:13px 18px;
+
+font-weight:1000;
+
+color:#ffd657;
+
+box-shadow:0 10px 30px #0008
+
+}
+
+.construction.show div{
+
+animation:buildpulse .55s alternate infinite
+
+}
+
+@keyframes buildpulse{
+
+to{transform:scale(1.05)}
+
+}
+
+.facility-part{
+
+transition:opacity .45s ease,transform .45s ease,filter .45s ease
+
+}
+
+.facility-part.level2{
+
+filter:brightness(1.09) drop-shadow(0 0 7px rgba(77,227,255,.34))
+
+}
+
+.facility-part.level3{
+
+filter:brightness(1.18) drop-shadow(0 0 12px rgba(255,201,40,.42))
+
+}
+
+body.breakdown .turbine,
+
+body.breakdown .h1,
+
+body.breakdown .h2{
+
+filter:drop-shadow(0 0 12px #ff3535) drop-shadow(0 0 22px #ff353566)!important;
+
+animation:v7alarm .48s alternate infinite!important
+
+}
+
+@keyframes v7alarm{
+
+to{opacity:.65}
+
+}
+
+@media(max-width:560px){
+
+.logo{font-size:22px}
+
+.stat b{font-size:15px}
+
+.hero{min-height:560px}
+
+.yard{height:325px}
+
+.h1{
+
+width:178px;
+
+left:38%
+
+}
+
+.h2{
+
+width:112px;
+
+left:70%
+
+}
+
+.s1{left:77%}
+
+.solar-field{width:135px}
+
+.v7-pylon{right:-3%}
+
+.asset{
+
+grid-template-columns:52px 1fr
+
+}
+
+.asset button{
+
+grid-column:1/3;
+
+width:100%
+
+}
+
+.asset-detail{
+
+grid-column:1/3
+
+}
+
+.mapgrid{
+
+grid-template-columns:1fr
+
+}
+
+}
 
 </style>
 
@@ -250,35 +2676,53 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="app">
 
-<div class="topbar">
+<header class="topbar">
 
 <div class="brand">
 
 <div class="logo">POWER PLANT <span>TYCOON</span></div>
 
-<div class="rank" id="rank">GRID ROOKIE</div>
+<div id="rank" class="rank">GRID ROOKIE</div>
 
 </div>
 
 <div class="stats">
 
-<div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
+<div class="stat cash">
 
-<div class="stat power"><small>POWER</small><b id="stored">0 kWh</b></div>
+<small>CASH</small>
 
-<div class="stat rate"><small>OUTPUT</small><b id="prod">0/s</b></div>
+<b id="cash">$0</b>
+
+</div>
+
+<div class="stat power">
+
+<small>POWER</small>
+
+<b id="power">0 kWh</b>
+
+</div>
+
+<div class="stat">
+
+<small>OUTPUT</small>
+
+<b id="output">0/s</b>
 
 </div>
 
 </div>
 
-<div class="content">
+</header>
 
-<section class="page active" id="homePage">
+<main class="content">
+
+<section id="home" class="page active">
 
 <div class="hero">
 
-<div class="sky"></div>
+<div class="sky">
 
 <div class="sunmoon"></div>
 
@@ -286,45 +2730,71 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="cloud c2"></div>
 
+</div>
+
 <div class="hills"></div>
 
 <div class="scene-label">
 
-<h2>RIVERBEND STATION</h2>
+<h2>Riverbend Station</h2>
 
-<p id="sceneSub">Starter grid • Region 1</p>
+<p id="sceneSub">Build your first generating unit.</p>
 
 </div>
 
 <div class="statusstrip">
 
-<div class="grid-status">● GRID ONLINE</div>
+<div id="gridStatus" class="grid-status">GRID ONLINE</div>
 
-<div class="weather" id="weather">☀️ CLEAR</div>
+<div id="weather" class="weather">☀ CLEAR</div>
 
 </div>
 
 <div class="yard">
 
-<div id="dieselVisual" class="diesel-unit facility-part hidden"></div>
+<div class="v7-treeline"></div>
 
-<div id="solarVisual" class="solar-field facility-part hidden"></div>
+<div class="v7-control"></div>
 
-<div id="reactorVisual" class="reactor facility-part hidden"></div>
+<div class="v7-tank"></div>
 
-<div class="site-sign">RIVERBEND GENERATING SITE</div>
+<div class="v7-light v7-l1"></div>
+
+<div class="v7-light v7-l2"></div>
+
+<div class="v7-light v7-l3"></div>
+
+<div class="v7-light v7-l4"></div>
+
+<div class="v7-light v7-l5"></div>
+
+<div class="v7-pylon"></div>
+
+<div class="v7-truck"></div>
+
+<div class="v7-worker v7-w1"></div>
+
+<div class="v7-worker v7-w2"></div>
+
+<div class="v7-worker v7-w3"></div>
+
+<div class="v7-fence"></div>
 
 <div id="cooling1" class="cooling c1t facility-part hidden"></div>
 
 <div id="cooling2" class="cooling c2t facility-part hidden"></div>
 
-<div id="gasStack" class="stack s1 facility-part hidden"></div>
+<div id="reactorVisual" class="reactor facility-part hidden"></div>
+
+<div id="dieselVisual" class="diesel-unit facility-part hidden"></div>
 
 <div id="steamStack" class="stack s2 facility-part hidden"></div>
 
-<div id="gasSmoke" class="smoke sm1 facility-part hidden"></div>
-
 <div id="steamSmoke" class="smoke sm2 facility-part hidden"></div>
+
+<div id="gasStack" class="stack s1 facility-part hidden"></div>
+
+<div id="gasSmoke" class="smoke sm1 facility-part hidden"></div>
 
 <div id="steamHall" class="hall h1 facility-part hidden">
 
@@ -342,15 +2812,51 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div id="turbineVisual" class="turbine facility-part hidden"></div>
 
-<div class="powerline"></div>
+<div id="pipe1" class="pipe p1 facility-part hidden"></div>
 
-<div class="truck"></div>
+<div id="pipe2" class="pipe p2 facility-part hidden"></div>
+
+<div id="pipe3" class="pipe p3 facility-part hidden"></div>
+
+<div id="pipeV1" class="pipe v v1 facility-part hidden"></div>
+
+<div id="pipeV2" class="pipe v v2 facility-part hidden"></div>
+
+<div id="substationVisual" class="substation facility-part hidden"></div>
+
+<div id="flareVisual" class="flare facility-part hidden"></div>
+
+<div id="switchyardVisual" class="switchyard facility-part hidden">
+
+<i></i><i></i><i></i>
+
+</div>
+
+<div id="solarVisual" class="solar-field facility-part hidden"></div>
+
+<div id="tagDiesel" class="level-tag tag-diesel">DIESEL L1</div>
+
+<div id="tagSteam" class="level-tag tag-steam">STEAM L1</div>
+
+<div id="tagGas" class="level-tag tag-gas">GAS L1</div>
+
+<div id="tagSolar" class="level-tag tag-solar">SOLAR L1</div>
+
+<div id="tagNuclear" class="level-tag tag-nuclear">NUCLEAR L1</div>
+
+<div class="site-sign">RIVERBEND INDUSTRIAL POWER COMPLEX</div>
 
 <div class="road"></div>
 
 </div>
 
-<div class="flash" id="flash"></div>
+<div id="construction" class="construction">
+
+<div>🚧 BUILDING NEW ASSET...</div>
+
+</div>
+
+<div id="flash" class="flash"></div>
 
 <div class="generate-wrap">
 
@@ -360,13 +2866,13 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 </div>
 
-<div id="eventBar" class="eventbar">
+<div id="eventBox" class="event">
 
-<h3 id="eventTitle">⚠️ GRID EVENT</h3>
+<h3 id="eventTitle">⚠ Plant Event</h3>
 
 <p id="eventText"></p>
 
-<button id="eventButton" class="btn orangebtn" onclick="resolveEvent()">RESOLVE</button>
+<button id="eventButton" class="btn orangebtn" onclick="resolveEvent()">Resolve</button>
 
 </div>
 
@@ -374,7 +2880,7 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="section-title">
 
-<h3>Grid Controls</h3>
+<h3>⚡ Grid Controls</h3>
 
 <span id="tapInfo">1 kWh/tap</span>
 
@@ -382,11 +2888,13 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="btnrow">
 
-<button class="btn greenbtn" onclick="sellPower()">💵 SELL POWER</button>
+<button class="btn greenbtn" onclick="sellPower()">💵 Sell All Power</button>
 
-<button class="btn bluebtn" onclick="upgradeTap()">⬆️ UPGRADE TAP</button>
+<button class="btn bluebtn" onclick="upgradeTap()">⚙ Upgrade Generator</button>
 
 </div>
+
+<p class="small" id="tapCost"></p>
 
 </div>
 
@@ -394,43 +2902,39 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="section-title">
 
-<h3>Operations</h3>
+<h3>🏭 Operations</h3>
 
-<span id="efficiencyText">Efficiency 100%</span>
+<span id="opsStatus">Starting facility...</span>
 
 </div>
 
 <div class="meters">
 
-<div class="meter">Reliability<b id="reliability">100%</b></div>
+<div class="meter">
 
-<div class="meter">Demand<b id="demand">Normal</b></div>
+LOAD
 
-<div class="meter">Prestige<b id="prestigeText">0</b></div>
-
-</div>
-
-<div class="btnrow" style="margin-top:10px">
-
-<button class="btn purplebtn" onclick="claimDaily()">🎁 DAILY</button>
-
-<button class="btn purplebtn" onclick="activateBoost()">⚡ 2× OUTPUT</button>
+<b id="loadMeter">0%</b>
 
 </div>
 
-</div>
+<div class="meter">
 
-<div class="card">
+EFFICIENCY
 
-<div class="section-title">
-
-<h3>Current Mission</h3>
-
-<span id="missionReward">Reward $150</span>
+<b id="effMeter">100%</b>
 
 </div>
 
-<div id="currentMission"></div>
+<div class="meter">
+
+SAFETY
+
+<b id="safeMeter">100%</b>
+
+</div>
+
+</div>
 
 </div>
 
@@ -438,67 +2942,31 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="section-title">
 
-<h3>Plant Log</h3>
+<h3>📋 Activity Log</h3>
 
-<span>Recent activity</span>
-
-</div>
-
-<div id="log" class="log"></div>
+<span>LIVE</span>
 
 </div>
 
-</section>
-
-<section class="page" id="plantsPage">
-
-<div class="card" style="margin-top:0">
-
-<div class="section-title">
-
-<h3>Power Assets</h3>
-
-<span>Operate & upgrade</span>
-
-</div>
-
-<div id="assets"></div>
+<div id="activityLog" class="log"></div>
 
 </div>
 
 </section>
 
-<section class="page" id="mapPage">
+<section id="plants" class="page">
 
-<div class="card" style="margin-top:0">
-
-<div class="section-title">
-
-<h3>Grid Expansion</h3>
-
-<span id="regionCount">1/4 regions</span>
-
-</div>
-
-<div class="mapgrid" id="regions"></div>
-
-</div>
-
-</section>
-
-<section class="page" id="missionsPage">
-
-<div class="card" style="margin-top:0">
+<div class="card">
 
 <div class="section-title">
 
-<h3>Missions</h3>
+<h3>🏭 Generating Assets</h3>
 
-<span>Grow your utility</span>
+<span>Build the complex</span>
 
 </div>
 
-<div id="missions"></div>
+<div id="plantList"></div>
 
 </div>
 
@@ -506,13 +2974,55 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="section-title">
 
-<h3>Achievements</h3>
+<h3>♻ Prestige</h3>
 
-<span id="achievementCount">0/6</span>
+<span>Permanent production</span>
 
 </div>
 
-<div id="achievements"></div>
+<p id="prestigeInfo"></p>
+
+<button class="btn purplebtn" style="width:100%" onclick="prestige()">
+
+PRESTIGE COMPANY
+
+</button>
+
+</div>
+
+</section>
+
+<section id="map" class="page">
+
+<div class="card">
+
+<div class="section-title">
+
+<h3>🗺 Power Grid Expansion</h3>
+
+<span>Regional bonuses</span>
+
+</div>
+
+<div id="regionList" class="mapgrid"></div>
+
+</div>
+
+</section>
+
+<section id="goals" class="page">
+
+<div class="card">
+
+<div class="section-title">
+
+<h3>🎯 Missions</h3>
+
+<span>Cash rewards</span>
+
+</div>
+
+<div id="missionList"></div>
 
 </div>
 
@@ -520,157 +3030,143 @@ body.night .sunmoon{background:#dce8ff;box-shadow:0 0 22px rgba(220,232,255,.35)
 
 <div class="section-title">
 
-<h3>Prestige</h3>
+<h3>🏆 Achievements</h3>
 
-<span>Permanent bonus</span>
+<span>Career milestones</span>
 
 </div>
 
-<p style="color:var(--muted);margin-top:0">
-
-Reset your utility after earning $50,000 lifetime cash to gain +10% permanent production.
-
-</p>
-
-<button class="btn purplebtn" onclick="prestige()">⚡ PRESTIGE GRID</button>
+<div id="achievementList"></div>
 
 </div>
 
 </section>
 
-<section class="page" id="storePage">
+<section id="store" class="page">
 
-<div class="card" style="margin-top:0">
+<div class="card">
 
 <div class="section-title">
 
-<h3>Tycoon Store</h3>
+<h3>🛒 Power Shop</h3>
 
-<span>Prototype only</span>
+<span>Test store</span>
 
 </div>
 
-<div class="shopitem">
+<div class="storeitem">
 
 <div>
 
-<b>Starter Pack</b>
+<strong>🎁 Daily Supply Drop</strong>
 
-<small>$5,000 game cash + 10 min 2× boost</small>
-
-</div>
-
-<div class="price">TEST</div>
+<small>Free cash once per day</small>
 
 </div>
 
-<div class="shopitem">
+<button class="btn greenbtn" onclick="dailyReward()">CLAIM</button>
+
+</div>
+
+<div class="storeitem">
 
 <div>
 
-<b>Cash Crate</b>
+<strong>⚡ 2× Grid Output</strong>
 
-<small>$25,000 game cash</small>
-
-</div>
-
-<div class="price">TEST</div>
+<small>10 minute production boost</small>
 
 </div>
 
-<div class="shopitem">
+<button class="btn bluebtn" onclick="activateBoost()">ACTIVATE</button>
+
+</div>
+
+<div class="storeitem">
 
 <div>
 
-<b>Remove Ads</b>
+<strong>🚀 Starter Pack</strong>
 
-<small>Future App Store purchase</small>
-
-</div>
-
-<div class="price">TEST</div>
+<small>$5,000 + 10 minute boost</small>
 
 </div>
 
-<button class="btn darkbtn" style="margin-top:10px" onclick="testStarter()">
-
-CLAIM TEST STARTER PACK
-
-</button>
+<button class="btn purplebtn" onclick="starterPack()">TEST BUY</button>
 
 </div>
 
-<div class="card">
+<div class="storeitem">
 
-<div class="section-title">
+<div>
 
-<h3>Save Data</h3>
+<strong>♻ Reset Save</strong>
 
-<span>Stored on this device</span>
+<small>Erase local progress</small>
 
 </div>
 
-<button class="btn redbtn" onclick="resetGame()">RESET GAME</button>
+<button class="btn redbtn" onclick="resetGame()">RESET</button>
+
+</div>
 
 </div>
 
 </section>
 
-</div>
+</main>
 
 </div>
 
-<div class="nav">
+<nav class="nav">
 
-<div class="navin">
+<button class="active" onclick="showPage('home',this)">
 
-<button class="navbtn active" data-page="homePage" onclick="showPage(this)">
-
-<span>🏭</span>HOME
+<i>🏠</i>HOME
 
 </button>
 
-<button class="navbtn" data-page="plantsPage" onclick="showPage(this)">
+<button onclick="showPage('plants',this)">
 
-<span>⚙️</span>PLANTS
-
-</button>
-
-<button class="navbtn" data-page="mapPage" onclick="showPage(this)">
-
-<span>🗺️</span>MAP
+<i>🏭</i>PLANTS
 
 </button>
 
-<button class="navbtn" data-page="missionsPage" onclick="showPage(this)">
+<button onclick="showPage('map',this)">
 
-<span>🏆</span>GOALS
-
-</button>
-
-<button class="navbtn" data-page="storePage" onclick="showPage(this)">
-
-<span>🛒</span>STORE
+<i>🗺️</i>MAP
 
 </button>
 
-</div>
+<button onclick="showPage('goals',this)">
 
-</div>
+<i>🎯</i>GOALS
 
-<div class="toast" id="toast"></div>
+</button>
 
-<div class="modal" id="offlineModal">
+<button onclick="showPage('store',this)">
+
+<i>🛒</i>STORE
+
+</button>
+
+</nav>
+
+<div id="toast" class="toast"></div>
+
+<div id="offlineModal" class="modal">
 
 <div class="modalbox">
 
-<div class="big">⚡</div>
+<h2>⚡ Welcome Back</h2>
 
-<h2>Welcome Back</h2>
+<p>Your power plants kept operating while you were away.</p>
+
+<div id="offlineAmount" class="bigmoney">$0</div>
 
 <p id="offlineText"></p>
 
-<button class="btn greenbtn" onclick="closeOffline()">COLLECT</button>
+<button class="btn greenbtn" style="width:100%" onclick="closeOffline()">COLLECT</button>
 
 </div>
 
@@ -678,7 +3174,7 @@ CLAIM TEST STARTER PACK
 
 <script>
 
-const PLANTS=[
+  const PLANTS=[
 
 {id:'diesel',icon:'⛽',name:'Diesel Generator',unlock:60,base:1.5,reliability:97},
 
@@ -710,43 +3206,37 @@ const MISSIONS=[
 
 {id:'m2',label:'Earn $1,000 lifetime cash',type:'lifetimeCash',target:1000,reward:500},
 
-{id:'m3',label:'Own 5 total plant levels',type:'plantLevels',target:5,reward:1200},
+{id:'m3',label:'Own 5 plant levels',type:'levels',target:5,reward:1200},
 
-{id:'m4',label:'Reach 50 kWh/s output',type:'output',target:50,reward:3500},
-
-{id:'m5',label:'Unlock 3 regions',type:'regions',target:3,reward:12000},
-
-{id:'m6',label:'Complete 5 grid events',type:'events',target:5,reward:15000}
+{id:'m4',label:'Reach 50 kWh/s',type:'output',target:50,reward:3500}
 
 ];
 
 const ACHIEVEMENTS=[
 
-{id:'a1',label:'First Sale',desc:'Sell power at least once',test:()=>g.sales>=1,reward:100},
+{id:'a1',label:'First Spark',desc:'Generate your first 10 kWh',type:'generated',target:10},
 
-{id:'a2',label:'Plant Owner',desc:'Unlock your first automatic plant',test:()=>totalPlantLevels()>=1,reward:250},
+{id:'a2',label:'Plant Operator',desc:'Unlock the Steam Turbine',type:'steam',target:1},
 
-{id:'a3',label:'Grid Builder',desc:'Reach 10 total plant levels',test:()=>totalPlantLevels()>=10,reward:2500},
+{id:'a3',label:'Grid Builder',desc:'Unlock a second region',type:'regions',target:2},
 
-{id:'a4',label:'Regional Utility',desc:'Unlock 2 regions',test:()=>g.regions.length>=2,reward:5000},
+{id:'a4',label:'Power Mogul',desc:'Earn $50,000 lifetime cash',type:'lifetimeCash',target:50000},
 
-{id:'a5',label:'Power Baron',desc:'Earn $100,000 lifetime cash',test:()=>g.lifetimeCash>=100000,reward:25000},
-
-{id:'a6',label:'Control Room Veteran',desc:'Resolve 10 grid events',test:()=>g.eventsCompleted>=10,reward:30000}
+{id:'a5',label:'Nuclear Age',desc:'Unlock the Nuclear Plant',type:'nuclear',target:1}
 
 ];
 
-function freshGame(){
-
-const plants={};
-
-PLANTS.forEach(p=>plants[p.id]={level:0,unlocked:false});
-
-return{
+const defaultGame=()=>({
 
 cash:0,
 
 stored:0,
+
+generated:0,
+
+sold:0,
+
+lifetimeCash:0,
 
 tapLevel:0,
 
@@ -754,135 +3244,173 @@ prestige:0,
 
 boostUntil:0,
 
-lastDaily:0,
-
-generated:0,
-
-lifetimeCash:0,
-
-sales:0,
-
-plants,
-
-regions:['riverbend'],
-
-missionsClaimed:[],
-
-achievementsClaimed:[],
-
 lastSeen:Date.now(),
 
-starterClaimed:false,
+lastDaily:0,
+
+starter:false,
+
+regions:{riverbend:true},
+
+plants:Object.fromEntries(PLANTS.map(p=>[
+
+p.id,
+
+{unlocked:false,level:0}
+
+])),
+
+missions:{},
+
+achievements:{},
 
 event:null,
 
-nextEventAt:Date.now()+45000,
+eventCooldown:0,
 
-eventsCompleted:0,
+log:['Riverbend Station connected to the grid.']
 
-log:['Riverbend Station online.'],
+});
 
-dayPhase:0
-
-};
-
-}
-
-let g=loadGame();
-
-function loadGame(){
-
-let obj=null;
+let g;
 
 try{
 
-obj=
+g=JSON.parse(localStorage.getItem('PPT_V5'))||defaultGame();
 
-JSON.parse(localStorage.getItem('PPT_V5')||'null') ||
+}catch(e){
 
-JSON.parse(localStorage.getItem('PPT_V4')||'null');
-
-}catch(e){}
-
-const base=freshGame();
-
-if(!obj)return base;
-
-const merged={
-
-...base,
-
-...obj,
-
-plants:{
-
-...base.plants,
-
-...(obj.plants||{})
+g=defaultGame();
 
 }
+
+function migrate(){
+
+if(!g.plants)g.plants={};
+
+PLANTS.forEach(p=>{
+
+if(!g.plants[p.id]){
+
+g.plants[p.id]={unlocked:false,level:0};
+
+}
+
+});
+
+if(!g.regions)g.regions={riverbend:true};
+
+if(!g.missions)g.missions={};
+
+if(!g.achievements)g.achievements={};
+
+if(!g.log)g.log=[];
+
+if(g.generated==null)g.generated=0;
+
+if(g.sold==null)g.sold=0;
+
+if(g.lifetimeCash==null)g.lifetimeCash=0;
+
+if(g.tapLevel==null)g.tapLevel=0;
+
+if(g.prestige==null)g.prestige=0;
+
+if(g.boostUntil==null)g.boostUntil=0;
+
+if(g.lastSeen==null)g.lastSeen=Date.now();
+
+if(g.lastDaily==null)g.lastDaily=0;
+
+if(g.eventCooldown==null)g.eventCooldown=0;
+
+}
+
+migrate();
+
+const money=n=>{
+
+if(!isFinite(n))n=0;
+
+if(n>=1e9)return'$'+(n/1e9).toFixed(2)+'B';
+
+if(n>=1e6)return'$'+(n/1e6).toFixed(2)+'M';
+
+if(n>=1e3)return'$'+(n/1e3).toFixed(2)+'K';
+
+return'$'+n.toFixed(1);
 
 };
 
-if(!Array.isArray(merged.regions))merged.regions=['riverbend'];
+const num=n=>{
 
-if(!Array.isArray(merged.missionsClaimed))merged.missionsClaimed=[];
+if(!isFinite(n))n=0;
 
-if(!Array.isArray(merged.achievementsClaimed))merged.achievementsClaimed=[];
+if(n>=1e9)return(n/1e9).toFixed(2)+'B';
 
-if(!Array.isArray(merged.log))merged.log=[];
+if(n>=1e6)return(n/1e6).toFixed(2)+'M';
 
-return merged;
+if(n>=1e3)return(n/1e3).toFixed(2)+'K';
 
-}
+return n.toFixed(1);
 
-function saveGame(){
+};
 
-g.lastSeen=Date.now();
+function prestigeMult(){
 
-localStorage.setItem('PPT_V5',JSON.stringify(g));
-
-}
-
-function fmt(v){
-
-v=Number(v)||0;
-
-if(v>=1e9)return(v/1e9).toFixed(2)+'B';
-
-if(v>=1e6)return(v/1e6).toFixed(2)+'M';
-
-if(v>=1e3)return(v/1e3).toFixed(2)+'K';
-
-return v.toFixed(1);
+return 1+g.prestige*.1;
 
 }
 
 function regionMult(){
 
-let b=0;
+let m=1;
 
-if(g.regions.includes('coast'))b+=.10;
+if(g.regions.coast)m+=.10;
 
-if(g.regions.includes('desert'))b+=.20;
+if(g.regions.desert)m+=.20;
 
-if(g.regions.includes('metro'))b+=.35;
+if(g.regions.metro)m+=.35;
 
-return 1+b;
+return m;
 
 }
 
-function prestigeMult(){return 1+(Number(g.prestige)||0)*.10;}
+function boostMult(){
 
-function boostMult(){return Date.now()<Number(g.boostUntil||0)?2:1;}
+return Date.now()<g.boostUntil?2:1;
 
-function eventMult(){return g.event&&g.event.type==='breakdown'?.5:1;}
+}
 
-function totalMult(){return prestigeMult()*regionMult()*boostMult()*eventMult();}
+function eventMult(){
 
-function tapPower(){return(1+g.tapLevel*2.5)*prestigeMult()*regionMult()*boostMult();}
+if(!g.event)return 1;
 
-function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel);}
+if(g.event.type==='breakdown')return .5;
+
+if(g.event.type==='surge')return 1.5;
+
+return 1;
+
+}
+
+function totalMult(){
+
+return prestigeMult()*regionMult()*boostMult()*eventMult();
+
+}
+
+function tapPower(){
+
+return(1+g.tapLevel*2.5)*prestigeMult()*regionMult()*boostMult();
+
+}
+
+function tapUpgradeCost(){
+
+return 25*Math.pow(1.65,g.tapLevel);
+
+}
 
 function output(){
 
@@ -892,7 +3420,11 @@ PLANTS.forEach(p=>{
 
 const s=g.plants[p.id];
 
-if(s&&s.unlocked)n+=p.base*s.level;
+if(s&&s.unlocked){
+
+n+=p.base*s.level;
+
+}
 
 });
 
@@ -910,87 +3442,37 @@ return p.unlock*.7*Math.pow(1.58,Math.max(1,s.level)-1);
 
 }
 
-function totalPlantLevels(){
+function totalLevels(){
 
-return PLANTS.reduce((sum,p)=>sum+(g.plants[p.id]?.level||0),0);
-
-}
-
-function reliability(){
-
-if(totalPlantLevels()===0)return 100;
-
-let total=0;
-
-let weight=0;
-
-PLANTS.forEach(p=>{
+return PLANTS.reduce((a,p)=>{
 
 const s=g.plants[p.id];
 
-if(s&&s.unlocked){
+return a+(s&&s.unlocked?s.level:0);
 
-total+=p.reliability*s.level;
-
-weight+=s.level;
+},0);
 
 }
 
-});
+function saveGame(){
 
-let r=weight?total/weight:100;
+g.lastSeen=Date.now();
 
-if(g.event&&g.event.type==='breakdown')r-=15;
-
-return Math.max(50,Math.round(r));
+localStorage.setItem('PPT_V5',JSON.stringify(g));
 
 }
 
-function efficiency(){
-
-let e=100+(g.regions.length-1)*3+g.prestige*2;
-
-if(Date.now()<g.boostUntil)e+=5;
-
-if(g.event&&g.event.type==='breakdown')e-=25;
-
-return Math.max(50,Math.round(e));
-
-}
-
-function demandText(){
-
-if(g.event&&g.event.type==='surge')return'PEAK';
-
-if(g.regions.includes('metro'))return'High';
-
-if(g.regions.includes('coast'))return'Elevated';
-
-return'Normal';
-
-}
-
-function addLog(msg){
-
-const t=new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
-
-g.log.unshift(t+'|'+msg);
-
-g.log=g.log.slice(0,12);
-
-}
-
-function toast(msg){
+function toast(text){
 
 const t=document.getElementById('toast');
 
-t.textContent=msg;
+t.textContent=text;
 
 t.classList.add('show');
 
-clearTimeout(toast.timer);
+clearTimeout(window.toastTimer);
 
-toast.timer=setTimeout(()=>{
+window.toastTimer=setTimeout(()=>{
 
 t.classList.remove('show');
 
@@ -998,13 +3480,29 @@ t.classList.remove('show');
 
 }
 
+function addLog(text){
+
+const time=new Date().toLocaleTimeString([],{
+
+hour:'2-digit',
+
+minute:'2-digit'
+
+});
+
+g.log.unshift(time+' • '+text);
+
+g.log=g.log.slice(0,20);
+
+}
+
 function tapGenerate(){
 
-const a=tapPower();
+const amount=tapPower();
 
-g.stored+=a;
+g.stored+=amount;
 
-g.generated+=a;
+g.generated+=amount;
 
 const f=document.getElementById('flash');
 
@@ -1014,11 +3512,7 @@ void f.offsetWidth;
 
 f.classList.add('on');
 
-toast('+'+fmt(a)+' kWh');
-
-checkAchievements();
-
-saveGame();
+if(navigator.vibrate)navigator.vibrate(12);
 
 render();
 
@@ -1028,27 +3522,37 @@ function sellPower(){
 
 if(g.stored<=0){
 
-toast('Generate some power first');
+toast('Generate some power first.');
 
 return;
 
 }
 
-const v=g.stored;
+let price=1;
 
-g.cash+=v;
+if(g.event&&g.event.type==='surge'){
 
-g.lifetimeCash+=v;
+price=1.75;
 
-g.sales++;
+}
+
+const earned=g.stored*price;
+
+g.cash+=earned;
+
+g.lifetimeCash+=earned;
+
+g.sold+=g.stored;
+
+addLog(
+
+'Sold '+num(g.stored)+' kWh for '+money(earned)+'.'
+
+);
 
 g.stored=0;
 
-addLog('Sold '+fmt(v)+' kWh for $'+fmt(v)+'.');
-
-toast('Sold power for $'+fmt(v));
-
-checkAchievements();
+toast('Grid sale: '+money(earned));
 
 saveGame();
 
@@ -1058,23 +3562,27 @@ render();
 
 function upgradeTap(){
 
-const c=tapUpgradeCost();
+const cost=tapUpgradeCost();
 
-if(g.cash<c){
+if(g.cash<cost){
 
-toast('Need $'+fmt(c-g.cash)+' more');
+toast('Need '+money(cost));
 
 return;
 
 }
 
-g.cash-=c;
+g.cash-=cost;
 
 g.tapLevel++;
 
-addLog('Manual generator upgraded to level '+g.tapLevel+'.');
+addLog(
 
-toast('Manual generator upgraded');
+'Manual generator upgraded to Level '+(g.tapLevel+1)+'.'
+
+);
+
+toast('Manual generation upgraded!');
 
 saveGame();
 
@@ -1082,45 +3590,47 @@ render();
 
 }
 
-function buyPlant(id){
+function buildPlant(id){
 
 const p=PLANTS.find(x=>x.id===id);
 
 const s=g.plants[id];
 
-const c=plantCost(p);
+const cost=plantCost(p);
 
-if(g.cash<c){
+if(g.cash<cost){
 
-toast('Need $'+fmt(c-g.cash)+' more');
+toast('Need '+money(cost));
 
 return;
 
 }
 
-g.cash-=c;
+g.cash-=cost;
 
-if(!s.unlocked){
+const first=!s.unlocked;
+
+if(first){
 
 s.unlocked=true;
 
 s.level=1;
 
-addLog(p.name+' commissioned.');
+showConstruction(p.name);
 
-toast(p.name+' unlocked!');
+addLog(p.name+' commissioned at Riverbend.');
+
+toast(p.name+' ONLINE!');
 
 }else{
 
 s.level++;
 
-addLog(p.name+' upgraded to level '+s.level+'.');
+addLog(p.name+' upgraded to Level '+s.level+'.');
 
-toast(p.name+' upgraded');
+toast(p.name+' upgraded!');
 
 }
-
-checkAchievements();
 
 saveGame();
 
@@ -1128,45 +3638,45 @@ render();
 
 }
 
-function claimDaily(){
+function showConstruction(name){
 
-const now=Date.now();
+const c=document.getElementById('construction');
 
-if(g.lastDaily&&now-g.lastDaily<86400000){
+c.querySelector('div').textContent=
 
-toast('Daily reward already claimed');
+'🚧 '+name.toUpperCase()+' CONSTRUCTION';
+
+c.classList.add('show');
+
+setTimeout(()=>{
+
+c.classList.remove('show');
+
+},1300);
+
+}
+
+function buyRegion(id){
+
+const r=REGIONS.find(x=>x.id===id);
+
+if(g.regions[id])return;
+
+if(g.cash<r.cost){
+
+toast('Need '+money(r.cost));
 
 return;
 
 }
 
-const r=Math.max(250,output()*600);
+g.cash-=r.cost;
 
-g.cash+=r;
+g.regions[id]=true;
 
-g.lifetimeCash+=r;
+addLog(r.name+' connected to the company grid.');
 
-g.lastDaily=now;
-
-addLog('Daily utility grant received: $'+fmt(r)+'.');
-
-toast('Daily reward: $'+fmt(r));
-
-checkAchievements();
-
-saveGame();
-
-render();
-
-}
-
-function activateBoost(){
-
-g.boostUntil=Math.max(Date.now(),g.boostUntil||0)+5*60*1000;
-
-addLog('Emergency output boost activated.');
-
-toast('2× output active for 5 minutes');
+toast(r.name+' unlocked!');
 
 saveGame();
 
@@ -1180,13 +3690,9 @@ if(m.type==='generated')return g.generated;
 
 if(m.type==='lifetimeCash')return g.lifetimeCash;
 
-if(m.type==='plantLevels')return totalPlantLevels();
+if(m.type==='levels')return totalLevels();
 
 if(m.type==='output')return output();
-
-if(m.type==='regions')return g.regions.length;
-
-if(m.type==='events')return g.eventsCompleted;
 
 return 0;
 
@@ -1196,61 +3702,29 @@ function claimMission(id){
 
 const m=MISSIONS.find(x=>x.id===id);
 
-if(!m)return;
+if(g.missions[id])return;
 
-if(g.missionsClaimed.includes(id))return;
+if(missionValue(m)<m.target){
 
-if(missionValue(m)<m.target)return;
-
-g.missionsClaimed.push(id);
-
-g.cash+=m.reward;
-
-g.lifetimeCash+=m.reward;
-
-addLog('Mission complete: '+m.label+'.');
-
-toast('Mission complete! +$'+fmt(m.reward));
-
-checkAchievements();
-
-saveGame();
-
-render();
-
-}
-
-function nextMission(){
-
-return MISSIONS.find(m=>!g.missionsClaimed.includes(m.id))||null;
-
-}
-
-function unlockRegion(id){
-
-const r=REGIONS.find(x=>x.id===id);
-
-if(!r)return;
-
-if(g.regions.includes(id))return;
-
-if(g.cash<r.cost){
-
-toast('Need $'+fmt(r.cost-g.cash)+' more');
+toast('Mission not complete yet.');
 
 return;
 
 }
 
-g.cash-=r.cost;
+g.missions[id]=true;
 
-g.regions.push(id);
+g.cash+=m.reward;
 
-addLog(r.name+' connected to your grid.');
+g.lifetimeCash+=m.reward;
 
-toast(r.name+' unlocked!');
+addLog(
 
-checkAchievements();
+'Mission completed: '+m.label+' +'+money(m.reward)
+
+);
+
+toast('Mission reward '+money(m.reward));
 
 saveGame();
 
@@ -1258,25 +3732,147 @@ render();
 
 }
 
-function checkAchievements(){
+function achievementValue(a){
+
+if(a.type==='generated')return g.generated;
+
+if(a.type==='steam')return g.plants.steam.unlocked?1:0;
+
+if(a.type==='regions')return Object.values(g.regions).filter(Boolean).length;
+
+if(a.type==='lifetimeCash')return g.lifetimeCash;
+
+if(a.type==='nuclear')return g.plants.nuclear.unlocked?1:0;
+
+return 0;
+
+}
+
+function updateAchievements(){
 
 ACHIEVEMENTS.forEach(a=>{
 
-if(!g.achievementsClaimed.includes(a.id)&&a.test()){
+if(
 
-g.achievementsClaimed.push(a.id);
+!g.achievements[a.id]&&
 
-g.cash+=a.reward;
+achievementValue(a)>=a.target
 
-g.lifetimeCash+=a.reward;
+){
 
-addLog('Achievement unlocked: '+a.label+'.');
+g.achievements[a.id]=true;
 
-toast('Achievement: '+a.label+' +$'+fmt(a.reward));
+addLog('Achievement unlocked: '+a.label);
+
+toast('🏆 '+a.label);
 
 }
 
 });
+
+}
+
+function dailyReward(){
+
+const now=Date.now();
+
+const day=86400000;
+
+if(now-g.lastDaily<day){
+
+const hrs=Math.ceil(
+
+(day-(now-g.lastDaily))/3600000
+
+);
+
+toast('Daily reward in '+hrs+'h');
+
+return;
+
+}
+
+const reward=Math.max(
+
+250,
+
+Math.round(300+output()*120)
+
+);
+
+g.cash+=reward;
+
+g.lifetimeCash+=reward;
+
+g.lastDaily=now;
+
+addLog(
+
+'Daily supply drop received: '+money(reward)
+
+);
+
+toast('Daily reward '+money(reward));
+
+saveGame();
+
+render();
+
+}
+
+function activateBoost(){
+
+if(Date.now()<g.boostUntil){
+
+toast('2× boost is already active.');
+
+return;
+
+}
+
+g.boostUntil=Date.now()+10*60*1000;
+
+addLog('Grid output boost activated for 10 minutes.');
+
+toast('⚡ 2× OUTPUT ACTIVE');
+
+saveGame();
+
+render();
+
+}
+
+function starterPack(){
+
+if(g.starter){
+
+toast('Starter Pack already claimed.');
+
+return;
+
+}
+
+g.starter=true;
+
+g.cash+=5000;
+
+g.lifetimeCash+=5000;
+
+g.boostUntil=Math.max(
+
+g.boostUntil,
+
+Date.now()+10*60*1000
+
+);
+
+addLog('Starter Pack test purchase completed.');
+
+toast('🚀 Starter Pack activated!');
+
+saveGame();
+
+render();
 
 }
 
@@ -1284,199 +3880,121 @@ function prestige(){
 
 if(g.lifetimeCash<50000){
 
-toast('Reach $50,000 lifetime cash first');
+toast('Earn $50,000 lifetime cash first.');
 
 return;
 
 }
 
-if(!confirm('Prestige will reset cash, power, upgrades and plants for +10% permanent production. Continue?')){
+if(!confirm(
 
-return;
+'Prestige will reset cash, plants and regions for +10% permanent production. Continue?'
 
-}
+))return;
 
-const p=g.prestige+1;
+const next=g.prestige+1;
 
-const r=[...g.regions];
+const achievements=g.achievements;
 
-const m=[...g.missionsClaimed];
+g=defaultGame();
 
-const a=[...g.achievementsClaimed];
+g.prestige=next;
 
-const ev=g.eventsCompleted;
+g.achievements=achievements;
 
-g=freshGame();
+g.log=[
 
-g.prestige=p;
+'Company prestiged. Permanent production bonus increased.'
 
-g.regions=r;
-
-g.missionsClaimed=m;
-
-g.achievementsClaimed=a;
-
-g.eventsCompleted=ev;
-
-addLog('Grid prestige '+g.prestige+' activated.');
-
-toast('Prestige '+g.prestige+' activated');
+];
 
 saveGame();
 
 render();
 
-}
-
-function testStarter(){
-
-if(g.starterClaimed){
-
-toast('Test starter pack already claimed');
-
-return;
-
-}
-
-g.starterClaimed=true;
-
-g.cash+=5000;
-
-g.lifetimeCash+=5000;
-
-g.boostUntil=Date.now()+10*60*1000;
-
-addLog('Test starter pack applied.');
-
-toast('Test starter pack claimed');
-
-checkAchievements();
-
-saveGame();
-
-render();
+toast('⭐ Prestige '+next+'!');
 
 }
 
 function resetGame(){
 
-if(!confirm('Reset all Power Plant Tycoon progress on this device?')){
+if(!confirm(
 
-return;
+'Erase all Power Plant Tycoon progress on this device?'
 
-}
+))return;
 
 localStorage.removeItem('PPT_V5');
 
-g=freshGame();
+g=defaultGame();
 
 saveGame();
 
 render();
 
-toast('Game reset');
-
-}
-
-function showPage(btn){
-
-document.querySelectorAll('.page').forEach(p=>{
-
-p.classList.remove('active');
-
-});
-
-document.querySelectorAll('.navbtn').forEach(b=>{
-
-b.classList.remove('active');
-
-});
-
-document.getElementById(btn.dataset.page).classList.add('active');
-
-btn.classList.add('active');
-
-window.scrollTo({
-
-top:0,
-
-behavior:'smooth'
-
-});
+toast('Game reset.');
 
 }
 
 function createEvent(){
 
-if(g.event||Date.now()<g.nextEventAt)return;
+if(g.event)return;
 
-const r=Math.random();
+if(Date.now()<g.eventCooldown)return;
 
-if(r<.48){
+if(output()<=0)return;
 
-const c=Math.max(50,output()*40);
+if(Math.random()>.035)return;
+
+const roll=Math.random();
+
+if(roll<.45){
 
 g.event={
 
 type:'breakdown',
 
-title:'⚠️ Turbine Breakdown',
+title:'⚠ Turbine Breakdown',
 
-text:'A plant trip cut automatic production by 50%. Repair cost: $'+fmt(c),
+text:'A plant trip cut automatic production by 50%.',
 
-cost:c
+cost:Math.max(300,output()*35)
 
 };
 
-addLog('Alarm: turbine breakdown detected.');
-
-}else if(r<.83){
-
-const rew=Math.max(100,output()*80);
+}else if(roll<.78){
 
 g.event={
 
 type:'surge',
 
-title:'⚡ Demand Surge',
+title:'📈 Demand Surge',
 
-text:'The grid needs extra power. Deliver 100 kWh for a $'+fmt(rew)+' bonus.',
+text:'Grid demand is high. Power sells for 75% more while this event is active.',
 
-need:100,
-
-reward:rew
+expires:Date.now()+60000
 
 };
 
-addLog('Grid operator issued a peak-demand request.');
-
 }else{
-
-const cost=Math.max(75,output()*25);
-
-const rew=Math.max(250,output()*120);
 
 g.event={
 
 type:'inspection',
 
-title:'🧰 Safety Inspection',
+title:'🦺 Safety Inspection',
 
-text:'Pass a maintenance inspection by paying $'+fmt(cost)+' to earn a $'+fmt(rew)+' compliance bonus.',
+text:'Complete a safety inspection to earn a reliability bonus.',
 
-cost:cost,
-
-reward:rew
+reward:Math.max(150,output()*20)
 
 };
 
-addLog('Safety inspection scheduled.');
-
 }
 
-g.nextEventAt=Date.now()+90000;
+g.eventCooldown=Date.now()+90000;
 
-saveGame();
+addLog(g.event.title.replace(/[⚠📈🦺]/g,'').trim());
 
 render();
 
@@ -1490,7 +4008,7 @@ if(g.event.type==='breakdown'){
 
 if(g.cash<g.event.cost){
 
-toast('Not enough cash to repair');
+toast('Repair requires '+money(g.event.cost));
 
 return;
 
@@ -1498,57 +4016,43 @@ return;
 
 g.cash-=g.event.cost;
 
-toast('Turbine repaired');
+addLog(
 
-}
+'Breakdown repaired for '+money(g.event.cost)+'.'
 
-else if(g.event.type==='surge'){
-
-if(g.stored<g.event.need){
-
-toast('Need '+fmt(g.event.need-g.stored)+' more kWh');
-
-return;
-
-}
-
-g.stored-=g.event.need;
-
-g.cash+=g.event.reward;
-
-g.lifetimeCash+=g.event.reward;
-
-toast('Demand surge completed!');
-
-}
-
-else if(g.event.type==='inspection'){
-
-if(g.cash<g.event.cost){
-
-toast('Need $'+fmt(g.event.cost-g.cash)+' more');
-
-return;
-
-}
-
-g.cash-=g.event.cost;
-
-g.cash+=g.event.reward;
-
-g.lifetimeCash+=g.event.reward;
-
-toast('Inspection passed!');
-
-}
-
-addLog('Grid event resolved: '+g.event.title.replace(/[⚠️⚡🧰]/g,'').trim()+'.');
-
-g.eventsCompleted++;
+);
 
 g.event=null;
 
-checkAchievements();
+toast('Plant repaired.');
+
+}else if(g.event.type==='inspection'){
+
+const reward=g.event.reward;
+
+g.cash+=reward;
+
+g.lifetimeCash+=reward;
+
+addLog(
+
+'Safety inspection passed. Bonus '+money(reward)+'.'
+
+);
+
+g.event=null;
+
+toast('Inspection passed!');
+
+}else if(g.event.type==='surge'){
+
+g.event=null;
+
+addLog('Demand surge ended.');
+
+toast('Demand normalized.');
+
+}
 
 saveGame();
 
@@ -1556,209 +4060,521 @@ render();
 
 }
 
-function handleOffline(){
+function updateEvent(){
 
-const prev=Number(g.lastSeen||Date.now());
+if(
 
-const secs=Math.min(8*3600,Math.max(0,(Date.now()-prev)/1000));
+g.event&&
 
-const earned=output()*secs*.65;
+g.event.type==='surge'&&
 
-if(secs>60&&earned>1){
+Date.now()>g.event.expires
 
-g.stored+=earned;
+){
 
-document.getElementById('offlineText').textContent=
+g.event=null;
 
-'Your plants generated '+fmt(earned)+' kWh while you were away.';
-
-document.getElementById('offlineModal').classList.add('show');
+addLog('Demand surge ended.');
 
 }
-
-saveGame();
-
-}
-
-function closeOffline(){
-
-document.getElementById('offlineModal').classList.remove('show');
-
-saveGame();
-
-render();
 
 }
 
 function updateDayNight(){
 
-g.dayPhase=(g.dayPhase+1)%120;
+const cycle=
 
-document.body.classList.toggle('night',g.dayPhase>72);
+Math.floor(Date.now()/45000)%2;
 
-const w=document.getElementById('weather');
+document.body.classList.toggle(
 
-w.textContent=g.dayPhase>72?'🌙 NIGHT SHIFT':'☀️ CLEAR';
+'night',
+
+cycle===1
+
+);
+
+const weather=document.getElementById('weather');
+
+weather.textContent=
+
+cycle===1?'🌙 NIGHT SHIFT':'☀ CLEAR';
 
 }
 
 function setVisual(id,on,level=1){
 
-const el=document.getElementById(id);
+const e=document.getElementById(id);
 
-if(!el)return;
+if(!e)return;
 
-el.classList.toggle('hidden',!on);
+e.classList.toggle('hidden',!on);
 
-el.classList.toggle('level2',on&&level>=3);
+e.classList.remove('level2','level3');
 
-el.classList.toggle('level3',on&&level>=7);
+if(on&&level>=8){
+
+e.classList.add('level3');
+
+}else if(on&&level>=3){
+
+e.classList.add('level2');
+
+}
+
+}
+
+function setTag(id,on,text){
+
+const e=document.getElementById(id);
+
+if(!e)return;
+
+e.classList.toggle('show',!!on);
+
+if(on)e.textContent=text;
 
 }
 
 function updateFacilityVisuals(){
 
-const d=g.plants.diesel||{unlocked:false,level:0};
+const d=g.plants.diesel;
 
-const s=g.plants.steam||{unlocked:false,level:0};
+const s=g.plants.steam;
 
-const ga=g.plants.gas||{unlocked:false,level:0};
+const ga=g.plants.gas;
 
-const so=g.plants.solar||{unlocked:false,level:0};
+const so=g.plants.solar;
 
-const n=g.plants.nuclear||{unlocked:false,level:0};
+const n=g.plants.nuclear;
 
-setVisual('dieselVisual',d.unlocked,d.level);
+setVisual(
 
-setVisual('steamHall',s.unlocked,s.level);
+'dieselVisual',
 
-setVisual('steamStack',s.unlocked,s.level);
+d.unlocked,
 
-setVisual('steamSmoke',s.unlocked,s.level);
+d.level
 
-setVisual('turbineVisual',s.unlocked,s.level);
+);
 
-setVisual('gasHall',ga.unlocked,ga.level);
+setVisual(
 
-setVisual('gasStack',ga.unlocked,ga.level);
+'steamHall',
 
-setVisual('gasSmoke',ga.unlocked,ga.level);
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'steamStack',
+
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'steamSmoke',
+
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'turbineVisual',
+
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'pipe1',
+
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'pipeV1',
+
+s.unlocked,
+
+s.level
+
+);
+
+setVisual(
+
+'gasHall',
+
+ga.unlocked,
+
+ga.level
+
+);
+
+setVisual(
+
+'gasStack',
+
+ga.unlocked,
+
+ga.level
+
+);
+
+setVisual(
+
+'gasSmoke',
+
+ga.unlocked,
+
+ga.level
+
+);
+
+setVisual(
+
+'pipe2',
+
+ga.unlocked,
+
+ga.level
+
+);
+
+setVisual(
+
+'pipe3',
+
+ga.unlocked,
+
+ga.level
+
+);
+
+setVisual(
+
+'pipeV2',
+
+ga.unlocked,
+
+ga.level
+
+);
 
 setVisual(
 
 'transformerVisual',
 
-ga.unlocked||s.unlocked,
+s.unlocked||ga.unlocked,
 
-Math.max(ga.level||0,s.level||0)
+Math.max(s.level||0,ga.level||0)
 
 );
 
-setVisual('solarVisual',so.unlocked,so.level);
+setVisual(
 
-setVisual('reactorVisual',n.unlocked,n.level);
+'substationVisual',
 
-setVisual('cooling1',n.unlocked,n.level);
+s.unlocked||ga.unlocked,
 
-setVisual('cooling2',n.unlocked,n.level);
+Math.max(s.level||0,ga.level||0)
 
-}
+);
 
-function render(){
+setVisual(
 
-updateFacilityVisuals();
+'flareVisual',
 
-document.getElementById('cash').textContent='$'+fmt(g.cash);
+ga.unlocked,
 
-document.getElementById('stored').textContent=fmt(g.stored)+' kWh';
+ga.level
 
-document.getElementById('prod').textContent=fmt(output())+'/s';
+);
 
-document.getElementById('tapInfo').textContent=
+setVisual(
 
-fmt(tapPower())+' kWh/tap • $'+fmt(tapUpgradeCost())+' upgrade';
+'solarVisual',
 
-document.getElementById('rank').textContent=
+so.unlocked,
 
-g.lifetimeCash>=100000
+so.level
 
-?'GRID MOGUL'
+);
 
-:g.lifetimeCash>=10000
+setVisual(
 
-?'UTILITY BOSS'
+'switchyardVisual',
 
-:g.lifetimeCash>=1000
+so.unlocked||n.unlocked,
 
-?'PLANT MANAGER'
+Math.max(so.level||0,n.level||0)
 
-:'GRID ROOKIE';
+);
 
-document.getElementById('efficiencyText').textContent='Efficiency '+efficiency()+'%';
+setVisual(
 
-document.getElementById('reliability').textContent=reliability()+'%';
+'reactorVisual',
 
-document.getElementById('demand').textContent=demandText();
+n.unlocked,
 
-document.getElementById('prestigeText').textContent=g.prestige;
+n.level
 
-document.getElementById('sceneSub').textContent=
+);
 
-(g.regions.length===1?'Starter grid':'Multi-region grid')+
+setVisual(
 
-' • '+
+'cooling1',
 
-g.regions.length+
+n.unlocked,
 
-' region'+
+n.level
 
-(g.regions.length>1?'s':'');
+);
 
-const eb=document.getElementById('eventBar');
+setVisual(
 
-if(g.event){
+'cooling2',
 
-eb.classList.add('show');
+n.unlocked,
 
-document.getElementById('eventTitle').textContent=g.event.title;
+n.level
 
-document.getElementById('eventText').textContent=g.event.text;
+);
 
-document.getElementById('eventButton').textContent=
+setTag(
+
+'tagDiesel',
+
+d.unlocked,
+
+'DIESEL L'+d.level
+
+);
+
+setTag(
+
+'tagSteam',
+
+s.unlocked,
+
+'STEAM L'+s.level
+
+);
+
+setTag(
+
+'tagGas',
+
+ga.unlocked,
+
+'GAS L'+ga.level
+
+);
+
+setTag(
+
+'tagSolar',
+
+so.unlocked,
+
+'SOLAR L'+so.level
+
+);
+
+setTag(
+
+'tagNuclear',
+
+n.unlocked,
+
+'NUCLEAR L'+n.level
+
+);
+
+const showDecor=(selector,on)=>{
+
+document.querySelectorAll(selector).forEach(el=>{
+
+el.style.display=on?'block':'none';
+
+});
+
+};
+
+showDecor(
+
+'.v7-control',
+
+s.unlocked
+
+);
+
+showDecor(
+
+'.v7-tank',
+
+s.unlocked
+
+);
+
+showDecor(
+
+'.v7-worker',
+
+s.unlocked
+
+);
+
+showDecor(
+
+'.v7-truck',
+
+s.unlocked
+
+);
+
+showDecor(
+
+'.v7-pylon',
+
+s.unlocked||
+
+ga.unlocked||
+
+so.unlocked||
+
+n.unlocked
+
+);
+
+document.body.classList.toggle(
+
+'breakdown',
+
+!!(
+
+g.event&&
 
 g.event.type==='breakdown'
 
-?'REPAIR'
+)
 
-:g.event.type==='surge'
+);
 
-?'DELIVER POWER'
+let stage='Empty industrial site';
 
-:'PASS INSPECTION';
+if(d.unlocked)stage='Diesel generation online';
 
-}else{
+if(s.unlocked)stage='Steam plant operating';
 
-eb.classList.remove('show');
+if(ga.unlocked)stage='Combined-cycle expansion';
+
+if(so.unlocked)stage='Renewable grid expansion';
+
+if(n.unlocked)stage='Major nuclear power complex';
+
+document.getElementById(
+
+'sceneSub'
+
+).textContent=stage;
 
 }
 
-const assets=document.getElementById('assets');
+function showPage(id,button){
 
-assets.innerHTML='';
+document.querySelectorAll('.page').forEach(p=>{
 
-PLANTS.forEach(p=>{
+p.classList.toggle(
+
+'active',
+
+p.id===id
+
+);
+
+});
+
+document.querySelectorAll('.nav button').forEach(b=>{
+
+b.classList.remove('active');
+
+});
+
+if(button){
+
+button.classList.add('active');
+
+}
+
+window.scrollTo({
+
+top:0,
+
+behavior:'smooth'
+
+});
+
+}
+
+function renderPlants(){
+
+const el=document.getElementById('plantList');
+
+el.innerHTML=PLANTS.map(p=>{
 
 const s=g.plants[p.id];
 
-const c=plantCost(p);
+const cost=plantCost(p);
 
-const row=document.createElement('div');
+const status=s.unlocked
 
-const rel=Math.max(60,p.reliability-Math.max(0,s.level-1));
+?'Level '+s.level+' • '+num(p.base*s.level)+' kWh/s base'
 
-row.className='asset';
+:'Locked • Unlock '+money(p.unlock);
 
-row.innerHTML=`
+const button=
+
+s.unlocked
+
+?'UPGRADE '+money(cost)
+
+:'BUILD '+money(cost);
+
+const reliability=
+
+Math.max(
+
+75,
+
+p.reliability-Math.floor(
+
+Math.max(0,s.level-1)*.3
+
+)
+
+);
+
+return`
+
+<div class="asset">
 
 <div class="asset-icon">${p.icon}</div>
 
@@ -1766,31 +4582,15 @@ row.innerHTML=`
 
 <div class="asset-name">${p.name}</div>
 
-<div class="asset-meta">
-
-${s.unlocked
-
-?'Level '+s.level+' • '+fmt(p.base*s.level*totalMult())+' kWh/s'
-
-:'Locked • '+fmt(p.base)+' kWh/s base'}
+<div class="asset-meta">${status}</div>
 
 </div>
 
-</div>
+<button onclick="buildPlant('${p.id}')">
 
-<button onclick="buyPlant('${p.id}')">
-
-${s.unlocked?'UPGRADE':'UNLOCK'}
-
-<br>
-
-$${fmt(c)}
+${button}
 
 </button>
-
-${s.unlocked
-
-?`
 
 <div class="asset-detail">
 
@@ -1798,25 +4598,25 @@ ${s.unlocked
 
 <div class="meter">
 
-Output
+OUTPUT
 
-<b>${fmt(p.base*s.level*totalMult())}/s</b>
-
-</div>
-
-<div class="meter">
-
-Reliability
-
-<b>${rel}%</b>
+<b>${s.unlocked?num(p.base*s.level):'0'} kWh/s</b>
 
 </div>
 
 <div class="meter">
 
-Level
+LEVEL
 
-<b>${s.level}</b>
+<b>${s.unlocked?s.level:'—'}</b>
+
+</div>
+
+<div class="meter">
+
+RELIABILITY
+
+<b>${s.unlocked?reliability+'%':'—'}</b>
 
 </div>
 
@@ -1824,215 +4624,505 @@ Level
 
 </div>
 
-`
-
-:''}
+</div>
 
 `;
 
-assets.appendChild(row);
+}).join('');
 
-});
+}
 
-const regions=document.getElementById('regions');
+function renderRegions(){
 
-regions.innerHTML='';
+const el=document.getElementById('regionList');
 
-REGIONS.forEach(r=>{
+el.innerHTML=REGIONS.map((r,i)=>{
 
-const owned=g.regions.includes(r.id);
+const owned=!!g.regions[r.id];
 
-const div=document.createElement('div');
+let bonus='Starter region';
 
-div.className='region'+(owned?'':' locked');
+if(r.id==='coast')bonus='+10% company output';
 
-div.innerHTML=`
+if(r.id==='desert')bonus='+20% company output';
+
+if(r.id==='metro')bonus='+35% company output';
+
+return`
+
+<div class="region ${owned?'':'locked'}">
+
+<div style="font-size:32px">${r.emoji}</div>
 
 <h4>${r.name}</h4>
 
 <p>${r.desc}</p>
 
-<div class="emoji">${r.emoji}</div>
+<div class="badge">${bonus}</div>
 
-${owned
+<div style="margin-top:12px">
 
-?'<div style="margin-top:12px;color:#4aff85;font-weight:900;font-size:12px">UNLOCKED</div>'
+${
 
-:`<button class="btn bluebtn" style="margin-top:12px;padding:9px" onclick="unlockRegion('${r.id}')">$${fmt(r.cost)}</button>`
+owned
+
+?'<span class="badge">CONNECTED</span>'
+
+:`<button class="btn bluebtn" onclick="buyRegion('${r.id}')">UNLOCK ${money(r.cost)}</button>`
 
 }
 
+</div>
+
+</div>
+
 `;
 
-regions.appendChild(div);
+}).join('');
 
-});
+}
 
-document.getElementById('regionCount').textContent=
+function renderMissions(){
 
-g.regions.length+'/4 regions';
+const el=document.getElementById('missionList');
 
-const missions=document.getElementById('missions');
+el.innerHTML=MISSIONS.map(m=>{
 
-missions.innerHTML='';
+const value=missionValue(m);
 
-MISSIONS.forEach(m=>{
+const pct=Math.min(
 
-const val=missionValue(m);
+100,
 
-const done=g.missionsClaimed.includes(m.id);
+value/m.target*100
 
-const pct=Math.min(100,(val/m.target)*100);
+);
 
-const div=document.createElement('div');
+const claimed=!!g.missions[m.id];
 
-div.className='mission';
+const ready=value>=m.target;
 
-div.innerHTML=`
+return`
+
+<div class="mission">
 
 <div class="mission-head">
 
 <span>${m.label}</span>
 
-<span>${done?'✅':fmt(Math.min(val,m.target))+'/'+fmt(m.target)}</span>
+<span>${claimed?'✓ CLAIMED':money(m.reward)}</span>
 
 </div>
 
-<div class="progress" style="margin-top:8px">
+<div class="small" style="margin:7px 0">
 
-<i style="width:${done?100:pct}%"></i>
-
-</div>
-
-<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
-
-<small>Reward $${fmt(m.reward)}</small>
-
-${!done&&val>=m.target
-
-?`<button class="btn greenbtn" style="width:auto;padding:8px 11px" onclick="claimMission('${m.id}')">CLAIM</button>`
-
-:''}
+${num(Math.min(value,m.target))} / ${num(m.target)}
 
 </div>
 
-`;
-
-missions.appendChild(div);
-
-});
-
-const ach=document.getElementById('achievements');
-
-ach.innerHTML='';
-
-ACHIEVEMENTS.forEach(a=>{
-
-const done=g.achievementsClaimed.includes(a.id);
-
-const div=document.createElement('div');
-
-div.className='achievement';
-
-div.innerHTML=`
-
-<div class="ach-head">
-
-<span>${done?'✅ ':'🏅 '}${a.label}</span>
-
-<span>$${fmt(a.reward)}</span>
-
-</div>
-
-<small>${a.desc}</small>
-
-`;
-
-ach.appendChild(div);
-
-});
-
-document.getElementById('achievementCount').textContent=
-
-g.achievementsClaimed.length+'/'+ACHIEVEMENTS.length;
-
-const m=nextMission();
-
-const cm=document.getElementById('currentMission');
-
-if(!m){
-
-cm.innerHTML='<div style="font-weight:900">All current missions complete! 🏆</div>';
-
-document.getElementById('missionReward').textContent='More coming soon';
-
-}else{
-
-const val=missionValue(m);
-
-const pct=Math.min(100,(val/m.target)*100);
-
-cm.innerHTML=`
-
-<div style="font-weight:900">${m.label}</div>
-
-<div class="progress" style="margin-top:10px">
+<div class="progress">
 
 <i style="width:${pct}%"></i>
 
 </div>
 
-<div style="display:flex;justify-content:space-between;margin-top:7px;color:var(--muted);font-size:12px">
+${
 
-<span>
+!claimed&&ready
 
-${fmt(Math.min(val,m.target))} / ${fmt(m.target)}
+?`<button class="btn greenbtn" style="width:100%;margin-top:9px" onclick="claimMission('${m.id}')">CLAIM REWARD</button>`
 
-</span>
-
-${val>=m.target
-
-?`<button class="btn greenbtn" style="width:auto;padding:7px 10px" onclick="claimMission('${m.id}')">CLAIM</button>`
-
-:''}
-
-</div>
-
-`;
-
-document.getElementById('missionReward').textContent=
-
-'Reward $'+fmt(m.reward);
+:''
 
 }
 
-const log=document.getElementById('log');
+</div>
 
-log.innerHTML=
+`;
 
-(g.log.length?g.log:['No activity yet.'])
+}).join('');
 
-.map(x=>{
+}
 
-const parts=x.split('|');
+function renderAchievements(){
 
-return `
+const el=document.getElementById(
 
-<div class="logline">
+'achievementList'
 
-${parts[1]
+);
 
-?`<time>${parts[0]}</time>${parts[1]}`
+el.innerHTML=ACHIEVEMENTS.map(a=>{
 
-:x}
+const unlocked=!!g.achievements[a.id];
+
+return`
+
+<div class="achievement">
+
+<div class="ach-head">
+
+<span>${unlocked?'🏆':'🔒'} ${a.label}</span>
+
+<span>${unlocked?'UNLOCKED':''}</span>
+
+</div>
+
+<small>${a.desc}</small>
 
 </div>
 
 `;
 
-})
+}).join('');
 
-.join('');
+}
+
+function renderEvent(){
+
+const box=document.getElementById('eventBox');
+
+if(!g.event){
+
+box.classList.remove('show');
+
+return;
+
+}
+
+box.classList.add('show');
+
+document.getElementById(
+
+'eventTitle'
+
+).textContent=g.event.title;
+
+let text=g.event.text;
+
+let button='RESOLVE';
+
+if(g.event.type==='breakdown'){
+
+text+=' Repair cost: '+money(g.event.cost);
+
+button='REPAIR';
+
+}
+
+if(g.event.type==='surge'){
+
+const secs=Math.max(
+
+0,
+
+Math.ceil(
+
+(g.event.expires-Date.now())/1000
+
+)
+
+);
+
+text+=' '+secs+'s remaining.';
+
+button='END EVENT';
+
+}
+
+if(g.event.type==='inspection'){
+
+text+=' Reward: '+money(g.event.reward);
+
+button='COMPLETE INSPECTION';
+
+}
+
+document.getElementById(
+
+'eventText'
+
+).textContent=text;
+
+document.getElementById(
+
+'eventButton'
+
+).textContent=button;
+
+}
+
+function render(){
+
+updateEvent();
+
+updateAchievements();
+
+updateDayNight();
+
+document.getElementById(
+
+'cash'
+
+).textContent=money(g.cash);
+
+document.getElementById(
+
+'power'
+
+).textContent=num(g.stored)+' kWh';
+
+document.getElementById(
+
+'output'
+
+).textContent=num(output())+'/s';
+
+document.getElementById(
+
+'tapInfo'
+
+).textContent=num(tapPower())+' kWh/tap';
+
+document.getElementById(
+
+'tapCost'
+
+).textContent=
+
+'Next manual generator upgrade: '+
+
+money(tapUpgradeCost());
+
+const out=output();
+
+document.getElementById(
+
+'loadMeter'
+
+).textContent=
+
+Math.min(
+
+100,
+
+Math.round(out/4)
+
+)+'%';
+
+document.getElementById(
+
+'effMeter'
+
+).textContent=
+
+g.event&&g.event.type==='breakdown'
+
+?'50%'
+
+:'100%';
+
+document.getElementById(
+
+'safeMeter'
+
+).textContent=
+
+g.event&&g.event.type==='inspection'
+
+?'CHECK'
+
+:'100%';
+
+document.getElementById(
+
+'opsStatus'
+
+).textContent=
+
+out>0
+
+?num(out)+' kWh/s automatic generation'
+
+:'No automatic units online';
+
+document.getElementById(
+
+'gridStatus'
+
+).textContent=
+
+g.event&&g.event.type==='breakdown'
+
+?'● UNIT TRIPPED'
+
+:'● GRID ONLINE';
+
+document.getElementById(
+
+'gridStatus'
+
+).style.color=
+
+g.event&&g.event.type==='breakdown'
+
+?'#ff6969'
+
+:'#4aff85';
+
+let rank='GRID ROOKIE';
+
+if(g.lifetimeCash>=10000)rank='PLANT MANAGER';
+
+if(g.lifetimeCash>=50000)rank='POWER EXECUTIVE';
+
+if(g.lifetimeCash>=250000)rank='GRID BARON';
+
+if(g.lifetimeCash>=1000000)rank='ENERGY MOGUL';
+
+document.getElementById(
+
+'rank'
+
+).textContent=rank;
+
+document.getElementById(
+
+'prestigeInfo'
+
+).innerHTML=
+
+'Current prestige: <b>'+
+
+g.prestige+
+
+'</b> • Permanent production bonus: <b>+'+
+
+(g.prestige*10)+
+
+'%</b><br><span class="small">Prestige unlocks after $50,000 lifetime cash. Current: '+
+
+money(g.lifetimeCash)+
+
+'</span>';
+
+renderPlants();
+
+renderRegions();
+
+renderMissions();
+
+renderAchievements();
+
+renderEvent();
+
+updateFacilityVisuals();
+
+document.getElementById(
+
+'activityLog'
+
+).innerHTML=g.log.map(x=>{
+
+const parts=x.split(' • ');
+
+return`
+
+<div>
+
+${parts[1]?`<time>${parts[0]}</time>${parts[1]}`:x}
+
+</div>
+
+`;
+
+}).join('');
+
+}
+
+function handleOffline(){
+
+const now=Date.now();
+
+const seconds=Math.min(
+
+8*3600,
+
+Math.max(
+
+0,
+
+(now-g.lastSeen)/1000
+
+)
+
+);
+
+if(seconds<30||output()<=0){
+
+g.lastSeen=now;
+
+return;
+
+}
+
+const earnedPower=
+
+output()*seconds*.65;
+
+g.stored+=earnedPower;
+
+g.generated+=earnedPower;
+
+document.getElementById(
+
+'offlineAmount'
+
+).textContent=
+
+num(earnedPower)+' kWh';
+
+document.getElementById(
+
+'offlineText'
+
+).textContent=
+
+'Your facility operated for '+
+
+Math.floor(seconds/60)+
+
+' minutes at 65% offline efficiency.';
+
+document.getElementById(
+
+'offlineModal'
+
+).classList.add('show');
+
+addLog(
+
+'Offline production added '+
+
+num(earnedPower)+
+
+' kWh.'
+
+);
+
+}
+
+function closeOffline(){
+
+document.getElementById(
+
+'offlineModal'
+
+).classList.remove('show');
+
+saveGame();
+
+render();
 
 }
 
@@ -2044,6 +5134,8 @@ setInterval(()=>{
 
 g.stored+=output();
 
+g.generated+=output();
+
 createEvent();
 
 updateDayNight();
@@ -2054,206 +5146,20 @@ render();
 
 },1000);
 
-document.addEventListener('visibilitychange',()=>{
+document.addEventListener(
+
+'visibilitychange',
+
+()=>{
 
 if(document.hidden)saveGame();
 
-});
-
-</script>
-<!-- V6 INDUSTRIAL VISUAL PATCH -->
-
-<style>
-
-.pipe6{position:absolute;height:8px;background:linear-gradient(#b7c6ce,#536b78);border:1px solid #d4e0e5;border-radius:6px;opacity:0;transition:.4s}.pipe6.v{width:8px;height:70px}.pipe6.on,.sub6.on,.flare6.on,.switch6.on,.tag6.on{opacity:1}.p61{left:20%;bottom:105px;width:145px}.p62{left:42%;bottom:113px;width:125px}.p63{left:60%;bottom:91px;width:105px}.pv61{left:39%;bottom:83px}.pv62{left:70%;bottom:62px}
-
-.sub6{position:absolute;left:49%;bottom:52px;width:78px;height:50px;border:2px solid #6a8798;background:linear-gradient(#335b72,#173447);opacity:0;transition:.4s}.sub6:before{content:"";position:absolute;left:8px;right:8px;top:-14px;height:13px;background:repeating-linear-gradient(90deg,#879da8 0 6px,transparent 6px 12px)}
-
-.flare6{position:absolute;left:70%;bottom:48px;width:11px;height:115px;background:#4d626d;opacity:0;transition:.4s}.flare6:after{content:"🔥";position:absolute;top:-28px;left:-10px;font-size:25px;animation:flick6 .55s alternate infinite}@keyframes flick6{to{transform:scale(.8) rotate(5deg);filter:brightness(1.3)}}
-
-.switch6{position:absolute;right:1%;bottom:50px;width:120px;height:100px;border-bottom:3px solid #657f8d;opacity:0;transition:.4s}.switch6 i{position:absolute;bottom:0;width:4px;height:78px;background:#6f8794}.switch6 i:before{content:"";position:absolute;left:-15px;top:17px;width:34px;height:3px;background:#6f8794;box-shadow:0 18px #6f8794}.switch6 i:nth-child(1){left:16px}.switch6 i:nth-child(2){left:56px}.switch6 i:nth-child(3){left:96px}
-
-.tag6{position:absolute;z-index:8;padding:3px 6px;border-radius:8px;background:#06131ddd;border:1px solid #426b83;font-size:9px;font-weight:900;color:#d6e8f2;opacity:0;transition:.3s}.td6{left:4%;bottom:102px}.ts6{left:55%;bottom:151px}.tg6{left:73%;bottom:126px}.tso6{right:3%;bottom:113px}.tn6{left:10%;bottom:235px}
-
-.build6{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:#040d178f;opacity:0;pointer-events:none;transition:.2s}.build6.on{opacity:1}.build6 b{background:#102b40;border:1px solid #4b7994;border-radius:15px;padding:13px 17px;color:#ffd657;box-shadow:0 10px 30px #0008;animation:pulse6 .5s alternate infinite}@keyframes pulse6{to{transform:scale(1.05)}}
-
-body.break6 .turbine,body.break6 .h1,body.break6 .h2{filter:drop-shadow(0 0 11px #ff3f3f);animation:alarm6 .55s alternate infinite}@keyframes alarm6{to{opacity:.55}}
-
-body.night .windows{box-shadow:0 29px #ffe26af2,0 0 15px #ffe26a88}
-
-</style>
-
-<script>
-
-(()=>{
-
-document.title='Power Plant Tycoon V6';
-
-const y=document.querySelector('.yard');
-
-if(!y)return;
-
-y.insertAdjacentHTML('beforeend',`
-
-<div id="p61" class="pipe6 p61"></div>
-
-<div id="p62" class="pipe6 p62"></div>
-
-<div id="p63" class="pipe6 p63"></div>
-
-<div id="pv61" class="pipe6 v pv61"></div>
-
-<div id="pv62" class="pipe6 v pv62"></div>
-
-<div id="sub6" class="sub6"></div>
-
-<div id="flare6" class="flare6"></div>
-
-<div id="switch6" class="switch6"><i></i><i></i><i></i></div>
-
-<div id="td6" class="tag6 td6"></div>
-
-<div id="ts6" class="tag6 ts6"></div>
-
-<div id="tg6" class="tag6 tg6"></div>
-
-<div id="tso6" class="tag6 tso6"></div>
-
-<div id="tn6" class="tag6 tn6"></div>
-
-`);
-
-document.querySelector('.hero').insertAdjacentHTML(
-
-'beforeend',
-
-'<div id="build6" class="build6"><b>🚧 BUILDING NEW ASSET...</b></div>'
-
-);
-
-const on=(id,v)=>{
-
-const e=document.getElementById(id);
-
-if(e)e.classList.toggle('on',!!v);
-
-};
-
-const oldUF=updateFacilityVisuals;
-
-updateFacilityVisuals=function(){
-
-oldUF();
-
-const d=g.plants.diesel||{};
-
-const s=g.plants.steam||{};
-
-const ga=g.plants.gas||{};
-
-const so=g.plants.solar||{};
-
-const n=g.plants.nuclear||{};
-
-on('p61',s.unlocked);
-
-on('pv61',s.unlocked);
-
-on('p62',ga.unlocked);
-
-on('pv62',ga.unlocked);
-
-on('p63',ga.unlocked||n.unlocked);
-
-on('sub6',s.unlocked||ga.unlocked);
-
-on('flare6',ga.unlocked);
-
-on('switch6',so.unlocked||n.unlocked);
-
-[
-
-['td6',d,'DIESEL'],
-
-['ts6',s,'STEAM'],
-
-['tg6',ga,'GAS'],
-
-['tso6',so,'SOLAR'],
-
-['tn6',n,'NUCLEAR']
-
-].forEach(([id,x,t])=>{
-
-const e=document.getElementById(id);
-
-if(e){
-
-e.classList.toggle('on',!!x.unlocked);
-
-e.textContent=t+' L'+(x.level||1);
-
 }
 
-});
-
-document.body.classList.toggle(
-
-'break6',
-
-!!(g.event&&g.event.type==='breakdown')
-
 );
-
-};
-
-const oldBuy=buyPlant;
-
-buyPlant=function(id){
-
-const first=!(
-
-g.plants[id]&&g.plants[id].unlocked
-
-);
-
-const p=PLANTS.find(x=>x.id===id);
-
-oldBuy(id);
-
-if(
-
-first&&
-
-g.plants[id]&&
-
-g.plants[id].unlocked
-
-){
-
-const b=document.getElementById('build6');
-
-b.querySelector('b').textContent=
-
-'🚧 '+p.name.toUpperCase()+' CONSTRUCTION';
-
-b.classList.add('on');
-
-setTimeout(()=>{
-
-b.classList.remove('on');
-
-},1200);
-
-}
-
-};
-
-updateFacilityVisuals();
-
-})();
 
 </script>
+
 </body>
 
 </html>
