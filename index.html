@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Premium Art Build</title>
+<title>Power Plant Tycoon — Premium Art Layout Fix</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -239,12 +239,25 @@ linear-gradient(145deg,#211c43,#0c1428)!important;border-color:#7455c8!important
   .premium-art-badge{right:10px;bottom:74px}
 }
 
+
+/* PREMIUM ART LAYOUT FIX */
+.hero{overflow:visible!important}
+.yard{position:relative!important;height:540px!important;overflow:hidden!important}
+.yard.premium-nuclear{background-size:cover!important;background-position:center center!important;min-height:540px!important}
+.premium-art-badge{display:none!important}
+.yard.premium-nuclear #v10StageLabel{display:none!important}
+.generate-wrap{position:relative!important;left:auto!important;right:auto!important;bottom:auto!important;z-index:45!important;margin:0!important;padding:14px 18px 18px!important;background:linear-gradient(180deg,rgba(6,18,28,.96),rgba(3,10,17,.99))!important;border-top:1px solid #315b72!important}
+.generate{width:100%!important;min-height:72px!important;border-radius:18px!important}
+body{padding-bottom:calc(100px + env(safe-area-inset-bottom))!important}
+@media(min-width:700px){.yard{height:610px!important}.yard.premium-nuclear{min-height:610px!important;background-position:center 48%!important}}
+@media(max-width:560px){.yard{height:470px!important}.yard.premium-nuclear{min-height:470px!important;background-size:cover!important;background-position:54% center!important}.generate-wrap{padding:12px 14px 16px!important}}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">PREMIUM</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">PREMIUM • FIXED</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -349,8 +362,9 @@ linear-gradient(145deg,#211c43,#0c1428)!important;border-color:#7455c8!important
 <div class="premium-art-badge">PREMIUM FACILITY ART</div>
 
 </div>
-<div class="generate-wrap"><button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button></div>
+
 </div>
+<div class="generate-wrap"><button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button></div>
 
 <div id="tutorialBox" class="tutorial">
   <strong id="tutorialTitle">Welcome to Riverbend</strong>
@@ -651,7 +665,7 @@ document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
-console.log("Power Plant Tycoon PREMIUM ART BUILD loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon PREMIUM ART LAYOUT FIX loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 </script>
 </body>
 </html>
