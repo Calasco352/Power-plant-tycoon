@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Cinematic Ultimate</title>
+<title>Power Plant Tycoon — Cinematic Ultimate Steam Fix</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -341,7 +341,7 @@ body{background:radial-gradient(circle at 50% 0,#244a63,#081722 35%,#02070b 100%
   background-size:cover!important;
   background-position:center!important;
 }
-.yard.premium-steam .plant-art{opacity:0!important}
+.yard.premium-steam .plant-art{opacity:0!important;visibility:hidden!important;pointer-events:none!important}
 .yard.premium-steam #v10StageLabel{display:none!important}
 .yard.premium-nuclear{min-height:690px!important}
 .generate-wrap{padding:16px 24px 20px!important;background:linear-gradient(180deg,rgba(4,14,22,.98),rgba(2,9,15,.99))!important}
@@ -382,7 +382,7 @@ body{background:radial-gradient(circle at 50% 0,#244a63,#081722 35%,#02070b 100%
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">CINEMATIC</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">CINEMATIC • FIXED</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -1045,18 +1045,21 @@ function updateFacility(){
   setStage("gasStage",ga.unlocked);
   setStage("solarStage",so.unlocked);
   setStage("nuclearStage",n.unlocked);
+
+  const yard=document.querySelector(".yard");
   if(yard){
-    yard.classList.toggle("premium-steam",!!(s.unlocked&&!ga.unlocked&&!so.unlocked&&!n.unlocked));
+    const steamOnly=!!(s.unlocked&&!ga.unlocked&&!so.unlocked&&!n.unlocked);
+    yard.classList.toggle("premium-steam",steamOnly);
     yard.classList.toggle("premium-nuclear",!!n.unlocked);
   }
+
   const stageMap=[["cpDiesel",d],["cpSteam",s],["cpGas",ga],["cpSolar",so],["cpNuclear",n]];
   stageMap.forEach(([id,p])=>{
-    const el=document.getElementById(id);if(!el)return;
+    const el=document.getElementById(id);
+    if(!el)return;
     el.classList.toggle("active",!!p.unlocked);
     el.classList.toggle("locked",!p.unlocked);
   });
-  const yard=document.querySelector(".yard");
-  if(yard)yard.classList.toggle("premium-nuclear",!!n.unlocked);
 
   document.body.classList.toggle(
     "breakdown",
@@ -1113,7 +1116,8 @@ document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame();renderMegaSystems()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
-console.log("Power Plant Tycoon CINEMATIC ULTIMATE loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon CINEMATIC ULTIMATE STEAM FIX loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 </script>
 </body>
 </html>
+<!-- Steam premium activation runtime fix -->
