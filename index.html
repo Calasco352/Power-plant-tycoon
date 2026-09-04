@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="en">
 
 <head>
 
@@ -10,225 +10,225 @@
 
 <meta name="apple-mobile-web-app-capable" content="yes">
 
-<meta name="theme-color" content="#07111e">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<meta name="theme-color" content="#06111e">
 
 <title>Power Plant Tycoon</title>
 
 <style>
 
-*{box-sizing:border-box}
+:root{
 
-body{
+  --bg:#06111e; --panel:#0b2033; --panel2:#102d46; --line:#2b5f86;
 
-margin:0;
+  --text:#fff; --muted:#9fb7ca; --yellow:#ffc928; --green:#1ed760;
 
-background:linear-gradient(#12385e,#06111e 40%,#02070d);
-
-color:white;
-
-font-family:Arial,sans-serif;
-
-padding:20px 16px;
-
-min-height:100vh
+  --blue:#2997ff; --purple:#a855f7; --red:#ff4d4f; --cyan:#4de3ff;
 
 }
 
-main{max-width:600px;margin:auto}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 
-.logo{
+html,body{margin:0;background:linear-gradient(#133b61 0,#081727 25%,#030912 100%);color:var(--text);font-family:Arial,Helvetica,sans-serif;min-height:100%;overscroll-behavior-y:none}
 
-text-align:center;
+body{padding:env(safe-area-inset-top) 0 calc(86px + env(safe-area-inset-bottom))}
 
-font-weight:900;
+button{font:inherit}
 
-font-size:38px;
+.app{max-width:680px;margin:auto;min-height:100vh}
 
-line-height:1
+.topbar{position:sticky;top:0;z-index:20;padding:12px 16px 10px;background:linear-gradient(rgba(3,10,18,.96),rgba(3,10,18,.78),transparent);backdrop-filter:blur(10px)}
 
-}
+.brand{display:flex;justify-content:space-between;align-items:center;gap:10px}
 
-.logo b{color:#ffc928}
+.logo{font-weight:1000;font-size:26px;letter-spacing:-1px}
 
-.sub{
+.logo span{color:var(--yellow)}
 
-text-align:center;
+.rank{background:#122b40;border:1px solid #2d5877;border-radius:999px;padding:7px 10px;font-size:12px;color:#cce3f5;font-weight:800}
 
-color:#9fb3c6;
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 
-margin:10px 0 20px
+.stat{background:rgba(10,30,47,.9);border:1px solid #275879;border-radius:14px;padding:10px 11px}
 
-}
+.stat small{display:block;color:var(--muted);font-size:10px;font-weight:800;letter-spacing:.6px}
 
-.grid{
+.stat b{display:block;margin-top:3px;font-size:18px}
 
-display:grid;
+.cash b{color:var(--green)}
 
-grid-template-columns:1fr 1fr;
+.power b{color:var(--yellow)}
 
-gap:10px
+.content{padding:6px 14px 18px}
 
-}
+.page{display:none}
 
-.card{
+.page.active{display:block}
 
-background:linear-gradient(#102a43,#071521);
+.hero{position:relative;overflow:hidden;border:1px solid #2d648b;border-radius:24px;min-height:400px;background:radial-gradient(circle at 50% 35%,rgba(77,227,255,.14),transparent 24%),linear-gradient(180deg,#123b5d 0,#0a2031 54%,#071019 100%);box-shadow:0 18px 44px rgba(0,0,0,.28)}
 
-border:1px solid #285477;
+.sky{position:absolute;inset:0 0 46% 0;background:linear-gradient(#1c547f,#12324e);opacity:.78}
 
-border-radius:18px;
+.cloud{position:absolute;background:rgba(255,255,255,.09);border-radius:40px;filter:blur(1px);animation:drift 22s linear infinite}
 
-padding:15px;
+.cloud.c1{width:130px;height:28px;top:45px;left:-30px}
 
-margin-bottom:12px
+.cloud.c2{width:95px;height:22px;top:92px;right:-20px;animation-duration:28s}
 
-}
+@keyframes drift{from{transform:translateX(-10px)}to{transform:translateX(70px)}}
 
-.label{
+.plant-scene{position:absolute;left:0;right:0;bottom:96px;height:190px}
 
-font-size:12px;
+.tower{position:absolute;bottom:0;width:54px;background:linear-gradient(90deg,#647c89,#b8c3c7 48%,#607680);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);border-bottom:4px solid #283944}
 
-color:#9fb3c6;
+.tower:after{content:"";position:absolute;left:17%;right:17%;top:22%;height:5px;background:#445967;box-shadow:0 24px #445967,0 48px #445967}
 
-font-weight:bold
+.t1{left:11%;height:120px}
 
-}
+.t2{left:23%;height:150px}
 
-.value{
+.stack{position:absolute;bottom:0;width:31px;background:linear-gradient(90deg,#354b59,#718490,#2f414d)}
 
-font-size:24px;
+.s1{left:42%;height:142px}
 
-font-weight:900;
+.s2{left:49%;height:116px}
 
-margin-top:5px
+.stack:before{content:"";position:absolute;top:0;left:-3px;right:-3px;height:10px;background:#253744}
 
-}
+.smoke{position:absolute;width:40px;height:25px;border-radius:50%;background:rgba(220,235,242,.24);filter:blur(2px);animation:puff 3.4s ease-in-out infinite}
 
-.green{color:#24e36b}
+.sm1{left:40%;bottom:142px}
 
-.yellow{color:#ffc928}
+.sm2{left:48%;bottom:117px;animation-delay:1.1s}
 
-.purple{color:#b75cff}
+@keyframes puff{0%{transform:translate(0,0) scale(.7);opacity:.25}70%{opacity:.12}100%{transform:translate(24px,-45px) scale(1.6);opacity:0}}
 
-button{
+.building{position:absolute;bottom:0;background:linear-gradient(#35556a,#182e3e);border:2px solid #4f6e80}
 
-border:0;
+.b1{left:58%;width:120px;height:84px}
 
-border-radius:13px;
+.b2{left:71%;width:86px;height:62px}
 
-padding:15px;
+.windows{position:absolute;left:8px;right:8px;top:14px;height:11px;background:repeating-linear-gradient(90deg,#ffe66b 0 9px,#314b5c 9px 16px);box-shadow:0 25px rgba(255,230,107,.8)}
 
-font-weight:900;
+.lines{position:absolute;left:0;right:0;bottom:0;height:42px;background:linear-gradient(#163046,#0a1621);border-top:2px solid #31556d}
 
-font-size:16px;
+.scene-label{position:absolute;top:18px;left:18px}
 
-color:white;
+.scene-label h2{margin:0;font-size:24px}
 
-width:100%
+.scene-label p{margin:5px 0 0;color:#b4ccdc;font-size:13px}
 
-}
+.grid-status{position:absolute;right:16px;top:18px;background:#082112;border:1px solid #1d8b48;color:#4aff85;padding:7px 10px;border-radius:999px;font-size:11px;font-weight:900}
 
-.yellowbtn{
+.generate-wrap{position:absolute;left:18px;right:18px;bottom:18px}
 
-background:linear-gradient(#ffd849,#e6aa00);
+.generate{width:100%;border:0;border-radius:18px;padding:18px 16px;background:linear-gradient(#ffe15b,#efb600);color:#0c0c0c;font-size:21px;font-weight:1000;box-shadow:0 7px 0 #a97900,0 0 24px rgba(255,201,40,.22);transition:.08s}
 
-color:#111
+.generate:active{transform:translateY(4px);box-shadow:0 3px 0 #a97900}
 
-}
+.flash{position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle,rgba(255,234,96,.28),transparent 55%);opacity:0}
 
-.greenbtn{
+.flash.on{animation:flash .28s ease-out}
 
-background:linear-gradient(#27e36e,#07963a)
+@keyframes flash{0%{opacity:1}100%{opacity:0}}
 
-}
+.card{background:linear-gradient(180deg,#102c44,#081827);border:1px solid #2d6084;border-radius:20px;padding:16px;margin-top:12px}
 
-.bluebtn{
+.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
 
-background:linear-gradient(#2b9cff,#075db7)
+.section-title h3{margin:0;font-size:19px}
 
-}
+.section-title span{font-size:12px;color:var(--muted)}
 
-.purplebtn{
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 
-background:linear-gradient(#ad5cff,#7130b5)
+.btn{border:0;border-radius:14px;padding:14px 12px;color:white;font-weight:900}
 
-}
+.greenbtn{background:linear-gradient(#22e16d,#09943e)}
 
-.actions{
+.bluebtn{background:linear-gradient(#32a4ff,#0869c3)}
 
-display:grid;
+.purplebtn{background:linear-gradient(#b45eff,#7432bd)}
 
-grid-template-columns:1fr 1fr;
+.redbtn{background:linear-gradient(#ff6668,#c92f31)}
 
-gap:10px;
+.darkbtn{background:#15324a;border:1px solid #315d7c}
 
-margin-bottom:14px
-
-}
-
-.hero{
-
-text-align:center;
-
-padding:26px 15px
-
-}
-
-.bolt{
-
-font-size:80px;
-
-filter:drop-shadow(0 0 15px #ffc928)
-
-}
-
-.msg{
-
-color:#a9bdcf;
-
-min-height:22px;
-
-margin-top:12px
-
-}
-
-.asset{
-
-display:flex;
-
-align-items:center;
-
-gap:10px;
-
-padding:12px 0;
-
-border-top:1px solid #173a56
-
-}
+.asset{display:grid;grid-template-columns:52px 1fr auto;align-items:center;gap:10px;padding:13px 0;border-top:1px solid #183a54}
 
 .asset:first-child{border-top:0}
 
-.asset .grow{flex:1}
+.asset-icon{width:48px;height:48px;display:grid;place-items:center;border-radius:15px;background:#143650;font-size:25px}
 
-.asset button{
+.asset-name{font-weight:900}
 
-width:120px;
+.asset-meta{font-size:12px;color:var(--muted);margin-top:4px}
 
-padding:11px;
+.asset button{min-width:106px;border:0;border-radius:12px;padding:10px 9px;color:#fff;font-weight:900;font-size:12px;background:linear-gradient(#2d9fff,#0968bf)}
 
-font-size:13px
+.progress{height:9px;border-radius:999px;background:#06111c;overflow:hidden;border:1px solid #1f4159}
 
-}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,#25dc72,#4de3ff);width:0%}
 
-.small{
+.mission{padding:13px 0;border-top:1px solid #183a54}
 
-font-size:12px;
+.mission:first-child{border-top:0}
 
-color:#9fb3c6;
+.mission-head{display:flex;justify-content:space-between;gap:10px;font-weight:800}
 
-margin-top:4px
+.mission small{color:var(--muted)}
 
-}
+.mapgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.region{min-height:130px;border-radius:18px;padding:14px;background:linear-gradient(145deg,#173850,#0b1b2a);border:1px solid #315e7a;position:relative;overflow:hidden}
+
+.region.locked{filter:saturate(.2);opacity:.65}
+
+.region h4{margin:0 0 6px}
+
+.region p{margin:0;color:var(--muted);font-size:12px}
+
+.region .emoji{font-size:42px;position:absolute;right:12px;bottom:8px;opacity:.85}
+
+.shopitem{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #183a54}
+
+.shopitem:first-child{border-top:0}
+
+.shopitem b{display:block}
+
+.shopitem small{color:var(--muted)}
+
+.price{color:var(--yellow);font-weight:1000}
+
+.toast{position:fixed;left:50%;bottom:92px;transform:translateX(-50%) translateY(20px);background:#0d2537;border:1px solid #376888;border-radius:14px;padding:11px 14px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;transition:.22s;z-index:60;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis}
+
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;padding:22px;z-index:70}
+
+.modal.show{display:flex}
+
+.modalbox{width:min(520px,100%);background:linear-gradient(#12334d,#071522);border:1px solid #3b6a89;border-radius:24px;padding:22px;text-align:center}
+
+.modalbox .big{font-size:60px}
+
+.modalbox h2{margin:8px 0}
+
+.modalbox p{color:#b8cede}
+
+.nav{position:fixed;left:0;right:0;bottom:0;z-index:50;background:rgba(4,12,21,.94);backdrop-filter:blur(14px);border-top:1px solid #24465f;padding:8px 8px calc(8px + env(safe-area-inset-bottom));display:flex;justify-content:center}
+
+.navin{width:min(680px,100%);display:grid;grid-template-columns:repeat(5,1fr);gap:3px}
+
+.navbtn{border:0;background:transparent;color:#7894a8;font-size:10px;font-weight:900;padding:7px 2px}
+
+.navbtn span{display:block;font-size:22px;margin-bottom:3px}
+
+.navbtn.active{color:#fff}
+
+.navbtn.active span{filter:drop-shadow(0 0 9px rgba(77,227,255,.7))}
 
 </style>
 
@@ -236,93 +236,65 @@ margin-top:4px
 
 <body>
 
-<main>
+<div class="app">
 
-<div class="logo">
+<div class="topbar">
 
-POWER PLANT<br>
+<div class="brand">
 
-<b>TYCOON</b>
+<div class="logo">POWER PLANT <span>TYCOON</span></div>
 
-</div>
-
-<div class="sub">
-
-Build. Generate. Expand.
+<div class="rank" id="rank">GRID ROOKIE</div>
 
 </div>
 
-<div class="actions">
+<div class="stats">
 
-<button class="purplebtn" onclick="daily()">🎁 Daily Reward</button>
+<div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 
-<button class="purplebtn" onclick="boost()">▶ 2× Boost</button>
+<div class="stat power"><small>POWER</small><b id="stored">0 kWh</b></div>
 
-</div>
-
-<div class="grid">
-
-<div class="card">
-
-<div class="label">CASH</div>
-
-<div id="cash" class="value green">$0</div>
-
-</div>
-
-<div class="card">
-
-<div class="label">STORED POWER</div>
-
-<div id="stored" class="value yellow">0 kWh</div>
-
-</div>
-
-<div class="card">
-
-<div class="label">PRODUCTION</div>
-
-<div id="prod" class="value">0/s</div>
-
-</div>
-
-<div class="card">
-
-<div class="label">PRESTIGE</div>
-
-<div id="prestige" class="value purple">0</div>
+<div class="stat rate"><small>OUTPUT</small><b id="prod">0/s</b></div>
 
 </div>
 
 </div>
 
-<div class="card hero">
+<div class="content">
 
-<div class="bolt">⚡</div>
+<section class="page active" id="homePage">
 
-<h2>MAIN GENERATOR</h2>
+<div class="hero">
 
-<div class="small">
+<div class="sky"></div>
 
-Manual grid generation
+<div class="cloud c1"></div><div class="cloud c2"></div>
+
+<div class="scene-label"><h2>RIVERBEND STATION</h2><p>Starter grid • Region 1</p></div>
+
+<div class="grid-status">● GRID ONLINE</div>
+
+<div class="plant-scene">
+
+<div class="tower t1"></div><div class="tower t2"></div>
+
+<div class="stack s1"></div><div class="stack s2"></div>
+
+<div class="smoke sm1"></div><div class="smoke sm2"></div>
+
+<div class="building b1"><div class="windows"></div></div>
+
+<div class="building b2"><div class="windows"></div></div>
+
+<div class="lines"></div>
 
 </div>
 
-<button
+<div class="flash" id="flash"></div>
 
-class="yellowbtn"
+<div class="generate-wrap">
 
-style="margin-top:18px"
-
-onclick="tap()">
-
-GENERATE
-
-</button>
-
-<div id="msg" class="msg">
-
-Tap the generator to make power.
+<button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
 
 </div>
 
@@ -330,73 +302,201 @@ Tap the generator to make power.
 
 <div class="card">
 
-<h3>SELL POWER</h3>
+<div class="section-title"><h3>Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div>
 
-<button
+<div class="btnrow">
 
-class="greenbtn"
+<button class="btn greenbtn" onclick="sellPower()">💵 SELL POWER</button>
 
-onclick="sell()">
+<button class="btn bluebtn" onclick="upgradeTap()">⬆️ UPGRADE TAP</button>
 
-SELL STORED POWER
-
-</button>
+</div>
 
 </div>
 
 <div class="card">
 
-<h3>MANUAL GENERATOR</h3>
+<div class="section-title"><h3>Quick Actions</h3><span>Daily boosts</span></div>
 
-<div id="tapInfo" class="small"></div>
+<div class="btnrow">
 
-<button
+<button class="btn purplebtn" onclick="claimDaily()">🎁 DAILY REWARD</button>
 
-class="bluebtn"
+<button class="btn purplebtn" onclick="activateBoost()">▶️ 2× OUTPUT</button>
 
-style="margin-top:10px"
-
-onclick="upgradeTap()">
-
-UPGRADE
-
-</button>
+</div>
 
 </div>
 
 <div class="card">
 
-<h3>POWER ASSETS</h3>
+<div class="section-title"><h3>Current Mission</h3><span id="missionReward">Reward $150</span></div>
+
+<div id="currentMission"></div>
+
+</div>
+
+</section>
+
+<section class="page" id="plantsPage">
+
+<div class="card" style="margin-top:0">
+
+<div class="section-title"><h3>Power Assets</h3><span>Automate production</span></div>
 
 <div id="assets"></div>
 
 </div>
 
-</main>
+</section>
+
+<section class="page" id="mapPage">
+
+<div class="card" style="margin-top:0">
+
+<div class="section-title"><h3>Grid Expansion</h3><span id="regionCount">1/4 regions</span></div>
+
+<div class="mapgrid" id="regions"></div>
+
+</div>
+
+</section>
+
+<section class="page" id="missionsPage">
+
+<div class="card" style="margin-top:0">
+
+<div class="section-title"><h3>Missions</h3><span>Grow your utility</span></div>
+
+<div id="missions"></div>
+
+</div>
+
+<div class="card">
+
+<div class="section-title"><h3>Prestige</h3><span>Permanent bonus</span></div>
+
+<p style="color:var(--muted);margin-top:0">Reset your utility after earning $50,000 lifetime cash to gain +10% permanent production.</p>
+
+<button class="btn purplebtn" onclick="prestige()">⚡ PRESTIGE GRID</button>
+
+</div>
+
+</section>
+
+<section class="page" id="storePage">
+
+<div class="card" style="margin-top:0">
+
+<div class="section-title"><h3>Tycoon Store</h3><span>Prototype only</span></div>
+
+<div class="shopitem"><div><b>Starter Pack</b><small>$5,000 game cash + 10 min 2× boost</small></div><div class="price">TEST</div></div>
+
+<div class="shopitem"><div><b>Cash Crate</b><small>$25,000 game cash</small></div><div class="price">TEST</div></div>
+
+<div class="shopitem"><div><b>Remove Ads</b><small>Future App Store purchase</small></div><div class="price">TEST</div></div>
+
+<button class="btn darkbtn" style="margin-top:10px" onclick="testStarter()">CLAIM TEST STARTER PACK</button>
+
+</div>
+
+<div class="card">
+
+<div class="section-title"><h3>Save Data</h3><span>Stored on this device</span></div>
+
+<button class="btn redbtn" onclick="resetGame()">RESET GAME</button>
+
+</div>
+
+</section>
+
+</div>
+
+</div>
+
+<div class="nav">
+
+<div class="navin">
+
+<button class="navbtn active" data-page="homePage" onclick="showPage(this)"><span>🏭</span>HOME</button>
+
+<button class="navbtn" data-page="plantsPage" onclick="showPage(this)"><span>⚙️</span>PLANTS</button>
+
+<button class="navbtn" data-page="mapPage" onclick="showPage(this)"><span>🗺️</span>MAP</button>
+
+<button class="navbtn" data-page="missionsPage" onclick="showPage(this)"><span>🏆</span>GOALS</button>
+
+<button class="navbtn" data-page="storePage" onclick="showPage(this)"><span>🛒</span>STORE</button>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<div class="modal" id="offlineModal">
+
+<div class="modalbox">
+
+<div class="big">⚡</div>
+
+<h2>Welcome Back</h2>
+
+<p id="offlineText"></p>
+
+<button class="btn greenbtn" onclick="closeOffline()">COLLECT</button>
+
+</div>
+
+</div>
 
 <script>
 
-const defs=[
+const PLANTS=[
 
-['diesel','⛽','Diesel Generator',60,1.5],
+{id:'diesel',icon:'⛽',name:'Diesel Generator',unlock:60,base:1.5},
 
-['steam','🌀','Steam Turbine',250,5],
+{id:'steam',icon:'🌀',name:'Steam Turbine',unlock:400,base:6},
 
-['gas','🔥','Gas Turbine',1250,18],
+{id:'gas',icon:'🔥',name:'Gas Turbine',unlock:2500,base:22},
 
-['solar','☀️','Solar Farm',6000,65],
+{id:'solar',icon:'☀️',name:'Solar Farm',unlock:12000,base:80},
 
-['nuclear','☢️','Nuclear Plant',35000,250]
+{id:'nuclear',icon:'☢️',name:'Nuclear Plant',unlock:75000,base:320}
 
 ];
 
-let g=
+const REGIONS=[
 
-JSON.parse(localStorage.getItem('PowerPlantTycoonSave')||'null')
+{id:'riverbend',name:'Riverbend',cost:0,emoji:'🏭',desc:'Your starter industrial grid.'},
 
-||
+{id:'coast',name:'Coastal Grid',cost:15000,emoji:'🌊',desc:'+10% production bonus.'},
 
-{
+{id:'desert',name:'Sunbelt',cost:75000,emoji:'🏜️',desc:'+20% production bonus.'},
+
+{id:'metro',name:'Metroplex',cost:300000,emoji:'🌆',desc:'+35% production bonus.'}
+
+];
+
+const MISSIONS=[
+
+{id:'m1',label:'Generate 100 kWh',type:'generated',target:100,reward:150},
+
+{id:'m2',label:'Earn $1,000 lifetime cash',type:'lifetimeCash',target:1000,reward:500},
+
+{id:'m3',label:'Own 5 total plant levels',type:'plantLevels',target:5,reward:1200},
+
+{id:'m4',label:'Reach 50 kWh/s output',type:'output',target:50,reward:3500}
+
+];
+
+function freshGame(){
+
+const plants={};
+
+PLANTS.forEach(p=>plants[p.id]={level:0,unlocked:false});
+
+return{
 
 cash:0,
 
@@ -406,149 +506,207 @@ tapLevel:0,
 
 prestige:0,
 
-boost:0,
+boostUntil:0,
 
 lastDaily:0,
 
-plants:{}
+generated:0,
+
+lifetimeCash:0,
+
+plants,
+
+regions:['riverbend'],
+
+missionsClaimed:[],
+
+lastSeen:Date.now(),
+
+starterClaimed:false
 
 };
 
-defs.forEach(d=>{
+}
 
-g.plants[d[0]] ??= {
+let g=loadGame();
 
-level:0,
+function loadGame(){
 
-unlocked:false
+let obj=null;
 
-};
+try{obj=JSON.parse(localStorage.getItem('PPT_V2')||'null')}catch(e){}
 
-});
+const base=freshGame();
 
-function save(){
+if(!obj)return base;
 
-localStorage.setItem(
+const merged={...base,...obj,plants:{...base.plants,...(obj.plants||{})}};
 
-'PowerPlantTycoonSave',
+if(!Array.isArray(merged.regions))merged.regions=['riverbend'];
 
-JSON.stringify(g)
+if(!Array.isArray(merged.missionsClaimed))merged.missionsClaimed=[];
 
-);
+return merged;
+
+}
+
+function saveGame(){
+
+g.lastSeen=Date.now();
+
+localStorage.setItem('PPT_V2',JSON.stringify(g));
 
 }
 
 function fmt(v){
 
-if(v>=1000000)
+v=Number(v)||0;
 
-return (v/1000000).toFixed(2)+'M';
+if(v>=1e9)return(v/1e9).toFixed(2)+'B';
 
-if(v>=1000)
+if(v>=1e6)return(v/1e6).toFixed(2)+'M';
 
-return (v/1000).toFixed(2)+'K';
+if(v>=1e3)return(v/1e3).toFixed(2)+'K';
 
 return v.toFixed(1);
 
 }
 
-function mult(){
+function regionMult(){
 
-return(1+g.prestige*.1)*(g.boost>0?2:1);
+let bonus=0;
 
-}
+if(g.regions.includes('coast'))bonus+=.10;
 
-function tp(){
+if(g.regions.includes('desert'))bonus+=.20;
 
-return(1+g.tapLevel*2.5)*mult();
+if(g.regions.includes('metro'))bonus+=.35;
 
-}
-
-function tcost(){
-
-return 25*Math.pow(1.6,g.tapLevel);
+return 1+bonus;
 
 }
 
-function pps(){
+function prestigeMult(){
+
+return 1+(Number(g.prestige)||0)*.10;
+
+}
+
+function boostMult(){
+
+return Date.now()<Number(g.boostUntil||0)?2:1;
+
+}
+
+function totalMult(){
+
+return prestigeMult()*regionMult()*boostMult();
+
+}
+
+function tapPower(){
+
+return(1+g.tapLevel*2.5)*totalMult();
+
+}
+
+function tapUpgradeCost(){
+
+return 25*Math.pow(1.65,g.tapLevel);
+
+}
+
+function output(){
 
 let n=0;
 
-defs.forEach(d=>{
+PLANTS.forEach(p=>{
 
-let s=g.plants[d[0]];
+const s=g.plants[p.id];
 
-if(s.unlocked)
-
-n+=d[4]*s.level;
+if(s&&s.unlocked)n+=p.base*s.level;
 
 });
 
-return n*mult();
+return n*totalMult();
 
 }
 
-function pcost(d){
+function plantCost(p){
 
-let s=g.plants[d[0]];
+const s=g.plants[p.id];
 
-return s.unlocked
+if(!s.unlocked)return p.unlock;
 
-?
-
-d[3]*.55*
-
-Math.pow(1.58,Math.max(s.level,1)-1)
-
-:
-
-d[3];
+return p.unlock*.7*Math.pow(1.58,Math.max(1,s.level)-1);
 
 }
 
-function message(x){
+function totalPlantLevels(){
 
-document.getElementById('msg').textContent=x;
+return PLANTS.reduce((sum,p)=>sum+(g.plants[p.id]?.level||0),0);
 
 }
 
-function tap(){
+function toast(msg){
 
-g.stored+=tp();
+const t=document.getElementById('toast');
 
-message(
+t.textContent=msg;
 
-'+'+fmt(tp())+' kWh'
+t.classList.add('show');
 
-);
+clearTimeout(toast.timer);
 
-save();
+toast.timer=setTimeout(()=>t.classList.remove('show'),1800);
+
+}
+
+function tapGenerate(){
+
+const amount=tapPower();
+
+g.stored+=amount;
+
+g.generated+=amount;
+
+const f=document.getElementById('flash');
+
+f.classList.remove('on');
+
+void f.offsetWidth;
+
+f.classList.add('on');
+
+toast('+'+fmt(amount)+' kWh');
+
+saveGame();
 
 render();
 
 }
 
-function sell(){
+function sellPower(){
 
 if(g.stored<=0){
 
-message('Generate some power first.');
+toast('Generate some power first');
 
 return;
 
 }
 
-g.cash+=g.stored;
+const value=g.stored;
 
-message(
+g.cash+=value;
 
-'Sold power for $'+fmt(g.stored)
-
-);
+g.lifetimeCash+=value;
 
 g.stored=0;
 
-save();
+toast('Sold power for $'+fmt(value));
+
+saveGame();
 
 render();
 
@@ -556,15 +714,11 @@ render();
 
 function upgradeTap(){
 
-let c=tcost();
+const c=tapUpgradeCost();
 
 if(g.cash<c){
 
-message(
-
-'Need $'+fmt(c-g.cash)+' more.'
-
-);
+toast('Need $'+fmt(c-g.cash)+' more');
 
 return;
 
@@ -574,29 +728,25 @@ g.cash-=c;
 
 g.tapLevel++;
 
-save();
+toast('Manual generator upgraded');
+
+saveGame();
 
 render();
 
 }
 
-function buy(id){
+function buyPlant(id){
 
-let d=
+const p=PLANTS.find(x=>x.id===id);
 
-defs.find(x=>x[0]==id);
+const s=g.plants[id];
 
-let s=g.plants[id];
-
-let c=pcost(d);
+const c=plantCost(p);
 
 if(g.cash<c){
 
-message(
-
-'Need $'+fmt(c-g.cash)+' more.'
-
-);
+toast('Need $'+fmt(c-g.cash)+' more');
 
 return;
 
@@ -610,71 +760,245 @@ s.unlocked=true;
 
 s.level=1;
 
+toast(p.name+' unlocked!');
+
 }else{
 
 s.level++;
 
+toast(p.name+' upgraded');
+
 }
 
-save();
+saveGame();
 
 render();
 
 }
 
-function boost(){
+function claimDaily(){
 
-g.boost=300;
+const now=Date.now();
 
-message(
+if(g.lastDaily&&now-g.lastDaily<86400000){
 
-'2× production active for 5 minutes!'
-
-);
-
-save();
-
-render();
-
-}
-
-function daily(){
-
-let now=Date.now();
-
-if(
-
-g.lastDaily &&
-
-now-g.lastDaily<86400000
-
-){
-
-message(
-
-'Daily reward already claimed.'
-
-);
+toast('Daily reward already claimed');
 
 return;
 
 }
 
-let r=
-
-Math.max(100,pps()*300);
+const r=Math.max(250,output()*600);
 
 g.cash+=r;
 
+g.lifetimeCash+=r;
+
 g.lastDaily=now;
 
-message(
+toast('Daily reward: $'+fmt(r));
 
-'Daily reward: $'+fmt(r)
+saveGame();
 
-);
+render();
 
-save();
+}
+
+function activateBoost(){
+
+g.boostUntil=Math.max(Date.now(),g.boostUntil||0)+5*60*1000;
+
+toast('2× output active for 5 minutes');
+
+saveGame();
+
+render();
+
+}
+
+function missionValue(m){
+
+if(m.type==='generated')return g.generated;
+
+if(m.type==='lifetimeCash')return g.lifetimeCash;
+
+if(m.type==='plantLevels')return totalPlantLevels();
+
+if(m.type==='output')return output();
+
+return 0;
+
+}
+
+function claimMission(id){
+
+const m=MISSIONS.find(x=>x.id===id);
+
+if(!m||g.missionsClaimed.includes(id)||missionValue(m)<m.target)return;
+
+g.missionsClaimed.push(id);
+
+g.cash+=m.reward;
+
+g.lifetimeCash+=m.reward;
+
+toast('Mission complete! +$'+fmt(m.reward));
+
+saveGame();
+
+render();
+
+}
+
+function nextMission(){
+
+return MISSIONS.find(m=>!g.missionsClaimed.includes(m.id))||null;
+
+}
+
+function unlockRegion(id){
+
+const r=REGIONS.find(x=>x.id===id);
+
+if(!r||g.regions.includes(id))return;
+
+if(g.cash<r.cost){
+
+toast('Need $'+fmt(r.cost-g.cash)+' more');
+
+return;
+
+}
+
+g.cash-=r.cost;
+
+g.regions.push(id);
+
+toast(r.name+' unlocked!');
+
+saveGame();
+
+render();
+
+}
+
+function prestige(){
+
+if(g.lifetimeCash<50000){
+
+toast('Reach $50,000 lifetime cash first');
+
+return;
+
+}
+
+if(!confirm('Prestige will reset cash, power, upgrades and plants for +10% permanent production. Continue?'))return;
+
+const oldPrestige=g.prestige+1;
+
+const oldRegions=[...g.regions];
+
+const oldMissions=[...g.missionsClaimed];
+
+g=freshGame();
+
+g.prestige=oldPrestige;
+
+g.regions=oldRegions;
+
+g.missionsClaimed=oldMissions;
+
+toast('Prestige '+g.prestige+' activated');
+
+saveGame();
+
+render();
+
+}
+
+function testStarter(){
+
+if(g.starterClaimed){
+
+toast('Test starter pack already claimed');
+
+return;
+
+}
+
+g.starterClaimed=true;
+
+g.cash+=5000;
+
+g.lifetimeCash+=5000;
+
+g.boostUntil=Date.now()+10*60*1000;
+
+toast('Test starter pack claimed');
+
+saveGame();
+
+render();
+
+}
+
+function resetGame(){
+
+if(!confirm('Reset all Power Plant Tycoon progress on this device?'))return;
+
+localStorage.removeItem('PPT_V2');
+
+g=freshGame();
+
+saveGame();
+
+render();
+
+toast('Game reset');
+
+}
+
+function showPage(btn){
+
+document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+
+document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));
+
+document.getElementById(btn.dataset.page).classList.add('active');
+
+btn.classList.add('active');
+
+window.scrollTo({top:0,behavior:'smooth'});
+
+}
+
+function handleOffline(){
+
+const previous=Number(g.lastSeen||Date.now());
+
+const secs=Math.min(8*3600,Math.max(0,(Date.now()-previous)/1000));
+
+const earned=output()*secs*.65;
+
+if(secs>60&&earned>1){
+
+g.stored+=earned;
+
+document.getElementById('offlineText').textContent='Your plants generated '+fmt(earned)+' kWh while you were away.';
+
+document.getElementById('offlineModal').classList.add('show');
+
+}
+
+saveGame();
+
+}
+
+function closeOffline(){
+
+document.getElementById('offlineModal').classList.remove('show');
+
+saveGame();
 
 render();
 
@@ -682,127 +1006,201 @@ render();
 
 function render(){
 
-document.getElementById('cash')
+document.getElementById('cash').textContent='$'+fmt(g.cash);
 
-.textContent='$'+fmt(g.cash);
+document.getElementById('stored').textContent=fmt(g.stored)+' kWh';
 
-document.getElementById('stored')
+document.getElementById('prod').textContent=fmt(output())+'/s';
 
-.textContent=fmt(g.stored)+' kWh';
+document.getElementById('tapInfo').textContent=fmt(tapPower())+' kWh/tap • $'+fmt(tapUpgradeCost())+' upgrade';
 
-document.getElementById('prod')
+document.getElementById('rank').textContent=
 
-.textContent=fmt(pps())+'/s';
+g.lifetimeCash>=100000?'GRID MOGUL':
 
-document.getElementById('prestige')
+g.lifetimeCash>=10000?'UTILITY BOSS':
 
-.textContent=g.prestige;
+g.lifetimeCash>=1000?'PLANT MANAGER':'GRID ROOKIE';
 
-document.getElementById('tapInfo')
+const assets=document.getElementById('assets');
 
-.textContent=
+assets.innerHTML='';
 
-'Level '+g.tapLevel+
+PLANTS.forEach(p=>{
 
-' • '+fmt(tp())+
+const s=g.plants[p.id];
 
-' kWh/tap • Upgrade $'+
+const c=plantCost(p);
 
-fmt(tcost());
+const row=document.createElement('div');
 
-let box=
+row.className='asset';
 
-document.getElementById('assets');
+row.innerHTML=
 
-box.innerHTML='';
+`<div class="asset-icon">${p.icon}</div>
 
-defs.forEach(d=>{
+<div>
 
-let s=g.plants[d[0]];
+<div class="asset-name">${p.name}</div>
 
-let c=pcost(d);
+<div class="asset-meta">
 
-box.innerHTML+=`
-
-<div class="asset">
-
-<div style="font-size:28px">
-
-${d[1]}
-
-</div>
-
-<div class="grow">
-
-<b>
-
-${d[2]}
-
-</b>
-
-<div class="small">
-
-${s.unlocked
-
-?
-
-'Lv. '+s.level+
-
-' • '+fmt(d[4]*s.level)+' kWh/s'
-
-:
-
-'Locked'}
+${s.unlocked?'Level '+s.level+' • '+fmt(p.base*s.level*totalMult())+' kWh/s':'Locked • '+fmt(p.base)+' kWh/s base'}
 
 </div>
 
 </div>
 
-<button
+<button onclick="buyPlant('${p.id}')">
 
-class="bluebtn"
+${s.unlocked?'UPGRADE':'UNLOCK'}<br>$${fmt(c)}
 
-onclick="buy('${d[0]}')">
+</button>`;
 
-${s.unlocked
-
-?
-
-'UPGRADE'
-
-:
-
-'UNLOCK'}
-
-<br>
-
-$${fmt(c)}
-
-</button>
-
-</div>
-
-`;
+assets.appendChild(row);
 
 });
 
+const regions=document.getElementById('regions');
+
+regions.innerHTML='';
+
+REGIONS.forEach(r=>{
+
+const owned=g.regions.includes(r.id);
+
+const div=document.createElement('div');
+
+div.className='region'+(owned?'':' locked');
+
+div.innerHTML=
+
+`<h4>${r.name}</h4>
+
+<p>${r.desc}</p>
+
+<div class="emoji">${r.emoji}</div>
+
+${owned?
+
+'<div style="margin-top:12px;color:#4aff85;font-weight:900;font-size:12px">UNLOCKED</div>':
+
+`<button class="btn bluebtn" style="margin-top:12px;padding:9px" onclick="unlockRegion('${r.id}')">$${fmt(r.cost)}</button>`}`;
+
+regions.appendChild(div);
+
+});
+
+document.getElementById('regionCount').textContent=g.regions.length+'/4 regions';
+
+const missions=document.getElementById('missions');
+
+missions.innerHTML='';
+
+MISSIONS.forEach(m=>{
+
+const val=missionValue(m);
+
+const done=g.missionsClaimed.includes(m.id);
+
+const pct=Math.min(100,(val/m.target)*100);
+
+const div=document.createElement('div');
+
+div.className='mission';
+
+div.innerHTML=
+
+`<div class="mission-head">
+
+<span>${m.label}</span>
+
+<span>${done?'✅':fmt(Math.min(val,m.target))+'/'+fmt(m.target)}</span>
+
+</div>
+
+<div class="progress" style="margin-top:8px">
+
+<i style="width:${done?100:pct}%"></i>
+
+</div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px">
+
+<small>Reward $${fmt(m.reward)}</small>
+
+${!done&&val>=m.target?
+
+`<button class="btn greenbtn" style="width:auto;padding:8px 11px" onclick="claimMission('${m.id}')">CLAIM</button>`:''}
+
+</div>`;
+
+missions.appendChild(div);
+
+});
+
+const m=nextMission();
+
+const cm=document.getElementById('currentMission');
+
+if(!m){
+
+cm.innerHTML='<div style="font-weight:900">All current missions complete! 🏆</div>';
+
+document.getElementById('missionReward').textContent='More coming soon';
+
+}else{
+
+const val=missionValue(m);
+
+const pct=Math.min(100,(val/m.target)*100);
+
+cm.innerHTML=
+
+`<div style="font-weight:900">${m.label}</div>
+
+<div class="progress" style="margin-top:10px">
+
+<i style="width:${pct}%"></i>
+
+</div>
+
+<div style="display:flex;justify-content:space-between;margin-top:7px;color:var(--muted);font-size:12px">
+
+<span>${fmt(Math.min(val,m.target))} / ${fmt(m.target)}</span>
+
+${val>=m.target?
+
+`<button class="btn greenbtn" style="width:auto;padding:7px 10px" onclick="claimMission('${m.id}')">CLAIM</button>`:''}
+
+</div>`;
+
+document.getElementById('missionReward').textContent='Reward $'+fmt(m.reward);
+
 }
+
+}
+
+handleOffline();
+
+render();
 
 setInterval(()=>{
 
-g.stored+=pps();
+g.stored+=output();
 
-if(g.boost>0)
-
-g.boost--;
-
-save();
+saveGame();
 
 render();
 
 },1000);
 
-render();
+document.addEventListener('visibilitychange',()=>{
+
+if(document.hidden)saveGame();
+
+});
 
 </script>
 
