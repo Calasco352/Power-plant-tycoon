@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon V9</title>
+<title>Power Plant Tycoon V10</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -79,12 +79,38 @@ radial-gradient(ellipse at 90% 100%,#0b1e21 0 33px,transparent 34px)}
 .toast{position:fixed;left:50%;top:135px;transform:translate(-50%,-20px);background:#08131def;border:1px solid #3b6885;border-radius:14px;padding:11px 14px;font-weight:900;z-index:100;opacity:0;pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translate(-50%,0)}
 .modal{position:fixed;inset:0;background:#000b;display:none;place-items:center;padding:20px;z-index:90}.modal.show{display:grid}.modalbox{width:min(430px,100%);background:linear-gradient(#14344e,#071522);border:1px solid #376786;border-radius:24px;padding:20px}.bigmoney{font-size:34px;font-weight:1000;color:#37e776}
 @media(max-width:560px){.logo{font-size:22px}.stat b{font-size:15px}.hero{min-height:610px}.yard{height:360px}.steamHall{width:195px;left:37%}.gasHall{left:71%;width:110px}.mapgrid{grid-template-columns:1fr}.asset{grid-template-columns:52px 1fr}.asset button{grid-column:1/3;width:100%}.dashboard{grid-template-columns:1fr 1fr}}
+
+/* ========================= V10 CINEMATIC FACILITY ========================= */
+.yard{height:430px;background:linear-gradient(#112933 0 18%,#18343a 18% 45%,#21383a 45% 100%);overflow:hidden}
+.plant-art{position:absolute;inset:0;width:100%;height:100%;z-index:12}
+.plant-art .stage{opacity:0;transform:translateY(14px);transition:opacity .55s ease,transform .55s ease}
+.plant-art .stage.on{opacity:1;transform:none}
+.plant-art .glow{filter:drop-shadow(0 0 6px rgba(255,210,75,.42))}
+.plant-art .metal{filter:drop-shadow(0 4px 5px rgba(0,0,0,.42))}
+.plant-art .steamPuff{animation:v10Steam 6s ease-in-out infinite alternate;transform-origin:center}
+.plant-art .steamPuff.s2{animation-delay:-2s}.plant-art .steamPuff.s3{animation-delay:-4s}
+@keyframes v10Steam{from{transform:translate(0,0) scale(.88);opacity:.55}to{transform:translate(28px,-28px) scale(1.18);opacity:.18}}
+.plant-art .fan{animation:v10Fan 2.1s linear infinite;transform-box:fill-box;transform-origin:center}
+@keyframes v10Fan{to{transform:rotate(360deg)}}
+.plant-art .blink{animation:v10Blink 1.3s steps(1) infinite}
+@keyframes v10Blink{50%{opacity:.18}}
+.plant-art .truckmove{animation:v10Truck 18s linear infinite}
+@keyframes v10Truck{from{transform:translateX(-110px)}to{transform:translateX(850px)}}
+.plant-art .pulse{animation:v10Pulse 2.4s ease-in-out infinite}
+@keyframes v10Pulse{50%{opacity:.35}}
+.night .plant-art .window{fill:#ffe66b!important;filter:drop-shadow(0 0 4px #ffe66b)}
+.night .plant-art .lampGlow{opacity:.9}
+.breakdown .plant-art #steamStage,.breakdown .plant-art #gasStage{filter:brightness(.7) saturate(.6)}
+.breakdown .plant-art .alarm{opacity:1!important}
+.v10-stage-label{position:absolute;left:16px;bottom:78px;z-index:33;padding:7px 9px;border-radius:10px;background:#07141ddd;border:1px solid #4e7184;color:#d9eef9;font-size:9px;font-weight:900;letter-spacing:.8px}
+@media(max-width:560px){.yard{height:390px}.v10-stage-label{bottom:72px}}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">V10</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -99,35 +125,79 @@ radial-gradient(ellipse at 90% 100%,#0b1e21 0 33px,transparent 34px)}
 <div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
 <div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
 <div class="yard">
-<div class="treeline"></div>
-<div id="dieselVisual" class="facility diesel hidden"></div>
-<div id="controlVisual" class="facility control hidden"></div>
-<div id="controlTop" class="facility controltop hidden"></div>
-<div id="steamHall" class="facility steamHall hidden"><div class="windows"></div></div>
-<div id="turbineVisual" class="facility turbine hidden"></div>
-<div id="steamStack" class="facility stack steamStack hidden"></div>
-<div id="steamSmoke" class="facility smoke steamSmoke hidden"></div>
-<div id="roofvents" class="facility roofvents hidden"><i></i><i></i><i></i><i></i><i></i></div>
-<div id="pipeRack" class="facility piperack hidden"></div>
-<div id="tank1" class="facility tank tank1 hidden"></div>
-<div id="tank2" class="facility tank tank2 hidden"></div>
-<div id="gasHall" class="facility gasHall hidden"></div>
-<div id="gasStack" class="facility stack gasStack hidden"></div>
-<div id="gasSmoke" class="facility smoke gasSmoke hidden"></div>
-<div id="flareVisual" class="facility flare hidden"></div>
-<div id="transformerVisual" class="facility transformer hidden"></div>
-<div id="switchyardVisual" class="facility switchyard hidden"><i></i><i></i><i></i></div>
-<div id="solarVisual" class="facility solar hidden"><div class="p p1"></div><div class="p p2"></div><div class="p p3"></div><div class="p p4"></div></div>
-<div id="reactorVisual" class="facility reactor hidden"></div>
-<div id="cool1" class="facility cooling cool1 hidden"></div>
-<div id="cool2" class="facility cooling cool2 hidden"></div>
-<div id="entryVisual" class="facility entry hidden"></div>
-<div id="signVisual" class="facility sign hidden"></div>
-<div class="facility light l1"></div><div class="facility light l2"></div><div class="facility light l3"></div>
-<div id="truckVisual" class="facility truck hidden"></div>
-<div id="worker1" class="facility worker w1 hidden"></div><div id="worker2" class="facility worker w2 hidden"></div>
-<div id="tagDiesel" class="leveltag td">DIESEL L1</div><div id="tagSteam" class="leveltag ts">STEAM L1</div><div id="tagGas" class="leveltag tg">GAS L1</div><div id="tagSolar" class="leveltag tso">SOLAR L1</div><div id="tagNuclear" class="leveltag tn">NUCLEAR L1</div>
-<div class="fence"></div><div class="road"></div>
+
+<svg class="plant-art" viewBox="0 0 760 430" preserveAspectRatio="xMidYMid slice" aria-label="Riverbend power station">
+<defs>
+  <linearGradient id="v10ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d4a4b"/><stop offset="1" stop-color="#182b2f"/></linearGradient>
+  <linearGradient id="v10steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#445b64"/><stop offset=".45" stop-color="#bcc7ca"/><stop offset=".72" stop-color="#687c84"/><stop offset="1" stop-color="#30464f"/></linearGradient>
+  <linearGradient id="v10darksteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#263b44"/><stop offset=".55" stop-color="#536b75"/><stop offset="1" stop-color="#1e3037"/></linearGradient>
+  <linearGradient id="v10concrete" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5dcdd"/><stop offset="1" stop-color="#77878b"/></linearGradient>
+  <linearGradient id="v10yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd95a"/><stop offset="1" stop-color="#be8517"/></linearGradient>
+  <filter id="v10shadow"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#000" flood-opacity=".55"/></filter>
+</defs>
+<rect x="0" y="250" width="760" height="180" fill="url(#v10ground)"/>
+<path d="M0 320 H760 V430 H0Z" fill="#202a2d"/>
+<path d="M0 353 H760" stroke="#65767c" stroke-width="5"/>
+<path d="M0 390 H760" stroke="#d8ae2f" stroke-width="4" stroke-dasharray="34 28"/>
+<g opacity=".55"><path d="M0 328 l18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22" fill="none" stroke="#748a92" stroke-width="2"/></g>
+
+<g id="dieselStage" class="stage">
+  <g filter="url(#v10shadow)">
+    <rect x="20" y="298" width="76" height="42" rx="3" fill="url(#v10darksteel)" stroke="#9aabb1" stroke-width="2"/>
+    <rect class="window" x="30" y="312" width="15" height="10" fill="#eacb56"/><rect class="window" x="50" y="312" width="15" height="10" fill="#eacb56"/>
+    <text x="29" y="307" fill="#e9f3f7" font-size="7" font-weight="700">SECURITY</text>
+  </g>
+  <g filter="url(#v10shadow)">
+    <rect x="108" y="260" width="145" height="80" rx="3" fill="url(#v10darksteel)" stroke="#9db0b6" stroke-width="2"/>
+    <rect x="118" y="282" width="48" height="31" fill="#14272e" stroke="#74858b"/>
+    <g stroke="#b7c4c8" stroke-width="5"><line x1="123" y1="286" x2="123" y2="309"/><line x1="135" y1="286" x2="135" y2="309"/><line x1="147" y1="286" x2="147" y2="309"/><line x1="159" y1="286" x2="159" y2="309"/></g>
+    <rect x="181" y="279" width="53" height="22" rx="3" fill="#1b3037" stroke="#8da0a7"/><text x="184" y="294" fill="#ffd64e" font-size="8" font-weight="900">DIESEL GEN</text>
+  </g>
+  <g filter="url(#v10shadow)"><ellipse cx="83" cy="274" rx="34" ry="11" fill="#aab6b9"/><rect x="49" y="274" width="68" height="52" fill="url(#v10steel)"/><ellipse cx="83" cy="326" rx="34" ry="11" fill="#586d74"/><path d="M50 294 H116" stroke="#6b7f86" stroke-width="3"/></g>
+  <g filter="url(#v10shadow)"><rect x="270" y="288" width="70" height="52" rx="2" fill="#30474f" stroke="#8da0a8" stroke-width="2"/><g fill="#aebdc2"><rect x="279" y="270" width="8" height="23"/><rect x="298" y="270" width="8" height="23"/><rect x="317" y="270" width="8" height="23"/></g></g>
+</g>
+
+<g id="steamStage" class="stage">
+  <g filter="url(#v10shadow)">
+    <rect x="265" y="177" width="282" height="163" rx="3" fill="url(#v10steel)" stroke="#a6b6bb" stroke-width="2"/>
+    <rect x="292" y="154" width="230" height="24" fill="#344b54" stroke="#81949b" stroke-width="2"/>
+    <rect x="284" y="208" width="246" height="23" fill="#20363e" stroke="#6f8289"/>
+    <g fill="#e7c957" class="glow"><rect class="window" x="293" y="214" width="17" height="11"/><rect class="window" x="318" y="214" width="17" height="11"/><rect class="window" x="343" y="214" width="17" height="11"/><rect class="window" x="368" y="214" width="17" height="11"/><rect class="window" x="393" y="214" width="17" height="11"/><rect class="window" x="418" y="214" width="17" height="11"/><rect class="window" x="443" y="214" width="17" height="11"/><rect class="window" x="468" y="214" width="17" height="11"/><rect class="window" x="493" y="214" width="17" height="11"/></g>
+    <text x="295" y="196" fill="#edf6fa" font-size="11" font-weight="900">STEAM TURBINE HALL</text>
+    <g fill="url(#v10steel)" stroke="#748891"><rect x="310" y="136" width="16" height="18" rx="2"/><rect x="360" y="136" width="16" height="18" rx="2"/><rect x="410" y="136" width="16" height="18" rx="2"/><rect x="460" y="136" width="16" height="18" rx="2"/></g>
+  </g>
+  <g filter="url(#v10shadow)"><rect x="200" y="80" width="45" height="260" fill="#e2e7e8" stroke="#9aa8ad" stroke-width="2"/><rect x="200" y="112" width="45" height="38" fill="#c94838"/><rect x="200" y="192" width="45" height="38" fill="#c94838"/><path d="M194 112 H251 M194 152 H251 M194 192 H251 M194 232 H251" stroke="#263940" stroke-width="4"/><circle class="blink" cx="222" cy="75" r="4" fill="#ff4545"/></g>
+  <g class="steamPuff"><circle cx="220" cy="55" r="31" fill="#e8f0f0" opacity=".48"/><circle cx="245" cy="35" r="39" fill="#e8f0f0" opacity=".34"/><circle cx="205" cy="22" r="33" fill="#e8f0f0" opacity=".27"/></g>
+  <g filter="url(#v10shadow)"><rect x="317" y="258" width="185" height="69" rx="9" fill="#415a64" stroke="#aab9be" stroke-width="2"/><circle cx="355" cy="292" r="27" fill="#1e343c" stroke="#d2dcdf" stroke-width="3"/><g class="fan" stroke="#f3c53d" stroke-width="5"><line x1="355" y1="268" x2="355" y2="316"/><line x1="331" y1="292" x2="379" y2="292"/><line x1="338" y1="275" x2="372" y2="309"/><line x1="372" y1="275" x2="338" y2="309"/></g><rect x="391" y="270" width="94" height="43" rx="5" fill="#263c44" stroke="#748891"/><text x="404" y="295" fill="#dfeaed" font-size="8" font-weight="900">GENERATOR</text></g>
+  <g class="metal"><path d="M110 245 H600" stroke="#d6e0e2" stroke-width="9" stroke-linecap="round"/><path d="M110 259 H600" stroke="#83979f" stroke-width="8" stroke-linecap="round"/><path d="M110 273 H600" stroke="#a9b9be" stroke-width="7" stroke-linecap="round"/><g stroke="#6f858d" stroke-width="4"><line x1="145" y1="235" x2="145" y2="303"/><line x1="230" y1="235" x2="230" y2="303"/><line x1="565" y1="235" x2="565" y2="303"/></g></g>
+</g>
+
+<g id="gasStage" class="stage">
+  <g filter="url(#v10shadow)"><rect x="540" y="225" width="150" height="115" fill="url(#v10darksteel)" stroke="#8da0a7" stroke-width="2"/><text x="555" y="245" fill="#f1f7fa" font-size="10" font-weight="900">GAS TURBINE BLOCK</text><rect x="555" y="265" width="118" height="30" rx="4" fill="#17313a" stroke="#72878f"/></g>
+  <g filter="url(#v10shadow)"><rect x="662" y="124" width="28" height="216" fill="#c7d0d2" stroke="#8b9a9f" stroke-width="2"/><path d="M657 164 H695 M657 205 H695 M657 246 H695" stroke="#31454d" stroke-width="4"/><circle class="blink" cx="676" cy="118" r="4" fill="#ff4a4a"/></g>
+  <g class="steamPuff s2"><circle cx="676" cy="96" r="23" fill="#dfe8e8" opacity=".3"/><circle cx="697" cy="78" r="28" fill="#dfe8e8" opacity=".22"/></g>
+  <g filter="url(#v10shadow)"><ellipse cx="598" cy="208" rx="36" ry="12" fill="#c9d2d4"/><rect x="562" y="208" width="72" height="91" fill="url(#v10steel)"/><ellipse cx="598" cy="299" rx="36" ry="12" fill="#586c73"/></g>
+</g>
+
+<g id="solarStage" class="stage">
+  <g transform="translate(505 275) skewX(-14)" filter="url(#v10shadow)"><g fill="#123f67" stroke="#86a5b6" stroke-width="2"><rect x="0" y="0" width="76" height="34"/><rect x="84" y="0" width="76" height="34"/><rect x="18" y="43" width="76" height="34"/><rect x="102" y="43" width="76" height="34"/></g></g>
+  <g stroke="#7d9299" stroke-width="4" fill="none"><path d="M620 210 V333 M680 210 V333 M735 210 V333"/><path d="M597 235 H755 M597 265 H755"/></g>
+  <g class="pulse" fill="#8edcff"><circle cx="620" cy="235" r="4"/><circle cx="680" cy="265" r="4"/><circle cx="735" cy="235" r="4"/></g>
+</g>
+
+<g id="nuclearStage" class="stage">
+  <g filter="url(#v10shadow)"><path d="M80 340 V230 Q80 160 150 160 Q220 160 220 230 V340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><rect x="104" y="241" width="92" height="62" rx="5" fill="#65777c" stroke="#9aa8ad"/><text x="150" y="282" text-anchor="middle" fill="#ffe04f" font-size="33">☢</text></g>
+  <g filter="url(#v10shadow)"><path d="M235 340 L255 130 L335 130 L355 340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><path d="M345 340 L372 105 L466 105 L493 340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><ellipse cx="295" cy="130" rx="40" ry="8" fill="#475a60"/><ellipse cx="419" cy="105" rx="47" ry="9" fill="#475a60"/></g>
+  <g class="steamPuff s2"><circle cx="294" cy="95" r="32" fill="#edf5f5" opacity=".43"/><circle cx="317" cy="68" r="42" fill="#edf5f5" opacity=".28"/></g>
+  <g class="steamPuff s3"><circle cx="419" cy="65" r="38" fill="#edf5f5" opacity=".45"/><circle cx="447" cy="35" r="49" fill="#edf5f5" opacity=".26"/></g>
+</g>
+
+<g><g stroke="#637981" stroke-width="5"><line x1="48" y1="352" x2="48" y2="265"/><line x1="382" y1="352" x2="382" y2="256"/><line x1="718" y1="352" x2="718" y2="266"/></g><g fill="#ffe484" class="glow"><rect x="38" y="258" width="20" height="7" rx="3"/><rect x="372" y="249" width="20" height="7" rx="3"/><rect x="708" y="259" width="20" height="7" rx="3"/></g><g class="lampGlow" opacity=".15" fill="#ffe997"><path d="M48 265 l-40 88 h80Z"/><path d="M382 256 l-44 97 h88Z"/><path d="M718 266 l-40 87 h80Z"/></g></g>
+<g class="truckmove" filter="url(#v10shadow)"><rect x="5" y="365" width="62" height="27" rx="4" fill="url(#v10yellow)"/><rect x="45" y="350" width="25" height="20" rx="4" fill="#b98218"/><circle cx="18" cy="394" r="8" fill="#111"/><circle cx="55" cy="394" r="8" fill="#111"/></g>
+<g class="alarm" opacity="0"><circle cx="525" cy="169" r="8" fill="#ff4949" class="blink"/></g>
+</svg>
+<div id="v10StageLabel" class="v10-stage-label">RIVERBEND STARTER SITE</div>
+
 </div>
 <div class="generate-wrap"><button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button></div>
 </div>
