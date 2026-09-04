@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Final Build</title>
+<title>Power Plant Tycoon — Final Build Bug Fix 1</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -137,7 +137,7 @@ radial-gradient(ellipse at 90% 100%,#0b1e21 0 33px,transparent 34px)}
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">FINAL</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">FINAL • FIX 1</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -326,8 +326,29 @@ const CORPORATE=[{id:"eff",name:"High-Efficiency Operations",desc:"+5% productio
 const MISSIONS=[{id:"m1",label:"Generate 100 kWh",type:"generated",target:100,reward:150},{id:"m2",label:"Earn $1,000 lifetime cash",type:"lifetimeCash",target:1000,reward:500},{id:"m3",label:"Own 5 plant levels",type:"levels",target:5,reward:1200},{id:"m4",label:"Reach 50 kWh/s",type:"output",target:50,reward:3500},{id:"m5",label:"Complete 3 contracts",type:"contracts",target:3,reward:7500}];
 const ACH=[{id:"a1",label:"First Spark",desc:"Generate your first 10 kWh",type:"generated",target:10},{id:"a2",label:"Plant Operator",desc:"Unlock the Steam Turbine",type:"steam",target:1},{id:"a3",label:"Grid Builder",desc:"Unlock a second region",type:"regions",target:2},{id:"a4",label:"Power Mogul",desc:"Earn $50,000 lifetime cash",type:"lifetimeCash",target:50000},{id:"a5",label:"Nuclear Age",desc:"Unlock the Nuclear Plant",type:"nuclear",target:1},{id:"a6",label:"Master Operator",desc:"Reach operator level 10",type:"operator",target:10}];
 const defaultGame=()=>({cash:0,stored:0,generated:0,sold:0,lifetimeCash:0,tapLevel:0,prestige:0,boostUntil:0,lastSeen:Date.now(),lastDaily:0,starter:false,maintenance:100,engineers:0,operatorXP:0,operatorLevel:1,regions:{riverbend:true},plants:Object.fromEntries(PLANTS.map(p=>[p.id,{unlocked:false,level:0,condition:100}])),corporate:{eff:0,maint:0,fuel:0,grid:0},contractsCompleted:0,activeContract:null,missions:{},achievements:{},event:null,eventCooldown:0,settings:{sound:true,haptics:true,reducedMotion:false,compact:true},tutorialStep:0,finalShown:false,endgame:{},log:["Riverbend Station connected to the grid."]});
-let g;try{g=JSON.parse(localStorage.getItem("PPT_V5"))||defaultGame()}catch(e){g=defaultGame()}
-function migrate(){if(!g.plants)g.plants={};PLANTS.forEach(p=>{if(!g.plants[p.id])g.plants[p.id]={unlocked:false,level:0,condition:100};if(g.plants[p.id].condition==null)g.plants[p.id].condition=100});if(!g.regions)g.regions={riverbend:true};if(!g.corporate)g.corporate={eff:0,maint:0,fuel:0,grid:0};["eff","maint","fuel","grid"].forEach(id=>{if(g.corporate[id]==null)g.corporate[id]=0});if(g.maintenance==null)g.maintenance=100;if(g.engineers==null)g.engineers=0;if(g.operatorXP==null)g.operatorXP=0;if(g.operatorLevel==null)g.operatorLevel=1;if(g.contractsCompleted==null)g.contractsCompleted=0;if(g.activeContract===undefined)g.activeContract=null;if(!g.missions)g.missions={};if(!g.achievements)g.achievements={};if(!g.log)g.log=[];
+let g;
+try{
+  const existingSave=localStorage.getItem("PPT_V5");
+  if(existingSave&&!localStorage.getItem("PPT_FINAL_BACKUP_1")){
+    localStorage.setItem("PPT_FINAL_BACKUP_1",existingSave);
+  }
+  g=JSON.parse(existingSave)||defaultGame();
+}catch(e){
+  g=defaultGame();
+}
+function migrate(){
+if(!g.plants)g.plants={};
+PLANTS.forEach(p=>{
+  if(!g.plants[p.id])g.plants[p.id]={unlocked:false,level:0,condition:100};
+  const s=g.plants[p.id];
+  if(s.level==null)s.level=0;
+  s.level=Math.max(0,Number(s.level)||0);
+  if(s.unlocked==null)s.unlocked=s.level>0;
+  if(s.level>0)s.unlocked=true;
+  if(s.unlocked&&s.level<1)s.level=1;
+  if(s.condition==null)s.condition=100;
+  s.condition=Math.max(35,Math.min(100,Number(s.condition)||100));
+});if(!g.regions)g.regions={riverbend:true};if(!g.corporate)g.corporate={eff:0,maint:0,fuel:0,grid:0};["eff","maint","fuel","grid"].forEach(id=>{if(g.corporate[id]==null)g.corporate[id]=0});if(g.maintenance==null)g.maintenance=100;if(g.engineers==null)g.engineers=0;if(g.operatorXP==null)g.operatorXP=0;if(g.operatorLevel==null)g.operatorLevel=1;if(g.contractsCompleted==null)g.contractsCompleted=0;if(g.activeContract===undefined)g.activeContract=null;if(!g.missions)g.missions={};if(!g.achievements)g.achievements={};if(!g.log)g.log=[];
 if(!g.settings)g.settings={sound:true,haptics:true,reducedMotion:false,compact:true};
 ["sound","haptics","reducedMotion","compact"].forEach(k=>{if(g.settings[k]==null)g.settings[k]=(k==="sound"||k==="haptics"||k==="compact")});
 if(g.tutorialStep==null)g.tutorialStep=0;if(g.finalShown==null)g.finalShown=false;if(!g.endgame)g.endgame={};
@@ -435,7 +456,59 @@ function updateEvent(){if(g.event&&g.event.type==="surge"&&Date.now()>g.event.ex
 function updateDayNight(){const n=Math.floor(Date.now()/45000)%2===1;document.body.classList.toggle("night",n);document.getElementById("weather").textContent=n?"🌙 NIGHT SHIFT":"☀ CLEAR"}
 function setVisual(id,on,l=1){const e=document.getElementById(id);if(!e)return;e.classList.toggle("hidden",!on);e.style.filter=on&&l>=8?"brightness(1.18) drop-shadow(0 0 12px #ffd24d55)":on&&l>=3?"brightness(1.08) drop-shadow(0 0 7px #4de3ff44)":""}
 function tag(id,on,text){const e=document.getElementById(id);e.classList.toggle("show",!!on);if(on)e.textContent=text}
-function updateFacility(){const d=g.plants.diesel,s=g.plants.steam,ga=g.plants.gas,so=g.plants.solar,n=g.plants.nuclear;setVisual("dieselVisual",d.unlocked,d.level);setVisual("entryVisual",d.unlocked,d.level);setVisual("signVisual",d.unlocked,d.level);["controlVisual","controlTop","steamHall","turbineVisual","steamStack","steamSmoke","roofvents","pipeRack","tank1","truckVisual","worker1"].forEach(id=>setVisual(id,s.unlocked,s.level));["gasHall","gasStack","gasSmoke","flareVisual","tank2","worker2"].forEach(id=>setVisual(id,ga.unlocked,ga.level));setVisual("transformerVisual",s.unlocked||ga.unlocked,Math.max(s.level,ga.level));setVisual("switchyardVisual",so.unlocked||n.unlocked,Math.max(so.level,n.level));setVisual("solarVisual",so.unlocked,so.level);["reactorVisual","cool1","cool2"].forEach(id=>setVisual(id,n.unlocked,n.level));tag("tagDiesel",d.unlocked,"DIESEL L"+d.level);tag("tagSteam",s.unlocked,"STEAM L"+s.level);tag("tagGas",ga.unlocked,"GAS L"+ga.level);tag("tagSolar",so.unlocked,"SOLAR L"+so.level);tag("tagNuclear",n.unlocked,"NUCLEAR L"+n.level);document.body.classList.toggle("breakdown",!!(g.event&&g.event.type==="breakdown"));let stage="Empty industrial site";if(d.unlocked)stage="Diesel generation operating";if(s.unlocked)stage="Steam plant operating";if(ga.unlocked)stage="Combined-cycle facility operating";if(so.unlocked)stage="Renewable grid expansion";if(n.unlocked)stage="Riverbend Energy Megacomplex";document.getElementById("sceneSub").textContent=stage}
+function updateFacility(){
+  const d=g.plants.diesel;
+  const s=g.plants.steam;
+  const ga=g.plants.gas;
+  const so=g.plants.solar;
+  const n=g.plants.nuclear;
+
+  const setStage=(id,on)=>{
+    const el=document.getElementById(id);
+    if(el)el.classList.toggle("on",!!on);
+  };
+
+  setStage("dieselStage",d.unlocked);
+  setStage("steamStage",s.unlocked);
+  setStage("gasStage",ga.unlocked);
+  setStage("solarStage",so.unlocked);
+  setStage("nuclearStage",n.unlocked);
+
+  document.body.classList.toggle(
+    "breakdown",
+    !!(g.event&&g.event.type==="breakdown")
+  );
+
+  let stage="RIVERBEND STARTER SITE";
+  let sub="Build your first generating unit.";
+
+  if(d.unlocked){
+    stage="DIESEL GENERATION YARD";
+    sub="Diesel generation operating";
+  }
+  if(s.unlocked){
+    stage="STEAM POWER STATION";
+    sub="Steam plant operating";
+  }
+  if(ga.unlocked){
+    stage="COMBINED-CYCLE COMPLEX";
+    sub="Gas and steam generation online";
+  }
+  if(so.unlocked){
+    stage="REGIONAL ENERGY CAMPUS";
+    sub="Renewable grid expansion online";
+  }
+  if(n.unlocked){
+    stage="RIVERBEND ENERGY MEGACOMPLEX";
+    sub="Nuclear baseload complex online";
+  }
+
+  const label=document.getElementById("v10StageLabel");
+  if(label)label.textContent=stage;
+
+  const sceneSub=document.getElementById("sceneSub");
+  if(sceneSub)sceneSub.textContent=sub;
+}
 function showPage(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
 function renderPlants(){document.getElementById("plantList").innerHTML=PLANTS.map(p=>{const s=g.plants[p.id],c=plantCost(p);return`<div class="asset"><div class="asset-icon">${p.icon}</div><div><div class="asset-name">${p.name}</div><div class="asset-meta">${s.unlocked?"Level "+s.level+" • "+num(p.base*s.level)+" kWh/s base":"Locked • "+money(p.unlock)}</div></div><button onclick="buildPlant('${p.id}')">${s.unlocked?"UPGRADE "+money(c):"BUILD "+money(c)}</button></div>`}).join("")}
 function renderCorporate(){document.getElementById("corporateUpgradeList").innerHTML=CORPORATE.map(u=>`<div class="asset"><div class="asset-icon">⚙️</div><div><div class="asset-name">${u.name}</div><div class="asset-meta">${u.desc}</div></div><button onclick="buyCorporate('${u.id}')">LV ${g.corporate[u.id]}<br>${money(corporateCost(u))}</button></div>`).join("")}
@@ -453,7 +526,7 @@ document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
-console.log("Power Plant Tycoon FINAL build loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon FINAL Bug Fix 1 loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 </script>
 </body>
 </html>
