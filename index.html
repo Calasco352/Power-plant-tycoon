@@ -454,29 +454,19 @@ return v.toFixed(1);
 
 function mult(){
 
-return
-
-(1+g.prestige*.1)*
-
-(g.boost>0?2:1);
+return(1+g.prestige*.1)*(g.boost>0?2:1);
 
 }
 
 function tp(){
 
-return
-
-(1+g.tapLevel*2.5)*
-
-mult();
+return(1+g.tapLevel*2.5)*mult();
 
 }
 
 function tcost(){
 
-return
-
-25*Math.pow(1.6,g.tapLevel);
+return 25*Math.pow(1.6,g.tapLevel);
 
 }
 
