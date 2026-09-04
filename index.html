@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Final Build Bug Fix 1</title>
+<title>Power Plant Tycoon — Ultra Graphics Final</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -132,12 +132,69 @@ radial-gradient(ellipse at 90% 100%,#0b1e21 0 33px,transparent 34px)}
 
 .reduced-motion *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 
+
+/* ================= ULTRA GRAPHICS OVERHAUL ================= */
+:root{--gold:#ffc928;--cyan:#5ed9ff;--glass:rgba(10,25,38,.78);--edge:rgba(117,198,240,.24)}
+html,body{background:
+radial-gradient(circle at 50% -10%,#21465e 0,#0b1c29 30%,#050b12 72%),
+linear-gradient(#07131e,#03070b)!important}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.16;background-image:
+linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:28px 28px}
+.wrap{max-width:980px!important}
+.topbar{border:1px solid var(--edge)!important;background:linear-gradient(180deg,rgba(17,39,55,.94),rgba(6,17,27,.92))!important;box-shadow:0 20px 60px #0008,inset 0 1px #ffffff14!important}
+.brand{font-size:24px!important;letter-spacing:-.8px!important;text-shadow:0 4px 20px #000}
+.brand span{background:linear-gradient(#ffe575,#ffb900);-webkit-background-clip:text;color:transparent}
+.stats{gap:10px!important}
+.stat,.dash,.kpi{background:linear-gradient(145deg,rgba(18,45,62,.92),rgba(5,17,27,.94))!important;border:1px solid #315f78!important;box-shadow:inset 0 1px #ffffff12,0 8px 22px #0005!important}
+.stat b{font-size:19px!important;text-shadow:0 2px 12px #000}
+.card{background:linear-gradient(145deg,rgba(15,36,51,.93),rgba(5,15,24,.96))!important;border:1px solid #315c75!important;border-radius:20px!important;box-shadow:0 18px 50px #0007,inset 0 1px #ffffff12!important}
+.section-title h3{font-size:18px!important}
+.btn{border-radius:14px!important;min-height:48px!important;box-shadow:inset 0 1px #ffffff44,0 7px 18px #0005!important;letter-spacing:.3px}
+.btn:hover{transform:translateY(-1px);filter:brightness(1.08)}
+.btn:active{transform:translateY(2px) scale(.985)}
+.btn.green{background:linear-gradient(180deg,#65e56d,#19a84d)!important}
+.btn.blue{background:linear-gradient(180deg,#62d7ff,#2488d2)!important}
+.btn.purple{background:linear-gradient(180deg,#c56cff,#7840d8)!important}
+.btn.orange{background:linear-gradient(180deg,#ffbd4b,#e77516)!important}
+.btn.red{background:linear-gradient(180deg,#ff6a55,#d8392e)!important}
+.hero{border-radius:24px!important;box-shadow:0 25px 65px #000a,inset 0 1px #ffffff22!important;border-color:#3e718a!important}
+.scenehead{background:linear-gradient(180deg,rgba(5,17,27,.84),rgba(5,17,27,.42))!important;backdrop-filter:blur(8px)}
+.scenehead h2{font-size:27px!important;text-shadow:0 3px 15px #000}
+.yard{height:500px!important;background:linear-gradient(#102d3d 0 18%,#174554 18% 44%,#284b4d 44% 100%)!important}
+.plant-art{filter:contrast(1.06) saturate(1.1)}
+.plant-art .stage.on{filter:drop-shadow(0 12px 12px rgba(0,0,0,.45))}
+.v10-stage-label{font-size:10px!important;padding:9px 12px!important;background:rgba(4,14,22,.88)!important;box-shadow:0 8px 20px #0008}
+.generate{font-size:20px!important;letter-spacing:1.1px!important;min-height:70px!important;background:linear-gradient(180deg,#ffe15a,#f0aa00)!important;box-shadow:inset 0 2px #fff6,0 12px 30px #0008,0 0 24px #ffcc2530!important}
+.asset,.region,.achievement,.storeitem{border:1px solid #294f66!important;background:linear-gradient(135deg,rgba(17,40,56,.9),rgba(7,19,29,.96))!important;border-radius:16px!important;box-shadow:0 8px 20px #0004!important}
+.asset:hover,.region:hover,.storeitem:hover{border-color:#4e91b6!important}
+.asset-icon{width:52px!important;height:52px!important;border-radius:14px!important;background:linear-gradient(145deg,#183c55,#0b1d2d)!important;box-shadow:inset 0 1px #ffffff20,0 7px 16px #0005}
+.nav{background:rgba(3,10,16,.94)!important;backdrop-filter:blur(18px)!important;border-top:1px solid #315a72!important;box-shadow:0 -10px 35px #0008!important}
+.nav button{padding:10px 4px!important;border-radius:12px!important}
+.nav button.active{background:linear-gradient(#17384d,#0b2232)!important;color:#ffe15a!important;box-shadow:inset 0 1px #ffffff18}
+.modalbox{background:linear-gradient(145deg,#153449,#071722)!important;border:1px solid #4b7e9c!important;border-radius:24px!important;box-shadow:0 30px 90px #000!important}
+.progress{height:9px!important;border-radius:10px!important;background:#06121b!important;box-shadow:inset 0 2px 4px #0008}
+.progress>i{border-radius:10px!important;background:linear-gradient(90deg,#22bf66,#b8ef55)!important;box-shadow:0 0 12px #4de77d88}
+#store.page.active .card:first-child{position:relative;overflow:hidden}
+#store.page.active .card:first-child:before{content:"POWER MARKET";position:absolute;right:-15px;top:12px;font-size:44px;font-weight:1000;color:#ffffff08;transform:rotate(-8deg)}
+.storeitem{padding:16px!important;margin:10px 0!important;min-height:72px}
+.storeitem b{font-size:15px!important}
+.setting{background:linear-gradient(145deg,#102a3d,#071620)!important;border-color:#315a72!important;box-shadow:inset 0 1px #ffffff12}
+.toggle{min-height:42px!important;box-shadow:inset 0 1px #ffffff24,0 5px 14px #0005}
+.endgame{background:
+radial-gradient(circle at 90% 10%,#7a4cff25,transparent 30%),
+linear-gradient(145deg,#211c43,#0c1428)!important;border-color:#7455c8!important}
+@media(max-width:560px){
+ .yard{height:455px!important}.scenehead h2{font-size:23px!important}.brand{font-size:21px!important}
+ .stat b{font-size:16px!important}.card{border-radius:17px!important}.generate{min-height:64px!important}
+}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">FINAL • FIX 1</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">ULTRA</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -222,6 +279,21 @@ radial-gradient(ellipse at 90% 100%,#0b1e21 0 33px,transparent 34px)}
 <g><g stroke="#637981" stroke-width="5"><line x1="48" y1="352" x2="48" y2="265"/><line x1="382" y1="352" x2="382" y2="256"/><line x1="718" y1="352" x2="718" y2="266"/></g><g fill="#ffe484" class="glow"><rect x="38" y="258" width="20" height="7" rx="3"/><rect x="372" y="249" width="20" height="7" rx="3"/><rect x="708" y="259" width="20" height="7" rx="3"/></g><g class="lampGlow" opacity=".15" fill="#ffe997"><path d="M48 265 l-40 88 h80Z"/><path d="M382 256 l-44 97 h88Z"/><path d="M718 266 l-40 87 h80Z"/></g></g>
 <g class="truckmove" filter="url(#v10shadow)"><rect x="5" y="365" width="62" height="27" rx="4" fill="url(#v10yellow)"/><rect x="45" y="350" width="25" height="20" rx="4" fill="#b98218"/><circle cx="18" cy="394" r="8" fill="#111"/><circle cx="55" cy="394" r="8" fill="#111"/></g>
 <g class="alarm" opacity="0"><circle cx="525" cy="169" r="8" fill="#ff4949" class="blink"/></g>
+
+<g id="ultraDetails" pointer-events="none">
+ <g opacity=".32">
+  <path d="M0 344 H760" stroke="#8fdcff" stroke-width="1"/>
+  <path d="M0 348 H760" stroke="#061016" stroke-width="2"/>
+ </g>
+ <g fill="#d9edf4" opacity=".72">
+  <circle cx="116" cy="350" r="2"/><circle cx="145" cy="350" r="2"/><circle cx="613" cy="350" r="2"/><circle cx="642" cy="350" r="2"/>
+ </g>
+ <g opacity=".75" filter="url(#v10shadow)">
+   <rect x="18" y="337" width="104" height="17" rx="3" fill="#071820" stroke="#4b778d"/>
+   <text x="70" y="349" text-anchor="middle" fill="#d6eef7" font-size="7" font-weight="900">RIVERBEND ENERGY</text>
+ </g>
+</g>
+
 </svg>
 <div id="v10StageLabel" class="v10-stage-label">RIVERBEND STARTER SITE</div>
 
@@ -526,7 +598,7 @@ document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
-console.log("Power Plant Tycoon FINAL Bug Fix 1 loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon ULTRA GRAPHICS FINAL loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();createEvent();updateContract();saveGame();render()},1000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 </script>
 </body>
 </html>
