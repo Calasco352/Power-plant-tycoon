@@ -625,3 +625,262 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
 .boot-load{width:280px;height:7px;background:#071019;border-radius:99px;overflow:hidden;margin-top:16px}
 .boot-load i{display:block;height:100%;width:100%;background:linear-gradient(90deg,#36d779,#5ddcff);transform-origin:left;animation:bootload 1.25s ease}
 @keyframes bootload{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+
+/* ================= PREMIUM EXPANSION V2 ================= */
+.hero{position:relative!important}
+.yard{position:relative!important;isolation:isolate!important}
+
+/* FIX: selector belongs to the scene, never the header */
+.yard .cp-stage-rail{
+  position:absolute!important;
+  top:120px!important;
+  left:18px!important;
+  bottom:auto!important;
+  z-index:64!important;
+  width:92px!important;
+  max-height:calc(100% - 150px)!important;
+  display:flex!important;
+  flex-direction:column!important;
+  gap:8px!important;
+  overflow:visible!important;
+  contain:none!important;
+  transform:none!important;
+}
+.yard .cp-stage{
+  appearance:none!important;
+  width:92px!important;
+  height:68px!important;
+  border-radius:12px!important;
+  cursor:pointer!important;
+  color:#d8edf7!important;
+  font-family:inherit!important;
+  text-shadow:0 2px 6px #000!important;
+  transition:transform .18s ease,border-color .18s ease,filter .18s ease!important;
+}
+.yard .cp-stage:hover{transform:translateX(5px)!important;filter:brightness(1.15)!important}
+.yard .cp-stage.active{border-color:#ffd34f!important;box-shadow:0 0 18px #ffc83d88,0 10px 18px #0008!important}
+.yard .cp-stage.locked{cursor:not-allowed!important;filter:grayscale(.8) brightness(.55)!important}
+
+.view-stage-badge{
+  position:absolute;left:124px;top:120px;z-index:63;
+  padding:7px 10px;border-radius:999px;
+  color:#eafaff;font-size:10px;font-weight:1000;letter-spacing:.8px;
+  border:1px solid #3d7897;background:#061925c9;backdrop-filter:blur(8px);
+  box-shadow:0 8px 20px #0007
+}
+
+/* cinematic motion layers */
+.cinematic-fx{position:absolute;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.cinematic-fx i{position:absolute;border-radius:50%;filter:blur(18px);opacity:.14;background:#dff8ff;animation:driftSteam 15s linear infinite}
+.cinematic-fx i:nth-child(1){width:110px;height:80px;left:28%;top:14%;animation-delay:-5s}
+.cinematic-fx i:nth-child(2){width:150px;height:100px;left:55%;top:8%;animation-duration:19s}
+.cinematic-fx i:nth-child(3){width:90px;height:70px;left:77%;top:17%;animation-delay:-11s;animation-duration:17s}
+@keyframes driftSteam{0%{transform:translate(0,20px) scale(.8);opacity:0}15%{opacity:.15}75%{opacity:.11}100%{transform:translate(60px,-135px) scale(1.45);opacity:0}}
+.reduced-motion .cinematic-fx i{animation:none}
+
+/* stronger stage visual tiers */
+.yard.tier-2{filter:saturate(1.05) contrast(1.03)}
+.yard.tier-3{filter:saturate(1.12) contrast(1.06) brightness(1.03)}
+.yard.tier-4{filter:saturate(1.18) contrast(1.08) brightness(1.06)}
+.yard.tier-4:after{
+  content:"";position:absolute;inset:0;z-index:4;pointer-events:none;
+  background:linear-gradient(115deg,transparent 42%,rgba(255,220,110,.06) 50%,transparent 58%);
+  animation:siteSweep 7s linear infinite
+}
+@keyframes siteSweep{from{transform:translateX(-80%)}to{transform:translateX(80%)}}
+
+/* Plants page - premium visual cards */
+#plantList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px!important}
+#plantList .asset{
+  min-height:210px!important;position:relative!important;overflow:hidden!important;
+  display:flex!important;flex-direction:column!important;justify-content:flex-end!important;align-items:stretch!important;
+  padding:0!important;border-radius:20px!important;border:1px solid #315d76!important;
+  background:#071722!important;box-shadow:0 15px 35px #0006!important
+}
+#plantList .plant-card-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .35s ease}
+#plantList .asset:hover .plant-card-bg{transform:scale(1.035)}
+#plantList .plant-card-shade{position:absolute;inset:0;background:linear-gradient(180deg,transparent 18%,rgba(3,12,20,.18) 43%,rgba(3,12,20,.96) 82%)}
+#plantList .plant-card-content{position:relative;z-index:2;padding:15px}
+#plantList .plant-card-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+#plantList .plant-card-name{font-size:19px;font-weight:1000}
+#plantList .plant-card-meta{color:#b5cbd8;font-size:11px;margin:5px 0 10px}
+#plantList .plant-card-output{font-size:12px;color:#65e39a;font-weight:900}
+#plantList .plant-card-level{padding:5px 8px;border-radius:999px;background:#102d40;border:1px solid #32617b;font-size:10px;font-weight:900}
+#plantList .plant-card-actions{display:grid;grid-template-columns:1fr auto;gap:8px}
+#plantList .plant-card-actions button{border:0;border-radius:11px;padding:11px;font-weight:1000;color:#fff;background:linear-gradient(#259fff,#0b64b6)}
+#plantList .plant-card-actions .view-btn{background:#17364a;border:1px solid #315d77}
+
+/* Expanded Map presentation */
+#regionList{display:grid!important;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px!important}
+#regionList .region{
+  position:relative;overflow:hidden;min-height:180px;padding:18px!important;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  border-radius:20px!important;background:linear-gradient(145deg,#102b40,#06141e)!important;
+  box-shadow:0 14px 30px #0005
+}
+#regionList .region:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 80% 10%,rgba(88,215,255,.16),transparent 35%);pointer-events:none}
+#regionList .region h4,#regionList .region p,#regionList .region .badge,#regionList .region button{position:relative;z-index:2}
+#regionList .region h4{font-size:20px;margin:5px 0}
+#regionList .region .region-icon{position:absolute;right:16px;top:14px;font-size:50px;filter:drop-shadow(0 8px 12px #0007)}
+#regionList .region.locked{opacity:.72}
+
+/* premium settings */
+.premium-setting{display:flex!important;flex-direction:column!important;align-items:stretch!important;gap:8px!important}
+.premium-setting input[type=range]{width:100%;accent-color:#45d989}
+
+/* mobile selector turns into bottom scene strip */
+@media(max-width:760px){
+  .yard .cp-stage-rail{
+    top:auto!important;left:8px!important;right:8px!important;bottom:14px!important;
+    width:auto!important;max-height:none!important;
+    flex-direction:row!important;justify-content:center!important;gap:5px!important;
+  }
+  .yard .cp-stage{
+    width:58px!important;height:52px!important;font-size:8px!important;flex:0 1 58px!important;
+  }
+  .yard .cp-stage i{font-size:17px!important}
+  .view-stage-badge{left:10px;top:94px}
+  #plantList,#regionList{grid-template-columns:1fr!important}
+}
+
+
+/* ================= PREMIUM EXPANSION V3 — DIESEL CLEANUP ================= */
+
+/* Keep the title area clear and readable. */
+.scene-label{
+  left:28px!important;
+  top:24px!important;
+  max-width:46%!important;
+  z-index:72!important;
+  pointer-events:none!important;
+}
+.scene-label h2{
+  margin:0!important;
+  line-height:1.04!important;
+  text-shadow:0 3px 10px #000c!important;
+}
+.scene-label p{
+  margin-top:6px!important;
+  text-shadow:0 2px 8px #000d!important;
+}
+
+/* Hide the oversized left-side diagnostic/stat card in the artwork area.
+   Those stats already exist in the main HUD and equipment cards. */
+.yard .legacy-scene-stats,
+.yard .scene-stats,
+.yard .v10-scene-stats,
+.yard .mega-scene-stats{
+  display:none!important;
+}
+
+/* Move the plant selector fully to the far-left edge INSIDE the scene. */
+.yard .cp-stage-rail{
+  top:128px!important;
+  left:12px!important;
+  width:76px!important;
+  gap:7px!important;
+  z-index:76!important;
+}
+.yard .cp-stage{
+  width:76px!important;
+  height:62px!important;
+  padding:5px!important;
+  background-color:rgba(5,16,25,.88)!important;
+  background-blend-mode:multiply!important;
+  border:1px solid #365f76!important;
+  box-shadow:0 8px 18px #0009!important;
+}
+.yard .cp-stage.active{
+  border:2px solid #ffd33f!important;
+  box-shadow:0 0 0 1px #ffdc5f55,0 0 18px #ffc83d77,0 10px 18px #0009!important;
+}
+.yard .cp-stage.locked{
+  opacity:.52!important;
+  filter:grayscale(.9) brightness(.55)!important;
+}
+.yard .cp-stage.locked::after{
+  content:"LOCKED";
+  position:absolute;
+  inset:auto 4px 4px 4px;
+  font-size:7px;
+  letter-spacing:.5px;
+  color:#d8e5ec;
+  background:rgba(2,8,13,.76);
+  border-radius:5px;
+  padding:2px 3px;
+}
+
+/* Prevent any old unlock-price labels from bleeding through on top of the artwork. */
+.yard .unlock-price,
+.yard .stage-price,
+.yard .plant-unlock-price,
+.yard .locked-price,
+.yard .price-overlay{
+  display:none!important;
+}
+
+/* Badge no longer crowds the title. */
+.view-stage-badge{
+  top:auto!important;
+  left:96px!important;
+  bottom:18px!important;
+  max-width:48%!important;
+  white-space:nowrap!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+}
+
+/* Keep the right status card compact so the artwork remains the focus. */
+.cp-plant-status{
+  width:170px!important;
+  right:16px!important;
+  top:132px!important;
+  padding:11px!important;
+  background:rgba(4,16,25,.84)!important;
+  backdrop-filter:blur(7px)!important;
+}
+
+/* Diesel stage specifically gets a clean viewing corridor. */
+.yard.stage-diesel .scene-label{max-width:40%!important}
+.yard.stage-diesel .cp-stage-rail{top:134px!important}
+.yard.stage-diesel .cp-plant-status{top:138px!important}
+
+/* Full image remains unobstructed except compact rail + status. */
+.yard.stage-diesel{
+  background-position:center center!important;
+}
+
+/* Mobile: selector becomes a contained horizontal strip, not a left overlay. */
+@media(max-width:760px){
+  .scene-label{
+    left:14px!important;
+    top:16px!important;
+    max-width:70%!important;
+  }
+  .yard .cp-stage-rail{
+    left:8px!important;
+    right:8px!important;
+    bottom:10px!important;
+    top:auto!important;
+    width:auto!important;
+    flex-direction:row!important;
+    justify-content:center!important;
+    gap:5px!important;
+  }
+  .yard .cp-stage{
+    width:56px!important;
+    height:50px!important;
+    flex:0 1 56px!important;
+  }
+  .view-stage-badge{
+    left:10px!important;
+    bottom:72px!important;
+    max-width:62%!important;
+  }
+  .cp-plant-status{
+    top:88px!important;
+    right:8px!important;
+    width:142px!important;
+  }
+}

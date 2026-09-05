@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — 100MB Premium Asset Edition</title>
+<title>Power Plant Tycoon — Premium Expansion V3 Diesel Cleanup</title>
 <link rel="stylesheet" href="css/game.css">
 </head>
 <body>
@@ -17,7 +17,7 @@
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">100MB PREMIUM</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">PREMIUM EXPANSION V3</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -35,8 +35,7 @@
 <div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
 <div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
 
-<div class="cp-stage-rail">
-  <div id="cpDiesel" class="cp-stage"><i>⛽</i>DIESEL</div>
+
   <div id="cpSteam" class="cp-stage"><i>🌀</i>STEAM</div>
   <div id="cpGas" class="cp-stage"><i>🔥</i>GAS</div>
   <div id="cpSolar" class="cp-stage"><i>☀️</i>SOLAR</div>
@@ -64,6 +63,10 @@
   <div class="r"><span>Demand</span><b id="cpDemand">100%</b></div>
 </div>
 <div class="yard">
+<div class="cinematic-fx"><i></i><i></i><i></i></div>
+<div id="viewStageBadge" class="view-stage-badge">LIVE FACILITY</div>
+<div class="cp-stage-rail">
+  <button id="cpDiesel" class="cp-stage" onclick="selectStageView('diesel')" title="View Diesel facility"><i>⛽</i>DIESEL</button>
 
 <svg class="plant-art" viewBox="0 0 760 430" preserveAspectRatio="xMidYMid slice" aria-label="Riverbend power station">
 <defs>
@@ -303,6 +306,8 @@
   <div class="settings-grid">
     <div class="setting"><b>Sound Effects</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div>
     <div class="setting"><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div>
+    <div class="setting premium-setting"><b>Music Volume</b><input id="musicVolume" type="range" min="0" max="100" value="16" oninput="setPremiumVolume('music',this.value)"></div>
+    <div class="setting premium-setting"><b>SFX Volume</b><input id="sfxVolume" type="range" min="0" max="100" value="22" oninput="setPremiumVolume('sfx',this.value)"></div>
     <div class="setting"><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div>
     <div class="setting"><b>Compact Numbers</b><button id="compactToggle" class="toggle on" onclick="toggleSetting('compact')">ON</button></div>
   </div>
