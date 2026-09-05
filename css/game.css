@@ -884,3 +884,276 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
     width:142px!important;
   }
 }
+
+/* =========================================================
+   IPHONE / MOBILE UI OVERHAUL
+   ========================================================= */
+
+@media (max-width: 760px){
+
+  /* ----- PAGE ----- */
+  html,body{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:hidden!important;
+    -webkit-text-size-adjust:100%;
+  }
+
+  body{
+    margin:0!important;
+    padding:0 0 calc(76px + env(safe-area-inset-bottom))!important;
+  }
+
+  *{
+    box-sizing:border-box;
+  }
+
+  button{
+    touch-action:manipulation;
+    -webkit-tap-highlight-color:transparent;
+  }
+
+  /* ----- MAIN GAME WIDTH ----- */
+  .app,
+  .shell,
+  .wrap,
+  main{
+    width:100%!important;
+    max-width:100%!important;
+    margin:0!important;
+  }
+
+  /* ----- TOP HEADER ----- */
+  .topbar,
+  .header,
+  header{
+    width:100%!important;
+    max-width:100%!important;
+  }
+
+  /* ----- FACILITY CARD ----- */
+  .hero{
+    width:100%!important;
+    max-width:100%!important;
+    min-height:0!important;
+    margin:0!important;
+    border-radius:0!important;
+    overflow:hidden!important;
+  }
+
+  /* ----- PLANT IMAGE AREA ----- */
+  .yard{
+    width:100%!important;
+    max-width:100%!important;
+    height:auto!important;
+    min-height:430px!important;
+    overflow:hidden!important;
+
+    background-size:cover!important;
+    background-position:center center!important;
+  }
+
+  /* ----- PLANT SELECTOR ----- */
+  .yard .cp-stage-rail{
+    position:absolute!important;
+
+    left:8px!important;
+    right:8px!important;
+    bottom:8px!important;
+    top:auto!important;
+
+    width:auto!important;
+
+    display:flex!important;
+    flex-direction:row!important;
+    justify-content:flex-start!important;
+
+    gap:7px!important;
+
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+
+    padding:6px!important;
+
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+
+    z-index:30!important;
+  }
+
+  .yard .cp-stage-rail::-webkit-scrollbar{
+    display:none;
+  }
+
+  .yard .cp-stage{
+    flex:0 0 58px!important;
+    width:58px!important;
+    height:52px!important;
+
+    min-width:58px!important;
+
+    display:flex!important;
+    align-items:center!important;
+    justify-content:center!important;
+
+    font-size:10px!important;
+  }
+
+  /* ----- FACILITY INFORMATION ----- */
+  .scene-label{
+    left:12px!important;
+    top:14px!important;
+
+    width:auto!important;
+    max-width:72%!important;
+
+    font-size:clamp(18px,6vw,28px)!important;
+    line-height:1.05!important;
+  }
+
+  .view-stage-badge{
+    left:12px!important;
+    bottom:70px!important;
+
+    max-width:70%!important;
+
+    font-size:9px!important;
+  }
+
+  .cp-plant-status{
+    top:74px!important;
+    right:8px!important;
+
+    width:132px!important;
+    max-width:38%!important;
+
+    font-size:9px!important;
+  }
+
+  /* ----- GENERATE POWER BUTTON ----- */
+  #generateBtn,
+  .generate-btn,
+  .generate{
+    width:calc(100% - 20px)!important;
+    min-height:64px!important;
+
+    margin:10px!important;
+
+    font-size:18px!important;
+    font-weight:900!important;
+
+    border-radius:14px!important;
+
+    touch-action:manipulation!important;
+  }
+
+  /* ----- CARDS / PANELS ----- */
+  .panel,
+  .card,
+  .section{
+    width:calc(100% - 16px)!important;
+    max-width:none!important;
+
+    margin-left:8px!important;
+    margin-right:8px!important;
+  }
+
+  /* ----- PLANT CARDS ----- */
+  .plant-grid,
+  .plants-grid{
+    display:grid!important;
+    grid-template-columns:1fr!important;
+    gap:10px!important;
+  }
+
+  .plant-card{
+    width:100%!important;
+    min-width:0!important;
+  }
+
+  /* ----- LARGE TOUCH TARGETS ----- */
+  .plant-card button,
+  .upgrade-btn,
+  .build-btn,
+  .action-btn{
+    min-height:48px!important;
+    font-size:14px!important;
+  }
+
+  /* ----- STATUS BOXES ----- */
+  .systems,
+  .system-grid,
+  .status-grid{
+    grid-template-columns:repeat(2,1fr)!important;
+    gap:6px!important;
+  }
+
+  /* ----- BOTTOM NAVIGATION ----- */
+  .bottom-nav,
+  nav.bottom,
+  .nav-bottom{
+    position:fixed!important;
+
+    left:0!important;
+    right:0!important;
+    bottom:0!important;
+
+    width:100%!important;
+
+    padding-bottom:env(safe-area-inset-bottom)!important;
+
+    z-index:9999!important;
+
+    backdrop-filter:blur(14px);
+    -webkit-backdrop-filter:blur(14px);
+  }
+
+  .bottom-nav button,
+  .bottom-nav .nav-item{
+    min-height:58px!important;
+
+    font-size:9px!important;
+
+    touch-action:manipulation!important;
+  }
+
+  /* ----- PREVENT TEXT FROM OVERFLOWING ----- */
+  h1,h2,h3,p,span,div{
+    overflow-wrap:break-word;
+  }
+
+  /* ----- IPHONE LANDSCAPE ----- */
+  @media (orientation:landscape){
+    .yard{
+      min-height:360px!important;
+    }
+
+    .cp-plant-status{
+      width:150px!important;
+    }
+  }
+}
+
+
+/* EXTRA SMALL IPHONES */
+@media (max-width:390px){
+
+  .yard{
+    min-height:400px!important;
+  }
+
+  .yard .cp-stage{
+    flex-basis:54px!important;
+    width:54px!important;
+    min-width:54px!important;
+  }
+
+  .scene-label{
+    max-width:68%!important;
+  }
+
+  .cp-plant-status{
+    width:118px!important;
+    font-size:8px!important;
+  }
+}
