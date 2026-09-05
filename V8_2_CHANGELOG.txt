@@ -1,0 +1,20 @@
+POWER PLANT TYCOON — GRID DOMINION V8.2
+OPERATOR EXPERIENCE UPDATE
+
+MAJOR CHANGES
+- Rebuilt guided tutorial: 16 lessons, bigger adaptive coach, lighter dimming, spotlight targeting and interactive action steps.
+- Added permanent Auto Sell browser entitlement with TEST BUY, OWNED state and Restore Purchases support.
+- Added Auto Sell modes: target price, continuous, 50% reserve, 90% reserve; plus Battery First / Contracts First / Highest Profit priorities.
+- Auto Generate and Auto Sell entitlements remain separate from normal save progression.
+- Power Pass progression separated from Company XP and legacy V8 pass progress is normalized for Season 2.
+- Smarter NEXT TARGET system now provides an actionable progression path.
+- Regional grid perks now affect specific technologies, market value and contract rewards.
+- Plant cards now show visual milestone progress and individual SERVICE actions.
+- New crisp V8.2 transmission network graphic and stronger connected/next-route visuals.
+- Added Company Valuation to Stats.
+- Added Low / Medium / High graphics quality setting.
+- Home facility received deeper lighting, selected-plant art treatment and automation controls.
+- Preserves PPT_V5 saves and creates PPT_V82_BACKUP_1 before migration.
+
+STORE DEVELOPMENT NOTE
+Auto Sell TEST BUY is a browser simulation. Live iOS paid ownership should use StoreKit entitlements.

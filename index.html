@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#06111b">
-<title>Power Plant Tycoon — Grid Dominion V8.1</title>
-<link rel="stylesheet" href="css/game.css?v=81">
+<title>Power Plant Tycoon — Grid Dominion V8.2</title>
+<link rel="stylesheet" href="css/game.css?v=82">
 </head>
 <body>
 <div id="bootSplash" class="boot-splash">
   <div class="boot-card">
     <div class="boot-logo">⚡ POWER PLANT <span>TYCOON</span></div>
-    <h1>GRID DOMINION V8.1</h1>
+    <h1>GRID DOMINION V8.2</h1>
     <p>Bigger plants. Deeper systems. A global energy empire.</p>
     <div class="boot-load"><i></i></div>
   </div>
@@ -34,7 +34,7 @@
 
   <div class="app">
     <header class="topbar">
-      <div class="top-title"><strong>POWER PLANT <span>TYCOON</span></strong><small>GRID DOMINION V8.1</small></div>
+      <div class="top-title"><strong>POWER PLANT <span>TYCOON</span></strong><small>GRID DOMINION V8.2</small></div>
       <div class="top-stats">
         <div class="top-stat cash"><small>CASH</small><b id="cash">$0</b><i id="incomeRate">$0/s</i></div>
         <div class="top-stat power"><small>STORED POWER</small><b id="power">0 kWh</b><i id="batteryMini">Battery 0</i></div>
@@ -52,7 +52,7 @@
             <div><small>COMPANY LV</small><b id="companyLevelValue">1</b><i id="companyXPValue">0 / 75 XP</i></div>
             <div><small>DAILY STREAK</small><b id="dailyStreakValue">0</b><i id="dailyBestValue">Best 0</i></div>
             <div><small>PASS</small><b id="powerPassTierHome">Tier 1</b><i id="passXPHome">0 XP</i></div>
-            <div><small>NEXT TARGET</small><b id="nextGoalValue">Build Diesel</b><i id="nextGoalHint">Start the station</i></div>
+            <div class="next-objective-kpi"><small>NEXT TARGET</small><b id="nextGoalValue">Build Diesel</b><i id="nextGoalHint">Start the station</i><span id="nextGoalPath">Generate → Sell → Build</span><button class="objective-help" onclick="explainNextObjective()">WHAT SHOULD I DO?</button></div>
           </div>
         </div>
 
@@ -72,6 +72,7 @@
             <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
             <button id="quickSellBtn" class="quick-sell-btn" onclick="sellPower()">💵 SELL POWER</button>
             <button id="autoGenerateBtn" class="auto-generate-btn locked" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
+            <button id="autoSellHomeBtn" class="auto-sell-home-btn locked" onclick="toggleAutoSell()">🔒 AUTO SELL</button>
           </div>
           <div class="hero-bottom-stats">
             <div><span>⛽ FUEL SYSTEM</span><b id="fuelSystemText">Normal</b><i><em id="fuelSystemBar"></em></i></div>
@@ -144,7 +145,21 @@
         <div class="card"><div class="section-title"><h3>📉 Market History & Forecast</h3><span id="marketForecastLabel">STABLE</span></div><canvas id="marketCanvas" width="1200" height="360"></canvas><div id="forecastMetrics" class="forecast-grid"></div></div>
         <div class="dashboard-grid two">
           <div class="card"><div class="section-title"><h3>🔋 Utility Storage</h3><span id="batteryLevel">LV 0</span></div><div class="battery-ring"><div><b id="batteryStored">0 kWh</b><small id="batteryCapacityText">Capacity 0</small></div></div><div class="btnrow"><button class="btn green" onclick="chargeBattery()">CHARGE</button><button class="btn orange" onclick="dischargeBattery()">SELL STORED</button></div><button class="btn purple wide" onclick="upgradeBattery()">UPGRADE BATTERY</button></div>
-          <div class="card"><div class="section-title"><h3>🤖 Automated Trading</h3><span>GRID AI</span></div><div class="auto-trade-card"><b id="autoSellState">AUTO SELL OFF</b><p>Requires Advanced Automation research. Automatically sells when market price is favorable.</p><button id="autoSellBtn" class="btn dark wide" onclick="toggleAutoSell()">AUTO SELL: OFF</button></div><button class="btn blue wide" onclick="dispatchPower()">⚡ EMERGENCY GRID DISPATCH</button></div>
+          <div class="card automation-card">
+            <div class="section-title"><h3>💵 Auto Sell Control</h3><span id="autoSellEntitlementBadge">STORE UNLOCK</span></div>
+            <div class="auto-trade-card">
+              <b id="autoSellState">AUTO SELL LOCKED</b>
+              <p id="autoSellDescription">Permanently unlock Auto Sell in the Store, then choose how your trading desk handles stored power.</p>
+              <button id="autoSellBtn" class="btn dark wide" onclick="toggleAutoSell()">🔒 AUTO SELL</button>
+            </div>
+            <div id="autoSellAdvanced" class="auto-sell-advanced locked">
+              <label><span>SELL MODE</span><select id="autoSellMode" onchange="setAutoSellSetting('mode',this.value)"><option value="price">Target market price</option><option value="continuous">Continuous selling</option><option value="reserve50">Sell above 50% operating reserve</option><option value="reserve90">Sell above 90% operating reserve</option></select></label>
+              <label><span>TARGET PRICE</span><div class="range-row"><input id="autoSellPrice" type="range" min="0.50" max="3.00" step="0.05" value="1.25" oninput="setAutoSellSetting('targetPrice',this.value)"><b id="autoSellPriceValue">$1.25</b></div></label>
+              <label><span>DISPATCH PRIORITY</span><select id="autoSellPriority" onchange="setAutoSellSetting('priority',this.value)"><option value="profit">Highest Profit</option><option value="contracts">Contracts First</option><option value="battery">Battery First</option></select></label>
+              <div class="automation-readout"><div><small>OPERATING RESERVE</small><b id="autoSellReserve">0 kWh</b></div><div><small>SELL TRIGGER</small><b id="autoSellTrigger">$1.25/kWh</b></div></div>
+            </div>
+            <button class="btn blue wide" onclick="dispatchPower()">⚡ EMERGENCY GRID DISPATCH</button>
+          </div>
         </div>
       </section>
 
@@ -181,6 +196,7 @@
         <div class="card"><div class="section-title"><h3>🔥 7-Day Operations Streak</h3><span>DAILY REWARDS</span></div><div id="dailyRewardMeta" class="small"></div><div id="dailyStreakGrid" class="daily-grid"></div><button id="dailyClaimBtn" class="btn green wide" onclick="dailyReward()">CLAIM DAY 1</button></div>
         <div class="store-grid">
           <div class="store-card"><i>🤖</i><div><h3>Auto Generate</h3><p>Permanent idle generator unlock.</p><small id="autoGenerateStoreInfo">Locked</small></div><button id="autoGeneratePurchaseBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
+          <div class="store-card automation-purchase"><i>💵</i><div><h3>Auto Sell</h3><p>Permanent trading automation unlock with price and reserve controls.</p><small id="autoSellStoreInfo">Locked</small></div><button id="autoSellPurchaseBtn" class="btn green" onclick="purchaseAutoSell()">TEST BUY</button></div>
           <div class="store-card"><i>⬆️</i><div><h3>Auto Generate Upgrade</h3><p>Improve idle generation strength.</p><small id="autoGenerateUpgradeInfo">Level 0</small></div><button id="autoGenerateUpgradeBtn" class="btn blue" onclick="upgradeAutoGenerate()">UPGRADE</button></div>
           <div class="store-card"><i>🚀</i><div><h3>Starter Pack</h3><p>$5,000 + 10 minute 2× boost.</p></div><button class="btn purple" onclick="starterPack()">TEST BUY</button></div>
           <div class="store-card"><i>🧰</i><div><h3>Maintenance Pack</h3><p>Restore all fleet condition.</p></div><button class="btn orange" onclick="maintenancePack()">TEST BUY</button></div>
@@ -189,30 +205,32 @@
           <div class="store-card"><i>⚡</i><div><h3>2× Grid Output</h3><p>10 minute production boost.</p></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
           <div class="store-card danger"><i>♻</i><div><h3>Reset Save</h3><p>Reset gameplay while keeping browser entitlements.</p></div><button class="btn red" onclick="resetGame()">RESET</button></div>
         </div>
-        <div class="card"><div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div><div class="settings-grid"><div><b>Sound</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div><div><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div><div><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div><div><b>Compact Numbers</b><button id="compactToggle" class="toggle" onclick="toggleSetting('compact')">ON</button></div></div><div class="btnrow"><button class="btn blue" onclick="openTutorialManual()">🎓 REPLAY GUIDED TUTORIAL</button><button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button><button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button></div><p class="small">Real App Store purchases still require native StoreKit integration when you publish.</p></div>
+
+        <div class="card v82-feature-card"><div class="section-title"><h3>⚙ Automation Ownership</h3><span>PERMANENT</span></div><div class="automation-ownership"><div><b>🤖 Auto Generate</b><span id="autoGenerateOwnership">Not owned</span></div><div><b>💵 Auto Sell</b><span id="autoSellOwnership">Not owned</span></div><div><b>⭐ Premium Pass</b><span id="passOwnership">Not owned</span></div></div><p class="small">Browser TEST BUY simulates ownership. The live iPhone version will use StoreKit entitlements as the source of truth.</p></div>
+        <div class="card"><div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div><div class="settings-grid"><div><b>Sound</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div><div><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div><div><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div><div><b>Compact Numbers</b><button id="compactToggle" class="toggle" onclick="toggleSetting('compact')">ON</button></div><div><b>Graphics Quality</b><button id="graphicsToggle" class="toggle on" onclick="cycleGraphicsQuality()">HIGH</button></div></div><div class="btnrow"><button class="btn blue" onclick="openTutorialManual()">🎓 REPLAY GUIDED TUTORIAL</button><button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button><button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button></div><p class="small">Real App Store purchases still require native StoreKit integration when you publish.</p></div>
       </section>
     </main>
   </div>
 </div>
 
 <div id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
-  <div class="tutorial-dim"></div>
+  <div class="tutorial-dim"></div><div id="tutorialSpotlight" class="tutorial-spotlight"></div>
   <aside id="tutorialCoach" class="tutorial-coach">
     <div class="tutorial-top">
       <div><small id="tutorialStepCount">STEP 1 OF 10</small><h2 id="tutorialStepTitle">Welcome to Power Plant Tycoon</h2></div>
       <button class="tutorial-close" onclick="skipTutorial()" title="Skip tutorial">×</button>
     </div>
-    <div class="tutorial-progress"><i id="tutorialProgressBar"></i></div>
+    <div class="tutorial-progress"><i id="tutorialProgressBar"></i></div><div id="tutorialStepDots" class="tutorial-step-dots"></div>
     <div class="tutorial-advisor">
-      <div class="advisor-icon">⚡</div>
-      <div><b>RIVERBEND ENERGY ADVISOR</b><p id="tutorialStepText"></p></div>
+      <div class="advisor-icon"><span>⚡</span></div>
+      <div><b>RILEY • RIVERBEND ENERGY ADVISOR</b><p id="tutorialStepText"></p></div>
     </div>
     <div id="tutorialTask" class="tutorial-task"></div>
     <div id="tutorialTip" class="tutorial-tip"></div>
     <div class="tutorial-actions">
       <button id="tutorialBackBtn" class="btn dark" onclick="tutorialBack()">BACK</button>
       <button class="btn dark" onclick="skipTutorial()">SKIP</button>
-      <button id="tutorialNextBtn" class="btn green" onclick="tutorialNext()">NEXT ➜</button>
+      <button id="tutorialNextBtn" class="btn green" onclick="tutorialPrimary()">NEXT ➜</button>
     </div>
     <div class="tutorial-footer">You can replay this guide anytime with the 🎓 GUIDE button.</div>
   </aside>
@@ -234,6 +252,6 @@
 <div id="toast" class="toast"></div>
 <div id="confirmModal" class="modal"><div class="modalbox"><h2 id="confirmTitle">Confirm</h2><p id="confirmText"></p><div class="btnrow"><button class="btn red" id="confirmYes">CONFIRM</button><button class="btn dark" onclick="closeConfirm()">CANCEL</button></div></div></div>
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power empire kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green wide" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=81"></script>
+<script src="js/game.js?v=82"></script>
 </body>
 </html>
