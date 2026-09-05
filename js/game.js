@@ -369,6 +369,7 @@ const GUIDED_TUTORIAL=[
   {page:"stats",sel:"#weeklyChallenge",title:"Build an Energy Empire",text:"Track your fleet, complete weekly goals and prestige when you are ready for permanent bonuses."}
 ];
 let tutSpotEl=null;
+let guidedTutorialRenderKey=null;
 function clearTutSpot(){if(tutSpotEl){tutSpotEl.classList.remove("tut-spot");tutSpotEl=null}}
 function openTutorialPage(page){
   const nav=document.querySelector(`[data-nav="${page}"]`);
@@ -377,20 +378,27 @@ function openTutorialPage(page){
 function renderGuidedTutorial(){
   const panel=document.getElementById("tutorialPanel2"),mask=document.getElementById("tutorialMask2");
   if(!panel||!mask)return;
-  if(g.finalTutorial.disabled||g.finalTutorial.done){panel.classList.remove("show");mask.classList.remove("show");clearTutSpot();return}
+  if(g.finalTutorial.disabled||g.finalTutorial.done){panel.classList.remove("show");mask.classList.remove("show");clearTutSpot();guidedTutorialRenderKey=null;return}
   const i=Math.max(0,Math.min(GUIDED_TUTORIAL.length-1,g.finalTutorial.step||0)),s=GUIDED_TUTORIAL[i];
-  openTutorialPage(s.page);
+  const renderKey=i+"|"+s.page;
+  const stepChanged=guidedTutorialRenderKey!==renderKey;
+  if(stepChanged){
+    guidedTutorialRenderKey=renderKey;
+    openTutorialPage(s.page);
+  }
   panel.classList.add("show");mask.classList.add("show");
   document.getElementById("tutorialCount2").textContent=`TUTORIAL ${i+1}/${GUIDED_TUTORIAL.length}`;
   document.getElementById("tutorialTitle2").textContent=s.title;
   document.getElementById("tutorialText2").textContent=s.text;
   document.getElementById("tutorialProgress2").style.width=((i+1)/GUIDED_TUTORIAL.length*100)+"%";
   document.getElementById("tutorialNext2").textContent=i===GUIDED_TUTORIAL.length-1?"FINISH":"NEXT ➜";
-  clearTutSpot();
-  setTimeout(()=>{
-    const el=document.querySelector(s.sel);
-    if(el){tutSpotEl=el;el.classList.add("tut-spot");el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"})}
-  },40);
+  if(stepChanged){
+    clearTutSpot();
+    setTimeout(()=>{
+      const el=document.querySelector(s.sel);
+      if(el){tutSpotEl=el;el.classList.add("tut-spot");el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"})}
+    },40);
+  }
 }
 function nextGuidedTutorial(){
   if((g.finalTutorial.step||0)>=GUIDED_TUTORIAL.length-1){g.finalTutorial.done=true;saveGame();renderGuidedTutorial();toast("Tutorial complete!");return}
@@ -398,7 +406,7 @@ function nextGuidedTutorial(){
 }
 function prevGuidedTutorial(){g.finalTutorial.step=Math.max(0,(g.finalTutorial.step||0)-1);saveGame();renderGuidedTutorial()}
 function skipGuidedTutorial(){g.finalTutorial.disabled=true;saveGame();renderGuidedTutorial();toast("Tutorial skipped")}
-function restartGuidedTutorial(){g.finalTutorial={step:0,done:false,disabled:false,autoStart:true};saveGame();renderGuidedTutorial()}
+function restartGuidedTutorial(){guidedTutorialRenderKey=null;g.finalTutorial={step:0,done:false,disabled:false,autoStart:true};saveGame();renderGuidedTutorial()}
 
 const FINAL_TUTORIAL_STEPS=[
 {title:"Welcome to Riverbend",text:"Tap GENERATE POWER to produce your first electricity.",page:"home"},
