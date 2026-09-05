@@ -1,39 +1,55 @@
-# Power Plant Tycoon — iOS / App Store transition
+# Power Plant Tycoon — iOS Monetization RC2
 
-This folder contains the native iPhone wrapper source for the current Release Candidate 1 web game.
+This folder is the native iPhone wrapper source for the current Power Plant Tycoon release candidate.
 
-## Intended identifiers
+## Bundle ID currently used by the source
+`com.calasco352.powerplanttycoon`
 
-- Suggested bundle ID: `com.calasco352.powerplanttycoon`
-- Auto Generate product ID: `com.calasco352.powerplanttycoon.autogenerate`
-- Auto Generate type: **Non-Consumable**
+Do not register a different Bundle ID in App Store Connect without also changing the product IDs below.
 
-The product ID in `PowerPlantStoreKitBridge.swift` and `js/game.js` must exactly match the product you create in App Store Connect.
+## StoreKit products to create in App Store Connect
 
-## What is already wired
+Permanent / Non-Consumable:
+- `com.calasco352.powerplanttycoon.removeads` — Remove Ads
+- `com.calasco352.powerplanttycoon.autogenerate` — Auto Generate
+- `com.calasco352.powerplanttycoon.executivelicense` — Executive License
 
-- The game still works normally on GitHub Pages.
-- In a browser, Auto Generate uses the existing TEST BUY behavior.
-- In the iPhone wrapper, Auto Generate calls Apple StoreKit instead.
-- StoreKit is the source of truth for ownership in the native app.
-- Restore Purchases calls `AppStore.sync()` and rechecks current entitlements.
-- The browser-only test booster card is hidden automatically in the native iPhone app.
-- The native wrapper loads the game from bundled local files, so gameplay does not depend on GitHub Pages being online.
+Consumable:
+- `com.calasco352.powerplanttycoon.turbogrid` — Turbo Grid Pack
+- `com.calasco352.powerplanttycoon.maintenancecrate` — Maintenance Crate
+- `com.calasco352.powerplanttycoon.capitalinjection` — Capital Injection
 
-## When you have cloud-Mac/Xcode access
+The app pulls display prices from StoreKit; prices are NOT hard-coded in the web game.
 
-1. Open Xcode and create a new **iOS App** named `PowerPlantTycoon` using SwiftUI and Swift.
-2. Set the bundle identifier to your final identifier (suggested above).
-3. Set the deployment target to iOS 15 or newer.
-4. Replace the generated app Swift file with `PowerPlantTycoonApp.swift`.
-5. Add `GameViewController.swift` and `PowerPlantStoreKitBridge.swift` to the app target.
-6. Add a folder named `www` to the Xcode project as a folder reference and make sure it is included in the app target.
-7. Put the current game files inside that `www` folder: `index.html`, `css/`, `js/`, `images/`, and `audio/`.
-8. Add `PrivacyInfo.xcprivacy` to the app target.
-9. In Signing & Capabilities, select your Apple Developer team.
-10. In App Store Connect, create the Auto Generate non-consumable using the exact product ID above.
-11. Run on an iPhone/TestFlight build and test purchase, cancel, pending, relaunch, reset-save, and Restore Purchases paths.
+## Ads design
+- No banner ad on the Home screen.
+- Optional rewarded ad: 2× output for 10 minutes.
+- Forced interstitials are sparse: after every 2 completed contracts, the ad becomes eligible and is shown at the player's next page transition, with a minimum 3-minute cooldown.
+- Remove Ads disables forced interstitials permanently.
+- Rewarded ads remain optional even when Remove Ads is owned.
 
-## Before App Store submission
+## Google Mobile Ads setup in Xcode
+1. File > Add Package Dependencies.
+2. Add: `https://github.com/googleads/swift-package-manager-google-mobile-ads.git`
+3. Add the package product to the app target.
+4. Add the AdMob App ID to Info.plist. `InfoPlist_AdMob_TEST_SNIPPET.xml` contains Google's TEST App ID for development.
+5. This build uses Google's official iOS TEST ad unit IDs inside `PowerPlantAdsBridge.swift`.
+6. NEVER ship the test App ID/ad unit IDs. Replace all of them with the real IDs from your AdMob app before App Store submission.
 
-The current native plan intentionally launches with only Auto Generate as a real paid digital feature. Browser TEST BUY items are hidden in the native app. Additional consumables can be added later after the first StoreKit flow is proven stable.
+## Consent/privacy before production ads
+Before release, configure Google's User Messaging Platform (UMP), complete the App Store privacy questionnaire, and decide whether the production ad setup will request App Tracking Transparency permission. This RC intentionally does not request ATT yet.
+
+## Web vs native testing
+GitHub Pages:
+- Purchase buttons use TEST BUY and immediately simulate success.
+- Rewarded ad uses TEST AD and immediately grants the reward.
+- Forced interstitials are not displayed in the browser.
+
+Native iPhone/TestFlight:
+- Store buttons call StoreKit.
+- Rewarded/interstitial ads call Google Mobile Ads.
+- Permanent ownership is read from Apple Transaction.currentEntitlements.
+- Restore Purchases uses AppStore.sync().
+
+## Existing assets
+Keep your repository's existing `images/` and `audio/` folders. Copy them into the native `www/` bundle before creating the Xcode build.

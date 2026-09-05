@@ -2287,3 +2287,21 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 
 /* App Store transition status */
 .storekit-status{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid #245578;background:#081a28;color:#9fd8ff;font-size:12px;font-weight:800;text-align:center}
+
+
+/* ===== MONETIZATION RC2 ===== */
+.rewarded-ad-card{border-color:rgba(47,157,245,.42)!important;background:linear-gradient(145deg,rgba(9,42,65,.96),rgba(5,19,30,.98))!important}
+.ad-reward-item{border-color:rgba(47,157,245,.48)!important}
+.remove-ads-storeitem{border-color:rgba(255,211,75,.48)!important;background:linear-gradient(135deg,rgba(69,51,11,.42),rgba(9,25,38,.95))!important}
+.executive-storeitem{border-color:rgba(165,92,255,.38)!important}
+.consumable-store-card{border-color:rgba(46,225,118,.26)!important}
+.store-note{margin:10px 4px 2px!important;color:#91a9ba!important}
+.ad-status{border-color:rgba(47,157,245,.42);color:#86d4ff}
+.btn.gold{background:linear-gradient(#ffd957,#d49b16);color:#101417;border-color:#ffe887;box-shadow:0 5px 14px #d49b1635}
+.ads-removed .remove-ads-storeitem{box-shadow:inset 0 0 0 1px rgba(46,225,118,.22),0 8px 20px #0004!important}
+@media(max-width:520px){
+  .rewarded-ad-card .storeitem,.premium-store-card .storeitem,.consumable-store-card .storeitem{display:grid!important;grid-template-columns:minmax(0,1fr) auto!important;gap:9px!important;padding:13px!important}
+  .rewarded-ad-card .storeitem strong,.premium-store-card .storeitem strong,.consumable-store-card .storeitem strong{font-size:12px!important;line-height:1.25!important}
+  .rewarded-ad-card .storeitem small,.premium-store-card .storeitem small,.consumable-store-card .storeitem small{font-size:9px!important;line-height:1.35!important;margin-top:3px!important}
+  .rewarded-ad-card .btn,.premium-store-card .btn,.consumable-store-card .btn{min-width:82px!important;padding:10px 9px!important;font-size:10px!important}
+}

@@ -13,61 +13,111 @@ const PLANTS=[
 {id:"orbital",icon:"🛰️",name:"Orbital Solar Network",unlock:75000000000,base:8500000,fuel:0,reliability:99,scene:false,thumb:"solar",era:"GLOBAL"}
  ];
 
-// ===== APP STORE / STOREKIT BRIDGE =====
+// ===== APP STORE / STOREKIT + ADS BRIDGES =====
 const PPT_STOREKIT={
   bridgeName:"powerPlantStoreKit",
-  products:{autoGenerate:"com.calasco352.powerplanttycoon.autogenerate"},
+  products:{
+    autoGenerate:"com.calasco352.powerplanttycoon.autogenerate",
+    removeAds:"com.calasco352.powerplanttycoon.removeads",
+    executiveLicense:"com.calasco352.powerplanttycoon.executivelicense",
+    turboGrid:"com.calasco352.powerplanttycoon.turbogrid",
+    maintenanceCrate:"com.calasco352.powerplanttycoon.maintenancecrate",
+    capitalInjection:"com.calasco352.powerplanttycoon.capitalinjection"
+  },
+  permanentKeys:["autoGenerate","removeAds","executiveLicense"],
+  consumableKeys:["turboGrid","maintenanceCrate","capitalInjection"],
   prices:{}
 };
-function nativeStoreKitAvailable(){
-  return !!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[PPT_STOREKIT.bridgeName]);
-}
-function postStoreKit(action,productID){
-  if(!nativeStoreKitAvailable())return false;
-  window.webkit.messageHandlers[PPT_STOREKIT.bridgeName].postMessage({action,productID:productID||null});
-  return true;
-}
-function requestStoreKitStatus(){
+const PPT_ADS={bridgeName:"powerPlantAds",ready:false};
+function nativeStoreKitAvailable(){return !!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[PPT_STOREKIT.bridgeName])}
+function nativeAdsAvailable(){return !!(window.webkit&&window.webkit.messageHandlers&&window.webkit.messageHandlers[PPT_ADS.bridgeName])}
+function postStoreKit(action,productID){if(!nativeStoreKitAvailable())return false;window.webkit.messageHandlers[PPT_STOREKIT.bridgeName].postMessage({action,productID:productID||null});return true}
+function postAds(action,extra={}){if(!nativeAdsAvailable())return false;window.webkit.messageHandlers[PPT_ADS.bridgeName].postMessage(Object.assign({action},extra));return true}
+function requestStoreKitStatus(){if(nativeStoreKitAvailable()){postStoreKit("status");postStoreKit("products")}}
+function requestAdsStatus(){if(nativeAdsAvailable())postAds("status")}
+function setStoreKitStatus(text){const el=document.getElementById("storeKitStatus");if(el)el.textContent=text}
+function setAdStatus(text){const el=document.getElementById("adStatus");if(el)el.textContent=text}
+function productPrice(key,fallback="BUY"){return PPT_STOREKIT.prices[PPT_STOREKIT.products[key]]||fallback}
+function applyPermanentEntitlements(owned){
+  if(!Array.isArray(owned))return;
   if(nativeStoreKitAvailable()){
-    postStoreKit("status");
-    postStoreKit("products");
+    g.autoGenerateUnlocked=owned.includes(PPT_STOREKIT.products.autoGenerate);
+    g.adsRemoved=owned.includes(PPT_STOREKIT.products.removeAds);
+    g.executiveLicenseUnlocked=owned.includes(PPT_STOREKIT.products.executiveLicense);
+    if(!g.autoGenerateUnlocked)g.autoGenerate=false;
+    saveGame();
   }
 }
-function setStoreKitStatus(text){
-  const el=document.getElementById("storeKitStatus");
-  if(el)el.textContent=text;
+function applyConsumablePurchase(productID,transactionID){
+  if(!g.processedStoreTransactions)g.processedStoreTransactions=[];
+  if(transactionID&&g.processedStoreTransactions.includes(transactionID))return false;
+  if(productID===PPT_STOREKIT.products.turboGrid){
+    g.boostUntil=Math.max(g.boostUntil||0,Date.now())+60*60*1000;
+    addLog("Turbo Grid Pack applied: +60 minutes of 2× generation.");
+  }else if(productID===PPT_STOREKIT.products.maintenanceCrate){
+    g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id]?.unlocked)g.plants[p.id].condition=100});
+    g.boostUntil=Math.max(g.boostUntil||0,Date.now())+15*60*1000;
+    addLog("Maintenance Crate applied: fleet fully repaired + 15 minute boost.");
+  }else if(productID===PPT_STOREKIT.products.capitalInjection){
+    const cash=Math.max(25000,netValuePerSecond()*1800,output()*900);
+    g.cash+=cash;g.lifetimeCash+=cash;addLog("Capital Injection received: "+money(cash)+".");
+  }else return false;
+  if(transactionID){g.processedStoreTransactions.push(transactionID);g.processedStoreTransactions=g.processedStoreTransactions.slice(-80)}
+  saveGame();render();feedback("big");return true;
 }
 window.powerPlantStoreKitResult=function(payload){
   try{
     if(!payload||typeof payload!=="object")return;
-    const id=PPT_STOREKIT.products.autoGenerate;
-    if(payload.prices&&typeof payload.prices==="object"){
-      Object.assign(PPT_STOREKIT.prices,payload.prices);
-    }
-    if(Array.isArray(payload.ownedProductIDs)){
-      const owned=payload.ownedProductIDs.includes(id);
-      if(nativeStoreKitAvailable()){
-        g.autoGenerateUnlocked=owned;
-        if(!owned)g.autoGenerate=false;
-        saveGame();
-      }
-    }
+    if(payload.prices&&typeof payload.prices==="object")Object.assign(PPT_STOREKIT.prices,payload.prices);
+    if(Array.isArray(payload.ownedProductIDs))applyPermanentEntitlements(payload.ownedProductIDs);
     if(payload.status==="purchased"){
-      if(payload.productID===id)completeAutoGeneratePurchase(true);
-      toast("✓ Purchase complete");
+      const id=payload.productID;
+      if(id===PPT_STOREKIT.products.autoGenerate)completeAutoGeneratePurchase(true);
+      else if(id===PPT_STOREKIT.products.removeAds)completeRemoveAdsPurchase(true);
+      else if(id===PPT_STOREKIT.products.executiveLicense)completeExecutiveLicensePurchase(true);
+      else if(applyConsumablePurchase(id,payload.transactionID))toast("✓ Operations pack delivered");
+      else toast("✓ Purchase complete");
     }else if(payload.status==="restored"){
-      toast(payload.ownedProductIDs&&payload.ownedProductIDs.includes(id)?"✓ Purchases restored":"No restorable purchases found.");
-    }else if(payload.status==="cancelled"){
-      toast("Purchase cancelled.");
-    }else if(payload.status==="pending"){
-      toast("Purchase pending approval.");
-    }else if(payload.status==="error"){
-      toast(payload.message||"App Store purchase error.");
-    }
+      const n=(payload.ownedProductIDs||[]).length;toast(n?"✓ Permanent purchases restored":"No restorable purchases found.");
+    }else if(payload.status==="cancelled")toast("Purchase cancelled.");
+    else if(payload.status==="pending")toast("Purchase pending approval.");
+    else if(payload.status==="error")toast(payload.message||"App Store purchase error.");
     setStoreKitStatus(nativeStoreKitAvailable()?"Apple StoreKit connected.":"Browser test store active.");
-    if(typeof renderAutoGenerateUI==="function")renderAutoGenerateUI();
+    renderMonetizationUI();
   }catch(e){console.warn("StoreKit bridge result error",e)}
 };
+window.powerPlantAdsResult=function(payload){
+  try{
+    if(!payload||typeof payload!=="object")return;
+    if(payload.status==="ready"){PPT_ADS.ready=true;setAdStatus("Google Mobile Ads test mode ready.")}
+    else if(payload.status==="rewardEarned")applyRewardedAdReward(payload.rewardType||"boost10");
+    else if(payload.status==="dismissed"){setAdStatus("Ad closed. Next test ad is preloading.")}
+    else if(payload.status==="unavailable")setAdStatus(payload.message||"Ads SDK not connected yet.");
+    else if(payload.status==="error")setAdStatus(payload.message||"Ad is not ready yet.");
+    renderMonetizationUI();
+  }catch(e){console.warn("Ads bridge result error",e)}
+};
+function applyRewardedAdReward(type){
+  if(type!=="boost10")return;
+  g.boostUntil=Math.max(g.boostUntil||0,Date.now())+10*60*1000;
+  g.rewardedAdsWatched=(g.rewardedAdsWatched||0)+1;
+  addLog("Rewarded ad completed: +10 minutes of 2× grid output.");saveGame();render();toast("⚡ 2× output added for 10 minutes!");
+}
+function watchRewardedAd(){
+  if(nativeAdsAvailable()){setAdStatus("Loading rewarded ad…");postAds("showRewarded",{rewardType:"boost10"});return}
+  applyRewardedAdReward("boost10");setAdStatus("Browser TEST AD completed instantly.");
+}
+function markInterstitialOpportunity(){
+  if(!g.adState)g.adState={contractsSinceAd:0,lastInterstitial:0,pending:false};
+  if(g.adsRemoved)return;
+  g.adState.contractsSinceAd=(g.adState.contractsSinceAd||0)+1;
+  if(g.adState.contractsSinceAd>=2)g.adState.pending=true;
+}
+function tryShowPendingInterstitial(){
+  if(!nativeAdsAvailable()||g.adsRemoved||!g.adState?.pending)return;
+  const now=Date.now();if(now-(g.adState.lastInterstitial||0)<180000)return;
+  g.adState.pending=false;g.adState.contractsSinceAd=0;g.adState.lastInterstitial=now;saveGame();postAds("showInterstitial");
+}
 const REGIONS=[
 {id:"riverbend",name:"Riverbend",cost:0,bonus:0,emoji:"🏭",desc:"Starter industrial grid."},
 {id:"coast",name:"Coastal Grid",cost:15000,bonus:.10,emoji:"🌊",desc:"+10% production • coastal utility market."},
@@ -180,7 +230,7 @@ const EMPIRE_MILESTONES=[
 const COMPANY_TIERS=[
 {at:0,name:"LOCAL UTILITY"},{at:50000,name:"REGIONAL OPERATOR"},{at:1000000,name:"UTILITY GROUP"},{at:20000000,name:"NATIONAL UTILITY"},{at:65000000,name:"INTERCONNECT OPERATOR"},{at:250000000,name:"MEGA UTILITY"},{at:1000000000,name:"GRID CONGLOMERATE"},{at:5000000000,name:"CONTINENTAL ENERGY"},{at:25000000000,name:"GLOBAL ENERGY"},{at:100000000000,name:"ENERGY TITAN"},{at:1000000000000,name:"PLANETARY UTILITY"},{at:10000000000000,name:"PLANETARY AUTHORITY"},{at:100000000000000,name:"ENERGY DYNASTY"},{at:1000000000000000,name:"QUADRILLION GRID"},{at:25000000000000000,name:"HELIOS AUTHORITY"},{at:100000000000000000,name:"GRID SOVEREIGN"}
 ];
-const defaultGame=()=>({cash:0,stored:0,generated:0,sold:0,lifetimeCash:0,tapLevel:0,prestige:0,boostUntil:0,lastSeen:Date.now(),lastDaily:0,starter:false,autoGenerateUnlocked:false,autoGenerate:false,maintenance:100,engineers:0,operatorXP:0,operatorLevel:1,regions:{riverbend:true},plants:Object.fromEntries(PLANTS.map(p=>[p.id,{unlocked:false,level:0,condition:100}])),corporate:{eff:0,maint:0,fuel:0,grid:0},contractsCompleted:0,activeContract:null,missions:{},achievements:{},event:null,eventCooldown:0,settings:{sound:true,haptics:true,reducedMotion:false,compact:true},
+const defaultGame=()=>({cash:0,stored:0,generated:0,sold:0,lifetimeCash:0,tapLevel:0,prestige:0,boostUntil:0,lastSeen:Date.now(),lastDaily:0,starter:false,autoGenerateUnlocked:false,autoGenerate:false,adsRemoved:false,executiveLicenseUnlocked:false,rewardedAdsWatched:0,processedStoreTransactions:[],adState:{contractsSinceAd:0,lastInterstitial:0,pending:false},maintenance:100,engineers:0,operatorXP:0,operatorLevel:1,regions:{riverbend:true},plants:Object.fromEntries(PLANTS.map(p=>[p.id,{unlocked:false,level:0,condition:100}])),corporate:{eff:0,maint:0,fuel:0,grid:0},contractsCompleted:0,activeContract:null,missions:{},achievements:{},event:null,eventCooldown:0,settings:{sound:true,haptics:true,reducedMotion:false,compact:true},
 tutorialStep:0,finalShown:false,endgame:{},
 market:{price:1,demand:1,trend:0,lastShift:Date.now()},
 battery:{level:0,stored:0},
@@ -210,6 +260,11 @@ try{
 function migrate(){
 if(g.autoGenerateUnlocked==null)g.autoGenerateUnlocked=false;
 if(g.autoGenerate==null)g.autoGenerate=false;
+if(g.adsRemoved==null)g.adsRemoved=false;
+if(g.executiveLicenseUnlocked==null)g.executiveLicenseUnlocked=false;
+if(g.rewardedAdsWatched==null)g.rewardedAdsWatched=0;
+if(!Array.isArray(g.processedStoreTransactions))g.processedStoreTransactions=[];
+if(!g.adState)g.adState={contractsSinceAd:0,lastInterstitial:0,pending:false};
 if(!g.plants)g.plants={};
 PLANTS.forEach(p=>{
   if(!g.plants[p.id])g.plants[p.id]={unlocked:false,level:0,condition:100};
@@ -282,8 +337,8 @@ const POWER_DISPLAY_UNITS=[
 function energy(n){return formatElectricalUnit(n,ENERGY_DISPLAY_UNITS)}
 function powerRate(kwhPerSecond){return formatElectricalUnit(kwhPerSecond*3600,POWER_DISPLAY_UNITS)}
 function missionDisplay(m,v){if(m.type==="generated")return energy(v);if(m.type==="output")return powerRate(v);if(m.type==="lifetimeCash")return money(v);return num(v)}
-function prestigeMult(){return 1+g.prestige*.15}function operatorMult(){return 1+(g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function totalMult(){return prestigeMult()*operatorMult()*efficiencyMult()*regionMult()*boostMult()*eventMult()*maintenanceMult()*policyProductionMult()*staffProductionMult()*researchProductionMult()*empireBonusMult()}function tapPower(){return(1+g.tapLevel*2.5)*prestigeMult()*operatorMult()*boostMult()}function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel)}
-function rawOutput(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=plantBaseContribution(p,s)*(.6+.4*s.condition/100)});return n}function output(){return rawOutput()*totalMult()}function fuelCostPerSecond(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=p.fuel*s.level});return n*Math.max(.35,1-g.corporate.fuel*.05-g.research.superconductors*.015)}function gridSaleMult(){return 1+g.corporate.grid*.04+g.research.quantumGrid*.08}function netValuePerSecond(){return Math.max(0,output()*gridSaleMult()-fuelCostPerSecond())}function plantCost(p){const s=g.plants[p.id];if(!s.unlocked)return p.unlock;return p.unlock*.7*Math.pow(1.62,Math.max(1,s.level)-1)}function totalLevels(){return PLANTS.reduce((a,p)=>a+(g.plants[p.id].unlocked?g.plants[p.id].level:0),0)}function maintenanceCost(){return Math.max(250,rawOutput()*20+(100-g.maintenance)*18)}function engineerCost(){return 2500*Math.pow(1.75,g.engineers)}function corporateCost(up){return up.base*Math.pow(1.9,g.corporate[up.id]||0)}
+function prestigeMult(){return 1+g.prestige*.15}function operatorMult(){return 1+(g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function premiumLicenseMult(){return g.executiveLicenseUnlocked?1.25:1}function totalMult(){return prestigeMult()*operatorMult()*efficiencyMult()*regionMult()*boostMult()*eventMult()*maintenanceMult()*policyProductionMult()*staffProductionMult()*researchProductionMult()*empireBonusMult()*premiumLicenseMult()}function tapPower(){return(1+g.tapLevel*2.5)*prestigeMult()*operatorMult()*boostMult()}function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel)}
+function rawOutput(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=plantBaseContribution(p,s)*(.6+.4*s.condition/100)});return n}function output(){return rawOutput()*totalMult()}function fuelCostPerSecond(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=p.fuel*s.level});return n*Math.max(.35,1-g.corporate.fuel*.05-g.research.superconductors*.015)}function gridSaleMult(){return(1+g.corporate.grid*.04+g.research.quantumGrid*.08)*(g.executiveLicenseUnlocked?1.10:1)}function netValuePerSecond(){return Math.max(0,output()*gridSaleMult()-fuelCostPerSecond())}function plantCost(p){const s=g.plants[p.id];if(!s.unlocked)return p.unlock;return p.unlock*.7*Math.pow(1.62,Math.max(1,s.level)-1)}function totalLevels(){return PLANTS.reduce((a,p)=>a+(g.plants[p.id].unlocked?g.plants[p.id].level:0),0)}function maintenanceCost(){return Math.max(250,rawOutput()*20+(100-g.maintenance)*18)}function engineerCost(){return 2500*Math.pow(1.75,g.engineers)}function corporateCost(up){return up.base*Math.pow(1.9,g.corporate[up.id]||0)}
 function saveGame(){g.lastSeen=Date.now();localStorage.setItem("PPT_V5",JSON.stringify(g))}function toast(t){const e=document.getElementById("toast");e.textContent=t;e.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove("show"),1800)}function addLog(t){const x=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});g.log.unshift(x+" • "+t);g.log=g.log.slice(0,25)}function addXP(a){g.operatorXP+=a;while(g.operatorXP>=g.operatorLevel*100){g.operatorXP-=g.operatorLevel*100;g.operatorLevel++;addLog("Operator Level increased to "+g.operatorLevel+".");toast("⭐ Operator Level "+g.operatorLevel)}}
 
 
@@ -655,6 +710,29 @@ function purchaseAutoGenerate(){
     completeAutoGeneratePurchase(false);
 }
 
+function completeRemoveAdsPurchase(fromStoreKit=false){g.adsRemoved=true;addLog(fromStoreKit?"Remove Ads entitlement verified by Apple StoreKit.":"Remove Ads browser test entitlement unlocked.");saveGame();render();toast("🚫 Forced ads removed permanently!")}
+function purchaseRemoveAds(){if(g.adsRemoved){toast("Remove Ads is already owned.");return}if(nativeStoreKitAvailable()){setStoreKitStatus("Contacting the App Store…");postStoreKit("purchase",PPT_STOREKIT.products.removeAds);return}completeRemoveAdsPurchase(false)}
+function completeExecutiveLicensePurchase(fromStoreKit=false){g.executiveLicenseUnlocked=true;addLog(fromStoreKit?"Executive License verified by Apple StoreKit.":"Executive License browser test entitlement unlocked.");saveGame();render();toast("👔 Executive License activated!")}
+function purchaseExecutiveLicense(){if(g.executiveLicenseUnlocked){toast("Executive License is already owned.");return}if(nativeStoreKitAvailable()){setStoreKitStatus("Contacting the App Store…");postStoreKit("purchase",PPT_STOREKIT.products.executiveLicense);return}completeExecutiveLicensePurchase(false)}
+function purchaseConsumable(key){const id=PPT_STOREKIT.products[key];if(nativeStoreKitAvailable()){setStoreKitStatus("Contacting the App Store…");postStoreKit("purchase",id);return}const tx="browser-"+Date.now()+"-"+Math.random().toString(36).slice(2);if(applyConsumablePurchase(id,tx))toast("TEST PURCHASE • Pack delivered")}
+function purchaseTurboGridPack(){purchaseConsumable("turboGrid")}
+function purchaseMaintenanceCrate(){purchaseConsumable("maintenanceCrate")}
+function purchaseCapitalInjection(){purchaseConsumable("capitalInjection")}
+function renderMonetizationUI(){
+  renderAutoGenerateUI();
+  const native=nativeStoreKitAvailable();
+  const permanent=[
+    ["removeAdsPurchaseBtn","removeAds",!!g.adsRemoved,"gold"],
+    ["executivePurchaseBtn","executiveLicense",!!g.executiveLicenseUnlocked,"purple"]
+  ];
+  permanent.forEach(([id,key,owned,cls])=>{const b=document.getElementById(id);if(!b)return;b.textContent=owned?"OWNED":(native?productPrice(key):"TEST BUY");b.disabled=owned;b.className="btn "+(owned?"dark":cls)});
+  [["turboGridPurchaseBtn","turboGrid"],["maintenanceCratePurchaseBtn","maintenanceCrate"],["capitalInjectionPurchaseBtn","capitalInjection"]].forEach(([id,key])=>{const b=document.getElementById(id);if(b)b.textContent=native?productPrice(key):"TEST BUY"});
+  const r=document.getElementById("restorePurchasesBtn");if(r)r.textContent=native?"RESTORE":"TEST RESTORE";
+  const dev=document.getElementById("devTestStore");if(dev)dev.style.display=native?"none":"";
+  const ad=document.getElementById("rewardedAdBtn");if(ad)ad.textContent=native?"WATCH AD":"TEST AD";
+  document.body.classList.toggle("ads-removed",!!g.adsRemoved);
+}
+
 function renderAutoGenerateUI(){
     const btn=document.getElementById("autoGenerateBtn");
     if(btn){
@@ -677,11 +755,6 @@ function renderAutoGenerateUI(){
         buy.disabled=!!g.autoGenerateUnlocked;
         buy.className="btn "+(g.autoGenerateUnlocked?"dark":"purple");
     }
-    const restore=document.getElementById("restorePurchasesBtn");
-    if(restore)restore.textContent=nativeStoreKitAvailable()?"RESTORE":"TEST RESTORE";
-    const devStore=document.getElementById("devTestStore");
-    if(devStore)devStore.style.display=nativeStoreKitAvailable()?"none":"";
-    setStoreKitStatus(nativeStoreKitAvailable()?"Apple StoreKit connected.":"Browser test store active.");
 }
 
 function runAutoGenerate(){
@@ -708,7 +781,7 @@ function performMaintenance(){const c=maintenanceCost();if(g.cash<c){toast("Main
 function hireEngineer(){const c=engineerCost();if(g.cash<c){toast("Engineer costs "+money(c));return}g.cash-=c;g.engineers++;addXP(15);addLog("Maintenance engineer hired.");saveGame();render()}
 function buyCorporate(id){const up=CORPORATE.find(x=>x.id===id),c=corporateCost(up);if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;g.corporate[id]++;addXP(20);addLog(up.name+" upgraded to Level "+g.corporate[id]+".");saveGame();render()}
 function startContract(id){if(g.activeContract){toast("Finish the current contract first.");return}const c=CONTRACTS.find(x=>x.id===id);if(output()<c.required){toast("Requires "+powerRate(c.required)+" output.");return}if(c.reliability&&g.reliability<c.reliability){toast("Requires "+c.reliability+"% reliability.");return}if(c.contracts&&g.contractsCompleted<c.contracts){toast("Complete "+c.contracts+" contracts first.");return}if(c.projects&&completedMegaProjects()<c.projects){toast("Complete "+c.projects+" mega projects first.");return}if(c.region&&!g.regions[c.region]){toast("Connect "+REGIONS.find(r=>r.id===c.region).name+" first.");return}g.activeContract={id:c.id,name:c.name,rate:c.rate,reward:c.reward,end:Date.now()+c.duration*1000};addLog("Contract started: "+c.name+".");saveGame();render()}
-function updateContract(){if(g.activeContract&&Date.now()>=g.activeContract.end){const c=g.activeContract;g.cash+=c.reward;g.lifetimeCash+=c.reward;g.contractsCompleted++;addXP(40);addLog("Contract completed: "+c.name+" +"+money(c.reward)+".");g.activeContract=null;toast("Contract complete! "+money(c.reward));saveGame()}}
+function updateContract(){if(g.activeContract&&Date.now()>=g.activeContract.end){const c=g.activeContract;g.cash+=c.reward;g.lifetimeCash+=c.reward;g.contractsCompleted++;addXP(40);addLog("Contract completed: "+c.name+" +"+money(c.reward)+".");g.activeContract=null;markInterstitialOpportunity();toast("Contract complete! "+money(c.reward));saveGame()}}
 function missionValue(m){if(m.type==="generated")return g.generated;if(m.type==="lifetimeCash")return g.lifetimeCash;if(m.type==="levels")return totalLevels();if(m.type==="output")return output();if(m.type==="contracts")return g.contractsCompleted;if(m.type==="masteries")return totalMasteries();if(m.type==="projects")return completedMegaProjects();if(m.type==="regions")return Object.values(g.regions).filter(Boolean).length;return 0}function claimMission(id){const m=MISSIONS.find(x=>x.id===id);if(g.missions[id]||missionValue(m)<m.target)return;g.missions[id]=true;g.cash+=m.reward;g.lifetimeCash+=m.reward;addXP(15);addLog("Mission completed: "+m.label);saveGame();render()}
 function achievementValue(a){if(a.type==="generated")return g.generated;if(a.type==="regions")return Object.values(g.regions).filter(Boolean).length;if(a.type==="lifetimeCash")return g.lifetimeCash;if(a.type==="operator")return g.operatorLevel;if(a.type==="megaProjects")return completedMegaProjects();if(a.type==="plant")return g.plants[a.plant]?.unlocked?1:0;if(a.type==="region")return g.regions[a.region]?1:0;if(a.type==="masteries")return totalMasteries();if(a.type==="contracts")return g.contractsCompleted;if(a.type==="empireLevel")return g.empireLevel||0;return 0}function updateAchievements(){ACH.forEach(a=>{if(!g.achievements[a.id]&&achievementValue(a)>=a.target){g.achievements[a.id]=true;addLog("Achievement unlocked: "+a.label);toast("🏆 "+a.label)}})}
 function dailyReward(){
@@ -722,7 +795,7 @@ function dailyReward(){
 }
 function activateBoost(){if(Date.now()<g.boostUntil){toast("2× boost is already active.");return}g.boostUntil=Date.now()+10*60*1000;addLog("Grid output boost activated.");saveGame();render()}function maintenancePack(){toast("TEST PURCHASE • Maintenance Pack");g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id].unlocked)g.plants[p.id].condition=100});saveGame();render()}function starterPack(){toast("TEST PURCHASE • Starter Pack");if(g.starter){toast("Starter Pack already claimed.");return}g.starter=true;g.cash+=5000;g.lifetimeCash+=5000;g.boostUntil=Math.max(g.boostUntil,Date.now()+10*60*1000);saveGame();render()}
 function prestigeRequirement(){return 50000*Math.pow(8,g.prestige||0)}
-function prestige(){const req=prestigeRequirement();if(g.lifetimeCash<req){toast("Earn "+money(req)+" lifetime cash first.");return}askConfirm("Prestige Company","Reset cash, plants and standard regions for +15% permanent production? Mega Projects, Empire Levels, achievements and Auto Generate remain.",()=>{const p=g.prestige+1,a=g.achievements,settings=g.settings,autoGenerateUnlocked=g.autoGenerateUnlocked,autoGenerateLevel=g.autoGenerateLevel,megaProjects=g.megaProjects,empireLevel=g.empireLevel,empireNotified=g.empireNotified,dailyStreak=g.dailyStreak,lifetimeCash=g.lifetimeCash;g=defaultGame();g.prestige=p;g.lifetimeCash=lifetimeCash;g.achievements=a;g.settings=settings;g.autoGenerateUnlocked=autoGenerateUnlocked;g.autoGenerateLevel=autoGenerateLevel;g.megaProjects=megaProjects;g.empireLevel=empireLevel;g.empireNotified=empireNotified;g.dailyStreak=dailyStreak;g.tutorialStep=5;g.finalTutorial={step:0,done:true,disabled:true};g.log=["Company prestiged to tier "+p+"."];saveGame();render();feedback("big")})}function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const autoGenerateUnlocked=g.autoGenerateUnlocked;localStorage.removeItem("PPT_V5");g=defaultGame();g.autoGenerateUnlocked=autoGenerateUnlocked;saveGame();render();toast("Save reset")})}
+function prestige(){const req=prestigeRequirement();if(g.lifetimeCash<req){toast("Earn "+money(req)+" lifetime cash first.");return}askConfirm("Prestige Company","Reset cash, plants and standard regions for +15% permanent production? Mega Projects, Empire Levels and permanent purchases remain.",()=>{const keep={achievements:g.achievements,settings:g.settings,autoGenerateUnlocked:g.autoGenerateUnlocked,autoGenerateLevel:g.autoGenerateLevel,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions,megaProjects:g.megaProjects,empireLevel:g.empireLevel,empireNotified:g.empireNotified,dailyStreak:g.dailyStreak,lifetimeCash:g.lifetimeCash};const p=g.prestige+1;g=defaultGame();Object.assign(g,keep);g.prestige=p;g.tutorialStep=5;g.finalTutorial={step:0,done:true,disabled:true};g.log=["Company prestiged to tier "+p+"."];saveGame();render();feedback("big")})}function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
 function buyMegaProject(id){
   const p=MEGA_PROJECTS.find(x=>x.id===id);if(!p)return;if(g.megaProjects[p.id]){toast("Mega project already completed.");return}
   if(g.lifetimeCash<(p.unlockAt||0)){toast("Project unlocks at "+money(p.unlockAt)+" lifetime cash.");return}
@@ -748,8 +821,7 @@ function restorePurchases(){
     postStoreKit("restore");
     return;
   }
-  if(g.autoGenerateUnlocked){toast("✓ Auto Generate browser test entitlement found.");return}
-  toast("No browser test entitlement found.");
+  const owned=[];if(g.autoGenerateUnlocked)owned.push("Auto Generate");if(g.adsRemoved)owned.push("Remove Ads");if(g.executiveLicenseUnlocked)owned.push("Executive License");toast(owned.length?"✓ Browser test entitlements: "+owned.join(", "):"No browser test entitlements found.");
 }
 function restorePurchasesTest(){restorePurchases()}
 function renderDailyStreak(){
@@ -871,7 +943,7 @@ if(stage==="starter"){
   const lab=document.getElementById("stageArtLabel");if(lab)lab.textContent=label;
   const sceneSub=document.getElementById("sceneSub");if(sceneSub)sceneSub.textContent=sub;
 }
-function showPage(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");window.scrollTo({top:0,behavior:"smooth"})}
+function showPage(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll(".nav button").forEach(x=>x.classList.remove("active"));if(b)b.classList.add("active");window.scrollTo({top:0,behavior:"smooth"});setTimeout(tryShowPendingInterstitial,450)}
 function renderPlants(){
   document.getElementById("plantList").innerHTML=PLANTS.map(p=>{
     const s=g.plants[p.id],c=plantCost(p);
@@ -917,7 +989,7 @@ if(g.policy==="maximum")d*=1.35;if(g.policy==="reliability")d*=.55;
 d*=1-Math.min(.45,g.research.materials*.07);g.maintenance=Math.max(0,g.maintenance-d);
 g.reliability=Math.max(40,Math.min(100,98-(100-g.maintenance)*.28+g.staff.safety*1.5+g.research.controls*2+g.research.advancedNuclear*.5));PLANTS.forEach(p=>{const s=g.plants[p.id];if(s.unlocked)s.condition=Math.max(35,s.condition-d*.7)})}
 function payOperatingCosts(){const c=fuelCostPerSecond();if(g.cash>=c)g.cash-=c;else{g.cash=0;g.maintenance=Math.max(0,g.maintenance-.03)}}
-function render(){updateEvent();updateContract();updateAchievements();updateDayNight();document.getElementById("cash").textContent=money(g.cash);document.getElementById("power").textContent=energy(g.stored);document.getElementById("output").textContent=powerRate(output());document.getElementById("tapInfo").textContent=energy(tapPower())+" / tap";document.getElementById("tapCost").textContent="Next manual generator upgrade: "+money(tapUpgradeCost());document.getElementById("operatorLevel").textContent=g.operatorLevel;document.getElementById("operatorXP").textContent=Math.floor(g.operatorXP)+" / "+(g.operatorLevel*100);document.getElementById("efficiencyValue").textContent=Math.round(totalMult()*100)+"%";document.getElementById("maintenanceValue").textContent=Math.round(g.maintenance)+"%";document.getElementById("fuelCostValue").textContent=money(fuelCostPerSecond())+"/s";document.getElementById("netValue").textContent=money(netValuePerSecond())+"/s";document.getElementById("maintenanceStatus").textContent=g.maintenance>80?"Healthy":g.maintenance>50?"Service Soon":"Maintenance Required";document.getElementById("engineerInfo").textContent="Engineers: "+g.engineers+" • Next hire: "+money(engineerCost())+" • Service cost: "+money(maintenanceCost());document.getElementById("gridStatus").textContent=g.event&&g.event.type==="breakdown"?"● UNIT TRIPPED":"● GRID ONLINE";let rank=companyTier();document.getElementById("rank").textContent=rank+" • LV "+g.operatorLevel;renderAutoGenerateUI();document.getElementById("prestigeInfo").innerHTML="Current prestige: <b>"+g.prestige+"</b> • Permanent production bonus: <b>+"+(g.prestige*15)+"%</b><br><span class='small'>Next prestige target: "+money(prestigeRequirement())+" lifetime cash • Current: "+money(g.lifetimeCash)+"</span>";renderPlants();renderCorporate();renderRegions();renderContracts();renderMissions();renderAchievements();renderEvent();updateFacility();document.getElementById("activityLog").innerHTML=g.log.map(x=>"<div>"+x+"</div>").join("");
+function render(){updateEvent();updateContract();updateAchievements();updateDayNight();document.getElementById("cash").textContent=money(g.cash);document.getElementById("power").textContent=energy(g.stored);document.getElementById("output").textContent=powerRate(output());document.getElementById("tapInfo").textContent=energy(tapPower())+" / tap";document.getElementById("tapCost").textContent="Next manual generator upgrade: "+money(tapUpgradeCost());document.getElementById("operatorLevel").textContent=g.operatorLevel;document.getElementById("operatorXP").textContent=Math.floor(g.operatorXP)+" / "+(g.operatorLevel*100);document.getElementById("efficiencyValue").textContent=Math.round(totalMult()*100)+"%";document.getElementById("maintenanceValue").textContent=Math.round(g.maintenance)+"%";document.getElementById("fuelCostValue").textContent=money(fuelCostPerSecond())+"/s";document.getElementById("netValue").textContent=money(netValuePerSecond())+"/s";document.getElementById("maintenanceStatus").textContent=g.maintenance>80?"Healthy":g.maintenance>50?"Service Soon":"Maintenance Required";document.getElementById("engineerInfo").textContent="Engineers: "+g.engineers+" • Next hire: "+money(engineerCost())+" • Service cost: "+money(maintenanceCost());document.getElementById("gridStatus").textContent=g.event&&g.event.type==="breakdown"?"● UNIT TRIPPED":"● GRID ONLINE";let rank=companyTier();document.getElementById("rank").textContent=rank+" • LV "+g.operatorLevel;renderMonetizationUI();document.getElementById("prestigeInfo").innerHTML="Current prestige: <b>"+g.prestige+"</b> • Permanent production bonus: <b>+"+(g.prestige*15)+"%</b><br><span class='small'>Next prestige target: "+money(prestigeRequirement())+" lifetime cash • Current: "+money(g.lifetimeCash)+"</span>";renderPlants();renderCorporate();renderRegions();renderContracts();renderMissions();renderAchievements();renderEvent();updateFacility();document.getElementById("activityLog").innerHTML=g.log.map(x=>"<div>"+x+"</div>").join("");
 document.getElementById("kpiLifetime").textContent=money(g.lifetimeCash);
 document.getElementById("kpiContracts").textContent=g.contractsCompleted;
 document.getElementById("kpiPrestige").textContent=g.prestige;
@@ -978,8 +1050,8 @@ window.addEventListener("load",()=>{
   if(splash)setTimeout(()=>{splash.classList.add("hide");setTimeout(()=>splash.remove(),700)},1150);
 });
 
-console.log("Power Plant Tycoon RELEASE CANDIDATE 1 LONG GAME loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon MONETIZATION RC2 loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 
 
 // Ask the native iPhone wrapper for App Store products/entitlements after the web game has initialized.
-setTimeout(requestStoreKitStatus,350);
+setTimeout(()=>{requestStoreKitStatus();requestAdsStatus();setStoreKitStatus(nativeStoreKitAvailable()?"Apple StoreKit connected.":"Browser test store active.");setAdStatus(nativeAdsAvailable()?"Google Mobile Ads connecting…":"Browser ad simulation active.")},350);

@@ -1,0 +1,5 @@
+<!-- DEVELOPMENT ONLY: Google sample AdMob App ID. Replace before App Store release. -->
+<key>GADApplicationIdentifier</key>
+<string>ca-app-pub-3940256099942544~1458002511</string>
+
+<!-- Google requires SKAdNetworkItems for production. Use the current list from the official AdMob iOS quick-start when configuring the final Info.plist. -->

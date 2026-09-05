@@ -5,6 +5,7 @@ import WebKit
 final class GameViewController: UIViewController, WKNavigationDelegate {
     private var webView: WKWebView!
     private var storeKitBridge: PowerPlantStoreKitBridge!
+    private var adsBridge: PowerPlantAdsBridge!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,7 +24,9 @@ final class GameViewController: UIViewController, WKNavigationDelegate {
         webView.backgroundColor = .clear
 
         storeKitBridge = PowerPlantStoreKitBridge(webView: webView)
+        adsBridge = PowerPlantAdsBridge(webView: webView, viewController: self)
         webView.configuration.userContentController.add(storeKitBridge, name: PowerPlantStoreKitBridge.messageHandlerName)
+        webView.configuration.userContentController.add(adsBridge, name: PowerPlantAdsBridge.messageHandlerName)
 
         view.addSubview(webView)
         NSLayoutConstraint.activate([
@@ -41,7 +44,7 @@ final class GameViewController: UIViewController, WKNavigationDelegate {
     }
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-        Task { await storeKitBridge.bootstrap() }
+        Task { await storeKitBridge.bootstrap(); await adsBridge.bootstrap() }
     }
 
     func webView(_ webView: WKWebView,
@@ -70,5 +73,6 @@ final class GameViewController: UIViewController, WKNavigationDelegate {
 
     deinit {
         webView?.configuration.userContentController.removeScriptMessageHandler(forName: PowerPlantStoreKitBridge.messageHandlerName)
+        webView?.configuration.userContentController.removeScriptMessageHandler(forName: PowerPlantAdsBridge.messageHandlerName)
     }
 }
