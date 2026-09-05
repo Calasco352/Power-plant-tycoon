@@ -438,8 +438,27 @@ function updateFacility(){
   if(so.unlocked)highest="solar";
   if(n.unlocked)highest="nuclear";
 
-  let stage=(g.viewStage&&g.plants[g.viewStage]&&g.plants[g.viewStage].unlocked)?g.viewStage:highest;
-  if(stage==="starter")g.viewStage=null;
+let stage=highest;
+
+/* Automatically follow progression when a new plant is unlocked */
+if(g.viewStage && g.plants[g.viewStage] && g.plants[g.viewStage].unlocked){
+  const order=["diesel","steam","gas","solar","nuclear"];
+  const viewedIndex=order.indexOf(g.viewStage);
+  const highestIndex=order.indexOf(highest);
+
+  if(viewedIndex>=highestIndex){
+    stage=g.viewStage;
+  }else{
+    g.viewStage=highest;
+    stage=highest;
+  }
+}
+
+if(stage==="starter"){
+  g.viewStage=null;
+}else{
+  g.viewStage=stage;
+}  if(stage==="starter")g.viewStage=null;
 
   if(yard){
     ["stage-diesel","stage-steam","stage-gas","stage-solar","stage-nuclear","premium-steam","premium-nuclear","tier-1","tier-2","tier-3","tier-4"].forEach(c=>yard.classList.remove(c));
