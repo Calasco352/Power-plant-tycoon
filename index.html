@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Empire Update V7</title>
-<link rel="stylesheet" href="css/game.css?v=7"></head>
+<title>Power Plant Tycoon — Empire Update V7.1</title>
+<link rel="stylesheet" href="css/game.css?v=71"></head>
 <body>
 <div id="bootSplashPremium">
   <div class="boot-card">
@@ -16,7 +16,7 @@
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">EMPIRE UPDATE V7</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">EMPIRE UPDATE V7.1</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -29,7 +29,7 @@
 <main class="content">
 <section id="home" class="page active">
 <div class="mega-banner">
-  <div class="mega-banner-head"><div><h3>⚡ Empire Operations Center</h3><p>Core progression first: build generation, expand the grid, complete megaprojects, then earn Power Pass rewards from normal play.</p></div><span id="versionBadge">LIVE V7</span></div>
+  <div class="mega-banner-head"><div><h3>⚡ Empire Operations Center</h3><p>Core progression first: build generation, expand the grid, complete megaprojects, then earn Power Pass rewards from normal play.</p></div><span id="versionBadge">LIVE V7.1</span></div>
   <div class="mega-banner-grid">
     <div class="mega-tile"><small>COMPANY LEVEL</small><b id="companyLevelValue">1</b><i id="companyXPValue">0 / 75 XP</i></div>
     <div class="mega-tile"><small>DAILY STREAK</small><b id="dailyStreakValue">0</b><i id="dailyBestValue">Best 0</i></div>
@@ -38,44 +38,43 @@
   </div>
 </div>
 <div class="hero">
-<div class="sky"><div class="sunmoon"></div></div>
-<div class="hills"></div>
-<div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
-<div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
+  <div class="sky"><div class="sunmoon"></div></div>
+  <div class="hills"></div>
+  <div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
+  <div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
 
-
-  <div id="cpSteam" class="cp-stage"><i>🌀</i>STEAM</div>
-  <div id="cpGas" class="cp-stage"><i>🔥</i>GAS</div>
-  <div id="cpSolar" class="cp-stage"><i>☀️</i>SOLAR</div>
-  <div id="cpNuclear" class="cp-stage"><i>☢️</i>NUCLEAR</div>
-</div>
-
-<div id="stageArtLabel" class="stage-art-label">RIVERBEND GENERATION SITE</div>
-<div id="tutorialFinal" class="tutorial-overlay-final">
-  <div class="tutorial-avatar">👷‍♂️</div>
-  <div class="tutorial-card-final">
-    <small id="tutorialFinalStep">TUTORIAL 1/7</small>
-    <h3 id="tutorialFinalTitle">Welcome to Power Plant Tycoon</h3>
-    <p id="tutorialFinalText">Generate power to begin operating Riverbend Station.</p>
-    <div class="tutorial-actions">
-      <button id="tutorialFinalNext" onclick="nextFinalTutorial()">NEXT ➜</button>
-      <button class="secondary" onclick="skipFinalTutorial()">SKIP</button>
+  <div id="stageArtLabel" class="stage-art-label">RIVERBEND GENERATION SITE</div>
+  <div id="tutorialFinal" class="tutorial-overlay-final">
+    <div class="tutorial-avatar">👷‍♂️</div>
+    <div class="tutorial-card-final">
+      <small id="tutorialFinalStep">TUTORIAL 1/7</small>
+      <h3 id="tutorialFinalTitle">Welcome to Power Plant Tycoon</h3>
+      <p id="tutorialFinalText">Generate power to begin operating Riverbend Station.</p>
+      <div class="tutorial-actions">
+        <button id="tutorialFinalNext" onclick="nextFinalTutorial()">NEXT ➜</button>
+        <button class="secondary" onclick="skipFinalTutorial()">SKIP</button>
+      </div>
     </div>
   </div>
-</div>
-<div class="cp-plant-status">
-  <h4 id="cpOnline">● PLANT ONLINE</h4>
-  <div class="r"><span>Efficiency</span><b id="cpEff">100%</b></div>
-  <div class="r"><span>Reliability</span><b id="cpRel">100%</b></div>
-  <div class="r"><span>Output</span><b id="cpOut">0/s</b></div>
-  <div class="r"><span>Demand</span><b id="cpDemand">100%</b></div>
-</div>
-<div class="yard">
-<div class="cinematic-fx"><i></i><i></i><i></i></div>
-<div id="viewStageBadge" class="view-stage-badge">LIVE FACILITY</div>
-<div class="cp-stage-rail">
-  <button id="cpDiesel" class="cp-stage" onclick="selectStageView('diesel')" title="View Diesel facility"><i>⛽</i>DIESEL</button>
 
+  <div class="cp-plant-status">
+    <h4 id="cpOnline">● PLANT ONLINE</h4>
+    <div class="r"><span>Efficiency</span><b id="cpEff">100%</b></div>
+    <div class="r"><span>Reliability</span><b id="cpRel">100%</b></div>
+    <div class="r"><span>Output</span><b id="cpOut">0/s</b></div>
+    <div class="r"><span>Demand</span><b id="cpDemand">100%</b></div>
+  </div>
+
+  <div class="yard">
+    <div class="cinematic-fx"><i></i><i></i><i></i></div>
+    <div id="viewStageBadge" class="view-stage-badge">LIVE FACILITY</div>
+    <div class="cp-stage-rail">
+      <button id="cpDiesel" class="cp-stage" onclick="selectStageView('diesel')" title="View Diesel facility"><i>⛽</i>DIESEL</button>
+      <button id="cpSteam" class="cp-stage" onclick="selectStageView('steam')" title="View Steam facility"><i>🌀</i>STEAM</button>
+      <button id="cpGas" class="cp-stage" onclick="selectStageView('gas')" title="View Gas facility"><i>🔥</i>GAS</button>
+      <button id="cpSolar" class="cp-stage" onclick="selectStageView('solar')" title="View Solar facility"><i>☀️</i>SOLAR</button>
+      <button id="cpNuclear" class="cp-stage" onclick="selectStageView('nuclear')" title="View Nuclear facility"><i>☢️</i>NUCLEAR</button>
+    </div>
 <svg class="plant-art" viewBox="0 0 760 430" preserveAspectRatio="xMidYMid slice" aria-label="Riverbend power station">
 <defs>
   <linearGradient id="v10ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d4a4b"/><stop offset="1" stop-color="#182b2f"/></linearGradient>
@@ -161,11 +160,9 @@
 </g>
 
 </svg>
-<div id="v10StageLabel" class="v10-stage-label">RIVERBEND STARTER SITE</div>
-<div class="premium-art-badge">PREMIUM FACILITY ART</div>
-
-</div>
-
+    <div id="v10StageLabel" class="v10-stage-label">RIVERBEND STARTER SITE</div>
+    <div class="premium-art-badge">PREMIUM FACILITY ART</div>
+  </div>
 </div>
 <div class="generate-wrap">
   <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
@@ -266,7 +263,18 @@
   <div class="uf-banner empire-banner"><h3>🏭 Fleet Command</h3><p>Grow from a local station into a national energy empire. Classic plants, advanced generation, specializations, and megaprojects all feed the same grid.</p></div>
   <div class="card"><div class="section-title"><h3>🏭 Core Generating Assets</h3><span>BUILD & SPECIALIZE</span></div><div id="plantList"></div></div>
   <div class="card"><div class="section-title"><h3>🚀 Advanced Generation</h3><span>LATE GAME</span></div><div id="advancedAssetList" class="advanced-asset-list"></div></div><div class="card"><div class="section-title"><h3>⚙ Corporate Upgrades</h3><span>Permanent bonuses</span></div><div id="corporateUpgradeList"></div></div><div class="card"><div class="section-title"><h3>♻ Prestige</h3><span>Permanent production</span></div><p id="prestigeInfo"></p><button class="btn purple" style="width:100%" onclick="prestige()">PRESTIGE COMPANY</button></div></section>
-<section id="map" class="page"><div class="card"><div class="section-title"><h3>🗺 Power Grid Expansion</h3><span>Regional bonuses</span></div><div id="regionList" class="mapgrid"></div></div></section>
+<section id="map" class="page">
+  <div class="uf-banner grid-expansion-banner">
+    <h3>🗺 National & Global Power Grid</h3>
+    <p>Build outward from Riverbend through regional, national, continental and global interconnections. Each connection permanently increases production.</p>
+    <div class="grid-expansion-kpis">
+      <div><small>CONNECTED</small><b id="gridConnectedCount">1 / 14</b></div>
+      <div><small>GRID BONUS</small><b id="gridBonusValue">+0%</b></div>
+      <div><small>NEXT CONNECTION</small><b id="gridNextRegion">Coastal Grid</b></div>
+    </div>
+  </div>
+  <div class="card"><div class="section-title"><h3>⚡ Transmission Expansion</h3><span>14 GRID REGIONS</span></div><div id="regionList" class="mapgrid"></div></div>
+</section>
 <section id="goals" class="page"><div class="card"><div class="section-title"><h3>🎯 Missions</h3><span>Cash rewards</span></div><div id="missionList"></div></div><div class="card"><div class="section-title"><h3>🏆 Achievements</h3><span>Career milestones</span></div><div id="achievementList"></div></div>
 <div class="card endgame">
   <div class="section-title"><h3>⚡ Company Milestones</h3><span>ENDGAME</span></div>
@@ -422,5 +430,5 @@
 </div>
 
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=7"></script></body>
+<script src="js/game.js?v=71"></script></body>
 </html>

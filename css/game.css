@@ -2287,3 +2287,82 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
   .pass-head{grid-template-columns:1fr}.pass-lanes{grid-template-columns:1fr}
   .forecast-metrics{grid-template-columns:1fr 1fr 1fr}
 }
+
+
+/* ======================= EMPIRE UPDATE V7.1 LAYOUT + GRID ======================= */
+.grid-expansion-banner{margin-bottom:14px}
+.grid-expansion-kpis{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:13px}
+.grid-expansion-kpis>div{padding:12px;border:1px solid #315872;border-radius:15px;background:rgba(5,20,31,.72)}
+.grid-expansion-kpis small{display:block;color:#8eabba;font-size:10px;font-weight:900;letter-spacing:.4px}
+.grid-expansion-kpis b{display:block;margin-top:5px;font-size:17px}
+.region{position:relative;overflow:hidden}
+.region-tier{margin-bottom:6px;color:#72d7ff;font-size:9px;font-weight:1000;letter-spacing:.8px}
+.region.connected{border-color:#2cbd6e!important;box-shadow:inset 0 0 0 1px rgba(46,225,118,.1),0 8px 20px #0004!important}
+.region.available{border-color:#347297!important}
+.region.locked{opacity:.72}
+
+@media(min-width:761px){
+  #home .hero{
+    position:relative!important;
+    min-height:0!important;
+    height:auto!important;
+    overflow:hidden!important;
+    display:grid!important;
+    grid-template-columns:minmax(0,1fr)!important;
+    padding-top:92px!important;
+    background:#07131e!important;
+  }
+  #home .sky,#home .hills{pointer-events:none!important}
+  #home .scene-label{top:20px!important;left:22px!important;max-width:52%!important;z-index:80!important}
+  #home .statusstrip{top:18px!important;right:18px!important;z-index:81!important}
+  #home .cp-plant-status{
+    position:absolute!important;
+    top:112px!important;
+    right:18px!important;
+    width:176px!important;
+    z-index:90!important;
+  }
+  #home .yard{
+    position:relative!important;
+    width:100%!important;
+    height:570px!important;
+    min-height:570px!important;
+    max-height:570px!important;
+    margin:0!important;
+    overflow:hidden!important;
+    background-size:cover!important;
+    background-position:center center!important;
+  }
+  #home .yard .cp-stage-rail{
+    position:absolute!important;
+    top:18px!important;
+    left:18px!important;
+    bottom:auto!important;
+    width:88px!important;
+    max-height:none!important;
+    display:flex!important;
+    flex-direction:column!important;
+    gap:7px!important;
+    z-index:92!important;
+  }
+  #home .yard .cp-stage{
+    width:88px!important;
+    height:62px!important;
+    min-height:62px!important;
+    margin:0!important;
+  }
+  #home .view-stage-badge{left:118px!important;bottom:18px!important;top:auto!important;z-index:91!important}
+  #home #stageArtLabel{display:none!important}
+  #home .plant-art{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;opacity:0!important;pointer-events:none!important}
+  #home .premium-art-badge,#home #v10StageLabel{z-index:70!important}
+}
+@media(min-width:900px){
+  .mapgrid{grid-template-columns:repeat(3,minmax(0,1fr))!important}
+}
+@media(min-width:1200px){
+  .mapgrid{grid-template-columns:repeat(4,minmax(0,1fr))!important}
+}
+@media(max-width:760px){
+  .grid-expansion-kpis{grid-template-columns:1fr!important}
+  #home .hero{padding-top:0!important}
+}

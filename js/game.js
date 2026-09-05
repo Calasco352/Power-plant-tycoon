@@ -1425,4 +1425,92 @@ importSave=function(){
 };
 /* ===================== END EMPIRE UPDATE V7 PATCH ===================== */
 
-console.log("Power Plant Tycoon EMPIRE UPDATE V7 loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+
+
+/* ======================= EMPIRE UPDATE V7.1 ======================= */
+REGIONS.splice(0,REGIONS.length,
+  {id:"riverbend",name:"Riverbend",cost:0,bonus:0,emoji:"🏭",tier:"LOCAL",desc:"Starter industrial grid.",requires:null},
+  {id:"coast",name:"Coastal Grid",cost:15000,bonus:.10,emoji:"🌊",tier:"REGIONAL",desc:"+10% production • coastal utility market.",requires:"riverbend"},
+  {id:"desert",name:"Sunbelt",cost:75000,bonus:.20,emoji:"🏜️",tier:"REGIONAL",desc:"+20% production • high solar demand.",requires:"coast"},
+  {id:"metro",name:"Metroplex",cost:300000,bonus:.35,emoji:"🌆",tier:"REGIONAL",desc:"+35% production • dense city load.",requires:"desert"},
+  {id:"mountain",name:"Mountain Relay",cost:900000,bonus:.45,emoji:"🏔️",tier:"REGIONAL",desc:"+45% production • high-voltage mountain corridor.",requires:"metro"},
+  {id:"plains",name:"Great Plains Grid",cost:2500000,bonus:.60,emoji:"🌾",tier:"NATIONAL",desc:"+60% production • continental transmission hub.",requires:"mountain"},
+  {id:"atlantic",name:"Atlantic Energy Hub",cost:7000000,bonus:.80,emoji:"⚓",tier:"NATIONAL",desc:"+80% production • industrial port and offshore load.",requires:"plains"},
+  {id:"national",name:"National Supergrid",cost:20000000,bonus:1.10,emoji:"🇺🇸",tier:"NATIONAL",desc:"+110% production • nationwide balancing authority.",requires:"atlantic"},
+  {id:"gulf",name:"Gulf Coast Intertie",cost:60000000,bonus:1.35,emoji:"🛢️",tier:"INTERCONNECT",desc:"+135% production • refinery, LNG and coastal industrial corridor.",requires:"national"},
+  {id:"pacific",name:"Pacific Renewable Corridor",cost:180000000,bonus:1.65,emoji:"🌅",tier:"INTERCONNECT",desc:"+165% production • western hydro, solar and wind exchange.",requires:"gulf"},
+  {id:"greatlakes",name:"Great Lakes Power Exchange",cost:500000000,bonus:2.00,emoji:"🌊",tier:"INTERCONNECT",desc:"+200% production • major cross-market transmission exchange.",requires:"pacific"},
+  {id:"arctic",name:"Arctic HVDC Link",cost:1500000000,bonus:2.50,emoji:"❄️",tier:"CONTINENTAL",desc:"+250% production • ultra-long-distance high-voltage DC backbone.",requires:"greatlakes"},
+  {id:"continental",name:"Continental Interconnect",cost:5000000000,bonus:3.20,emoji:"🌎",tier:"CONTINENTAL",desc:"+320% production • synchronized continent-scale balancing network.",requires:"arctic"},
+  {id:"global",name:"Global Energy Network",cost:20000000000,bonus:4.50,emoji:"🌐",tier:"GLOBAL",desc:"+450% production • endgame worldwide power exchange.",requires:"continental"}
+);
+
+if(!MISSIONS.some(m=>m.id==="m11")){
+  MISSIONS.push(
+    {id:"m11",label:"Connect 8 Grid Regions",type:"regions",target:8,reward:250000},
+    {id:"m12",label:"Connect 12 Grid Regions",type:"regions",target:12,reward:2000000},
+    {id:"m13",label:"Complete the Global Energy Network",type:"regions",target:14,reward:12000000}
+  );
+}
+if(!ACH.some(a=>a.id==="a11")){
+  ACH.push(
+    {id:"a11",label:"National Operator",desc:"Connect all 8 original U.S. grid regions",type:"regions",target:8},
+    {id:"a12",label:"Continental Grid",desc:"Connect 12 total grid regions",type:"regions",target:12},
+    {id:"a13",label:"Global Grid Authority",desc:"Complete all 14 grid expansions",type:"regions",target:14}
+  );
+}
+
+function regionRequirementMet(r){
+  return !r.requires || !!g.regions[r.requires];
+}
+function gridBonusPercent(){
+  return Math.round(REGIONS.reduce((sum,r)=>sum+(r.id!=="riverbend"&&g.regions[r.id]?(r.bonus||0):0),0)*100);
+}
+function nextLockedRegion(){
+  return REGIONS.find(r=>r.id!=="riverbend"&&!g.regions[r.id])||null;
+}
+buyRegion=function(id){
+  feedback("big");
+  const r=REGIONS.find(x=>x.id===id);if(!r||g.regions[id])return;
+  if(!regionRequirementMet(r)){
+    const prior=REGIONS.find(x=>x.id===r.requires);
+    toast("Connect "+(prior?.name||"the previous region")+" first.");
+    return;
+  }
+  if(g.cash<r.cost){toast("Need "+money(r.cost));return}
+  g.cash-=r.cost;g.regions[id]=true;g.reputation+=Math.max(3,Math.round((r.bonus||0)*10));addXP(30+Math.min(100,(r.bonus||0)*20));
+  addLog(r.name+" connected to company grid.");toast("⚡ "+r.name+" CONNECTED");saveGame();render();
+};
+renderRegions=function(){
+  const el=document.getElementById("regionList");if(!el)return;
+  el.innerHTML=REGIONS.map((r,i)=>{
+    const owned=!!g.regions[r.id],available=regionRequirementMet(r),prior=REGIONS.find(x=>x.id===r.requires);
+    const action=owned
+      ? '<span class="badge">CONNECTED</span>'
+      : available
+        ? `<button class="btn blue" onclick="buyRegion('${r.id}')">CONNECT ${money(r.cost)}</button>`
+        : `<button class="btn dark" disabled>REQUIRES ${prior?.name||"PRIOR GRID"}</button>`;
+    return `<div class="region ${owned?"connected":available?"available":"locked"}">
+      <div class="region-tier">${r.tier||"GRID"} • NODE ${i+1}</div>
+      <div class="region-icon">${r.emoji}</div>
+      <h4>${r.name}</h4>
+      <p>${r.desc}</p>
+      ${action}
+    </div>`;
+  }).join("");
+  const count=unlockedRegionsCount();
+  const countEl=document.getElementById("gridConnectedCount");if(countEl)countEl.textContent=`${count} / ${REGIONS.length}`;
+  const bonusEl=document.getElementById("gridBonusValue");if(bonusEl)bonusEl.textContent=`+${gridBonusPercent()}%`;
+  const next=nextLockedRegion();
+  const nextEl=document.getElementById("gridNextRegion");if(nextEl)nextEl.textContent=next?next.name:"GLOBAL GRID COMPLETE";
+};
+
+/* V7.1 desktop scene: keep all status/selector controls inside the facility card. */
+const empireRenderV71=render;
+render=function(){
+  empireRenderV71();
+  renderRegions();
+};
+/* ===================== END EMPIRE UPDATE V7.1 ===================== */
+
+console.log("Power Plant Tycoon EMPIRE UPDATE V7.1 loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
