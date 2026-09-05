@@ -2289,7 +2289,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 .storekit-status{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid #245578;background:#081a28;color:#9fd8ff;font-size:12px;font-weight:800;text-align:center}
 
 
-/* ===== MONETIZATION RC2 ===== */
+/* ===== MONETIZATION + BALANCE RC3 ===== */
 .rewarded-ad-card{border-color:rgba(47,157,245,.42)!important;background:linear-gradient(145deg,rgba(9,42,65,.96),rgba(5,19,30,.98))!important}
 .ad-reward-item{border-color:rgba(47,157,245,.48)!important}
 .remove-ads-storeitem{border-color:rgba(255,211,75,.48)!important;background:linear-gradient(135deg,rgba(69,51,11,.42),rgba(9,25,38,.95))!important}
