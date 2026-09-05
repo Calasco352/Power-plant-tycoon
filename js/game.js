@@ -476,7 +476,7 @@ const TUTORIAL_STEPS=[
   {page:"home",title:"You’re Ready to Run Riverbend",text:"You now know the foundation. Build a profitable fleet first, then discover markets, grid strategy, research, megaprojects and endgame systems as they become relevant.",task:"Keep following NEXT TARGET and grow from Riverbend into a global energy empire.",tip:"Replay this guide anytime with 🎓 GUIDE. Advanced help remains available when you need it."}
 ];
 let tutorialTargetEl=null;
-function clearTutorialTarget(){if(tutorialTargetEl){tutorialTargetEl.classList.remove("tutorial-target");tutorialTargetEl=null;}document.querySelectorAll("[data-nav]").forEach(x=>x.classList.remove("tutorial-nav-target"));const s=byId("tutorialSpotlight");if(s)s.classList.remove("show");document.body.classList.remove("tutorial-action-step");}
+function clearTutorialTarget(){if(tutorialTargetEl){tutorialTargetEl.classList.remove("tutorial-target");tutorialTargetEl=null;}document.querySelectorAll("[data-nav]").forEach(x=>x.classList.remove("tutorial-nav-target"));document.body.classList.remove("tutorial-action-step");}
 function tutorialCurrent(){return TUTORIAL_STEPS[clamp(Number(g.tutorial?.step)||0,0,TUTORIAL_STEPS.length-1)];}
 function prepareTutorialStep(step){
   if(!g.tutorial) return;
@@ -511,14 +511,13 @@ function tutorialRecoverProgress(){
   }
 }
 function positionTutorialCoach(el){
-  const coach=byId("tutorialCoach"),spot=byId("tutorialSpotlight");if(!coach)return;
-  if(!el||window.innerWidth<=760){coach.style.removeProperty("left");coach.style.removeProperty("right");coach.style.removeProperty("top");coach.style.removeProperty("bottom");if(spot)spot.classList.remove("show");return;}
+  const coach=byId("tutorialCoach");if(!coach)return;
+  if(!el||window.innerWidth<=760){coach.style.removeProperty("left");coach.style.removeProperty("right");coach.style.removeProperty("top");coach.style.removeProperty("bottom");return;}
   const r=el.getBoundingClientRect(),gap=28,cw=Math.min(500,window.innerWidth-48),ch=Math.min(coach.offsetHeight||460,window.innerHeight-48);
   let left=r.right+gap,top=clamp(r.top-28,24,Math.max(24,window.innerHeight-ch-24));
   if(left+cw>window.innerWidth-24)left=r.left-cw-gap;
   if(left<24){left=window.innerWidth-cw-32;top=clamp(r.bottom+18,24,Math.max(24,window.innerHeight-ch-24));}
   coach.style.left=left+"px";coach.style.right="auto";coach.style.top=top+"px";coach.style.bottom="auto";
-  if(spot){spot.style.left=Math.max(6,r.left-10)+"px";spot.style.top=Math.max(6,r.top-10)+"px";spot.style.width=Math.min(window.innerWidth-12,r.width+20)+"px";spot.style.height=Math.min(window.innerHeight-12,r.height+20)+"px";spot.classList.add("show");}
 }
 function renderTutorialStep(){
   const overlay=byId("tutorialOverlay");if(!overlay)return;

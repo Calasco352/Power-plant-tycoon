@@ -1,0 +1,9 @@
+Power Plant Tycoon — Grid Dominion V8.2.2
+Tutorial Target Anchor Fix
+
+- Removed the old fixed-position blue tutorial spotlight that could drift to unrelated cards while scrolling.
+- Tutorial highlighting is now attached directly to the required button/card.
+- The highlight scrolls with the real target instead of staying at stale screen coordinates.
+- Tutorial coach remains stable while the player scrolls.
+- Improved desktop/mobile scroll margins around tutorial targets.
+- Cache version bumped to 8.2.2.

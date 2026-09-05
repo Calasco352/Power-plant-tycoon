@@ -131,9 +131,24 @@ body[data-graphics="low"] .hero-scene:before{display:none}body[data-graphics="lo
 @media(max-width:760px){.hero-actions{grid-template-columns:1fr!important}.tutorial-coach{left:8px!important;right:8px!important;top:auto!important;bottom:92px!important;width:auto!important;max-height:60vh!important;padding:14px!important}.tutorial-overlay.intro .tutorial-coach{left:8px!important;right:8px!important;top:50%!important;bottom:auto!important;width:auto!important}.tutorial-top h2{font-size:21px!important}.tutorial-advisor{grid-template-columns:44px 1fr!important}.advisor-icon{width:44px!important;height:44px!important;font-size:22px!important}.tutorial-advisor p{font-size:12px!important}.tutorial-spotlight{display:none!important}.range-row{grid-template-columns:1fr 65px}}
 
 
-/* ===== GRID DOMINION V8.2.1 — TUTORIAL STABILITY ===== */
+/* ===== GRID DOMINION V8.2.2 — TUTORIAL STABILITY ===== */
 body.tutorial-running{overscroll-behavior:none}
 .tutorial-coach{max-height:calc(100vh - 48px);overflow:auto}
 .tutorial-task.done{border-color:#39db80!important;background:linear-gradient(180deg,#123b2b,#0a291e)!important;color:#dffff0!important}
 .tutorial-spotlight{pointer-events:none!important}
 @media(min-width:761px){.tutorial-coach{min-width:390px}.tutorial-target{scroll-margin-top:120px;scroll-margin-bottom:120px}}
+
+
+/* ===== GRID DOMINION V8.2.2 — TUTORIAL TARGET ANCHOR FIX ===== */
+/* The old fixed-position spotlight could drift onto other cards while scrolling.
+   The actual target element now owns the entire highlight so it moves naturally with the page. */
+.tutorial-spotlight{display:none!important}
+.tutorial-target{
+  position:relative!important;
+  z-index:1001!important;
+  outline:3px solid #6cecff!important;
+  outline-offset:6px!important;
+  box-shadow:0 0 0 9px rgba(72,224,255,.15),0 0 38px rgba(64,223,255,.72)!important;
+}
+body.tutorial-running .tutorial-target{scroll-margin-top:140px!important;scroll-margin-bottom:160px!important}
+@media(max-width:760px){body.tutorial-running .tutorial-target{scroll-margin-top:90px!important;scroll-margin-bottom:220px!important}}
