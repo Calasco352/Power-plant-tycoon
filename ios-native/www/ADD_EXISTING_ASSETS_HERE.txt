@@ -1,0 +1,7 @@
+Before building in Xcode, copy the repository's existing images/ and audio/ folders into this www folder.
+Final structure must include:
+www/index.html
+www/css/game.css
+www/js/game.js
+www/images/...
+www/audio/...
