@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Premium Expansion V3 Diesel Cleanup</title>
-<link rel="stylesheet" href="css/game.css?v=5"></head>
+<title>Power Plant Tycoon — Empire Update V7</title>
+<link rel="stylesheet" href="css/game.css?v=7"></head>
 <body>
 <div id="bootSplashPremium">
   <div class="boot-card">
@@ -16,7 +16,7 @@
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">PREMIUM EXPANSION V3</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">EMPIRE UPDATE V7</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -28,6 +28,15 @@
 </header>
 <main class="content">
 <section id="home" class="page active">
+<div class="mega-banner">
+  <div class="mega-banner-head"><div><h3>⚡ Empire Operations Center</h3><p>Core progression first: build generation, expand the grid, complete megaprojects, then earn Power Pass rewards from normal play.</p></div><span id="versionBadge">LIVE V7</span></div>
+  <div class="mega-banner-grid">
+    <div class="mega-tile"><small>COMPANY LEVEL</small><b id="companyLevelValue">1</b><i id="companyXPValue">0 / 75 XP</i></div>
+    <div class="mega-tile"><small>DAILY STREAK</small><b id="dailyStreakValue">0</b><i id="dailyBestValue">Best 0</i></div>
+    <div class="mega-tile"><small>AUTO GENERATE</small><b id="autoGenerateStatus">LOCKED</b><i id="autoGenerateLevelValue">Level 0</i></div>
+    <div class="mega-tile"><small>NEXT TARGET</small><b id="nextGoalValue">Build Diesel</b><i id="nextGoalHint">Commission your first plant</i></div>
+  </div>
+</div>
 <div class="hero">
 <div class="sky"><div class="sunmoon"></div></div>
 <div class="hills"></div>
@@ -161,7 +170,9 @@
 <div class="generate-wrap">
   <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
   <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
-</div><div class="cp-equipment">
+</div>
+<div id="autoGenerateInfo" class="auto-generate-panel">Auto Generate locked. Unlock it in the Store to idle while you manage the grid.</div>
+<div class="cp-equipment">
   <div class="cp-equip"><strong>🔥 FUEL SYSTEM</strong><small id="cpFuelText">Ready</small><div class="bar"><i id="cpFuelBar" style="width:85%"></i></div></div>
   <div class="cp-equip"><strong>🌀 TURBINE</strong><small id="cpTurbineText">Online</small><div class="bar"><i id="cpTurbineBar" style="width:92%"></i></div></div>
   <div class="cp-equip"><strong>⚙️ GENERATOR</strong><small id="cpGeneratorText">Online</small><div class="bar"><i id="cpGeneratorBar" style="width:96%"></i></div></div>
@@ -176,7 +187,7 @@
 </div>
 
 <div id="eventBox" class="event"><h3 id="eventTitle">⚠ Plant Event</h3><p id="eventText"></p><button id="eventButton" class="btn orange" onclick="resolveEvent()">RESOLVE</button></div>
-<div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button class="btn green" onclick="sellPower()">💵 Sell All Power</button><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
+<div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button id="sellBtn" class="btn green" onclick="sellPower()">💵 Sell All Power</button><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
 <div class="card"><div class="section-title"><h3>📊 Operations Dashboard</h3><span>LIVE</span></div><div class="dashboard">
 <div class="dash"><small>OPERATOR LEVEL</small><b id="operatorLevel">1</b></div>
 <div class="dash"><small>OPERATOR XP</small><b id="operatorXP">0 / 100</b></div>
@@ -239,9 +250,22 @@
   <button class="btn blue" style="width:100%;margin-top:10px" onclick="showPage('company',document.querySelector('[data-nav=company]'))">OPEN COMPANY HQ</button>
 </div>
 
+<div class="card empire-quick-card">
+  <div class="section-title"><h3>🌐 Empire Operations</h3><span>CORE GAME</span></div>
+  <div class="empire-quick-grid">
+    <div class="empire-mini"><small>ADVANCED ASSETS</small><b id="advancedAssetCountHome">0</b><span>Wind • Hydro • Geothermal • Fusion</span></div>
+    <div class="empire-mini"><small>MEGAPROJECTS</small><b id="megaProjectCountHome">0 / 4</b><span>Permanent empire infrastructure</span></div>
+    <div class="empire-mini"><small>POWER PASS</small><b id="powerPassTierHome">Tier 1</b><span>Earned through normal gameplay</span></div>
+    <div class="empire-mini"><small>MARKET FORECAST</small><b id="marketForecastHome">STABLE</b><span>Trading desk outlook</span></div>
+  </div>
+  <button class="btn purple" style="width:100%;margin-top:10px" onclick="showPage('company',document.querySelector('[data-nav=company]'))">OPEN EMPIRE HQ</button>
+</div>
 <div class="card"><div class="section-title"><h3>📋 Activity Log</h3><span>LIVE</span></div><div id="activityLog" class="log"></div></div>
 </section>
-<section id="plants" class="page"><div class="card"><div class="section-title"><h3>🏭 Generating Assets</h3><span>Build the complex</span></div><div id="plantList"></div></div><div class="card"><div class="section-title"><h3>⚙ Corporate Upgrades</h3><span>Permanent bonuses</span></div><div id="corporateUpgradeList"></div></div><div class="card"><div class="section-title"><h3>♻ Prestige</h3><span>Permanent production</span></div><p id="prestigeInfo"></p><button class="btn purple" style="width:100%" onclick="prestige()">PRESTIGE COMPANY</button></div></section>
+<section id="plants" class="page">
+  <div class="uf-banner empire-banner"><h3>🏭 Fleet Command</h3><p>Grow from a local station into a national energy empire. Classic plants, advanced generation, specializations, and megaprojects all feed the same grid.</p></div>
+  <div class="card"><div class="section-title"><h3>🏭 Core Generating Assets</h3><span>BUILD & SPECIALIZE</span></div><div id="plantList"></div></div>
+  <div class="card"><div class="section-title"><h3>🚀 Advanced Generation</h3><span>LATE GAME</span></div><div id="advancedAssetList" class="advanced-asset-list"></div></div><div class="card"><div class="section-title"><h3>⚙ Corporate Upgrades</h3><span>Permanent bonuses</span></div><div id="corporateUpgradeList"></div></div><div class="card"><div class="section-title"><h3>♻ Prestige</h3><span>Permanent production</span></div><p id="prestigeInfo"></p><button class="btn purple" style="width:100%" onclick="prestige()">PRESTIGE COMPANY</button></div></section>
 <section id="map" class="page"><div class="card"><div class="section-title"><h3>🗺 Power Grid Expansion</h3><span>Regional bonuses</span></div><div id="regionList" class="mapgrid"></div></div></section>
 <section id="goals" class="page"><div class="card"><div class="section-title"><h3>🎯 Missions</h3><span>Cash rewards</span></div><div id="missionList"></div></div><div class="card"><div class="section-title"><h3>🏆 Achievements</h3><span>Career milestones</span></div><div id="achievementList"></div></div>
 <div class="card endgame">
@@ -268,6 +292,16 @@
     <div class="section-title"><h3>🧪 Research & Development</h3><span>TECH TREE</span></div>
     <div id="researchTree" class="uf-research"></div>
   </div>
+  <div class="card empire-card">
+    <div class="section-title"><h3>🌐 Megaprojects</h3><span>CORE ENDGAME</span></div>
+    <p class="small">Permanent infrastructure projects. These are core game goals and survive prestige.</p>
+    <div id="megaProjectList" class="mega-project-grid"></div>
+  </div>
+  <div class="card empire-card">
+    <div class="section-title"><h3>🎫 Power Pass</h3><span>REWARD TRACK</span></div>
+    <p class="small">The pass follows your normal gameplay. Company XP also advances the pass, so you never need to stop building the main game to progress it.</p>
+    <div id="powerPassPanel"></div>
+  </div>
 </section>
 
 <section id="stats" class="page">
@@ -292,16 +326,34 @@
     <div class="section-title"><h3>🗓 Weekly Challenge</h3><span id="weeklyTimer">7 DAYS</span></div>
     <div id="weeklyChallenge"></div>
   </div>
+  <div class="card"><div class="section-title"><h3>🔭 Market Forecast</h3><span>TRADING DESK</span></div><div id="marketForecastPanel" class="forecast-panel"></div></div>
+  <div class="card"><div class="section-title"><h3>🌐 Empire Snapshot</h3><span>V7</span></div><div class="empire-stat-grid">
+    <div class="empire-stat"><small>ADVANCED ASSETS</small><b id="statsAdvancedAssets">0</b></div>
+    <div class="empire-stat"><small>MEGAPROJECTS</small><b id="statsMegaProjects">0 / 4</b></div>
+    <div class="empire-stat"><small>SPECIALIZATION</small><b id="statsSpecialization">0</b></div>
+    <div class="empire-stat"><small>POWER PASS</small><b id="statsPowerPass">Tier 1</b></div>
+  </div></div>
 </section>
 
-<section id="store" class="page"><div class="card"><div class="section-title"><h3>🛒 Power Shop</h3><span>TEST STORE</span></div>
-<div class="storeitem"><div><strong>🎁 Daily Supply Drop</strong><small>Free cash once per day</small></div><button class="btn green" onclick="dailyReward()">CLAIM</button></div>
-<div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>10 minute production boost</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
-<div class="storeitem"><div><strong>🧰 Maintenance Pack</strong><small>Restore all equipment condition</small></div><button class="btn orange" onclick="maintenancePack()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>🚀 Starter Pack</strong><small>$5,000 + 10 minute boost</small></div><button class="btn purple" onclick="starterPack()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>🤖 Auto Generate</strong><small>Permanent unlock • automatically generates power every second</small></div><button id="autoGeneratePurchaseBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress</small></div><button class="btn red" onclick="resetGame()">RESET</button></div>
-</div></section>
+<section id="store" class="page">
+  <div class="card">
+    <div class="section-title"><h3>🛒 Power Shop</h3><span>BROWSER TEST STORE</span></div>
+    <div class="daily-streak-card">
+      <div class="daily-streak-head"><strong>7-Day Operations Streak</strong><small id="dailyRewardMeta">Claim your daily supply drop.</small></div>
+      <div id="dailyStreakGrid" class="daily-streak-grid"></div>
+      <button id="dailyClaimBtn" class="btn green" style="width:100%;margin-top:10px" onclick="dailyReward()">CLAIM DAY 1</button>
+    </div>
+    <div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>10 minute production boost for active sessions</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
+    <div class="storeitem"><div><strong>🚀 Starter Pack</strong><small>$5,000 + 10 minute boost + instant momentum</small></div><button class="btn purple" onclick="starterPack()">TEST BUY</button></div>
+    <div class="storeitem"><div><strong>🧰 Maintenance Pack</strong><small>Restore all equipment condition and stabilize the yard</small></div><button class="btn orange" onclick="maintenancePack()">TEST BUY</button></div>
+    <div class="storeitem"><div><strong>🤖 Auto Generate Unlock</strong><small>Permanent unlock. Turns your manual generator into an idle system.</small></div><button id="autoGeneratePurchaseBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
+    <div class="storeitem"><div><strong>⬆️ Auto Generate Upgrade</strong><small>Increase idle generation strength for the permanent system.</small></div><button id="autoGenerateUpgradeBtn" class="btn blue" onclick="upgradeAutoGenerate()">UPGRADE</button></div>
+    <div class="storeitem pass-store-item"><div><strong>🎫 Premium Power Pass</strong><small>Permanent test unlock for the current V7 pass. Premium rewards still require normal gameplay progress.</small></div><button id="premiumPassPurchaseBtn" class="btn purple" onclick="purchasePremiumPass()">TEST BUY</button></div>
+    <div class="storeitem"><div><strong>🧾 Restore Purchases</strong><small>Placeholder hook for App Store / live release integration.</small></div><button class="btn dark" onclick="restorePurchasesPlaceholder()">RESTORE</button></div>
+    <div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress while keeping browser test purchases</small></div><button class="btn red" onclick="resetGame()">RESET</button></div>
+    <p class="small store-note">These are safe browser test purchases right now. When you go live, replace the purchase functions with real App Store / StoreKit handlers.</p>
+  </div>
+</section>
 
 <div class="card">
   <div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div>
@@ -318,7 +370,7 @@
     <button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button>
     <button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button>
   </div>
-  <p class="small">Store buttons are test hooks only. Real ads and Apple in-app purchases still require native App Store integration.</p>
+  <p class="small">Titan Update note: browser test purchases work now. Real in-app purchases still need native App Store integration when you publish.</p>
 </div>
 
 </main></div>
@@ -370,5 +422,5 @@
 </div>
 
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=5"></script></body>
+<script src="js/game.js?v=7"></script></body>
 </html>
