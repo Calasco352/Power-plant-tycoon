@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — ONE BUILD FINAL Clean Layout</title>
+<title>Power Plant Tycoon — FINAL Guided Tutorial Fix</title>
 <style>
 :root{--bg:#06111b;--panel:#0b1d2c;--panel2:#10293d;--line:#245578;--text:#f6fbff;--muted:#9db5c8;--yellow:#ffd34b;--green:#2ee176;--blue:#2f9df5;--red:#ff5f61;--orange:#f7a531;--purple:#a55cff}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
@@ -519,12 +519,70 @@ body{
   .generate{min-height:64px!important;font-size:19px!important}
 }
 
+
+/* ================= FINAL INTERACTIVE TUTORIAL ================= */
+.tut-mask{position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:180;display:none;pointer-events:none}
+.tut-mask.show{display:block}
+.tut-spot{position:relative!important;z-index:191!important;box-shadow:0 0 0 4px #58d8ff,0 0 28px #58d8ff88!important;border-radius:14px!important}
+.tut-panel{position:fixed;left:50%;bottom:115px;transform:translateX(-50%);width:min(520px,calc(100% - 24px));z-index:195;display:none;padding:16px;border-radius:18px;background:linear-gradient(145deg,#0d2d43,#071722);border:1px solid #4d83a2;box-shadow:0 24px 70px #000d}
+.tut-panel.show{display:block}
+.tut-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.tut-head small{color:#5edcff;font-weight:1000;letter-spacing:.7px}
+.tut-panel h3{margin:6px 0 7px}
+.tut-panel p{margin:0;color:#c8dbe7;line-height:1.5;font-size:13px}
+.tut-actions{display:flex;gap:9px;margin-top:13px}
+.tut-actions button{flex:1;border:0;border-radius:11px;padding:10px;font-weight:900;color:#fff;background:linear-gradient(#2fdc74,#108c48)}
+.tut-actions .secondary{background:#15344a;border:1px solid #315e78}
+.tut-progress{height:6px;margin-top:12px;background:#08141c;border-radius:99px;overflow:hidden}
+.tut-progress i{display:block;height:100%;background:linear-gradient(90deg,#4dd6ff,#45e17a)}
+@media(max-width:560px){.tut-panel{bottom:102px;padding:14px}.tut-panel p{font-size:12px}}
+
+
+/* ================= PLANT SELECTOR POSITION FIX ================= */
+.cp-stage-rail{
+  top:150px!important;
+  left:18px!important;
+  bottom:auto!important;
+  transform:none!important;
+  max-height:calc(100% - 185px)!important;
+  overflow:visible!important;
+  z-index:54!important;
+}
+.cp-stage{
+  position:relative!important;
+  margin:0!important;
+  transform:none!important;
+}
+.hero .cp-stage-rail{
+  contain:layout paint!important;
+}
+@media(max-width:760px){
+  .cp-stage-rail{
+    top:142px!important;
+    left:10px!important;
+    width:64px!important;
+    max-height:calc(100% - 170px)!important;
+  }
+}
+@media(max-width:560px){
+  .cp-stage-rail{
+    top:136px!important;
+    left:8px!important;
+    width:60px!important;
+    gap:6px!important;
+  }
+  .cp-stage{
+    height:50px!important;
+    font-size:8px!important;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">ONE BUILD FINAL • CLEAN</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">FINAL • TUTORIAL • FIXED</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -814,7 +872,7 @@ body{
     <div class="setting"><b>Compact Numbers</b><button id="compactToggle" class="toggle on" onclick="toggleSetting('compact')">ON</button></div>
   </div>
   <div class="final-toolbar">
-    <button class="btn blue" onclick="restartFinalTutorial()">🎓 RESTART TUTORIAL</button>
+    <button class="btn blue" onclick="restartGuidedTutorial()">🎓 RESTART TUTORIAL</button>
     <button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button>
     <button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button>
   </div>
@@ -832,6 +890,22 @@ body{
 <button data-nav="store" onclick="showPage('store',this)"><i>🛒</i>STORE</button>
 </nav>
 <div id="toast" class="toast"></div>
+
+<div id="tutorialMask2" class="tut-mask"></div>
+<div id="tutorialPanel2" class="tut-panel">
+  <div class="tut-head">
+    <small id="tutorialCount2">TUTORIAL 1/7</small>
+    <button class="btn dark" style="min-height:auto;padding:6px 9px" onclick="skipGuidedTutorial()">SKIP</button>
+  </div>
+  <h3 id="tutorialTitle2">Welcome to Riverbend</h3>
+  <p id="tutorialText2">Generate your first electricity.</p>
+  <div class="tut-progress"><i id="tutorialProgress2" style="width:14%"></i></div>
+  <div class="tut-actions">
+    <button class="secondary" onclick="prevGuidedTutorial()">BACK</button>
+    <button id="tutorialNext2" onclick="nextGuidedTutorial()">NEXT ➜</button>
+  </div>
+</div>
+
 
 <div id="confirmModal" class="modal">
   <div class="modalbox">
@@ -912,7 +986,7 @@ if(!g.staff)g.staff={engineer:0,trader:0,safety:0,operator:0};["engineer","trade
 if(!g.policy)g.policy="balanced";
 if(!g.research)g.research={automation:0,storage:0,forecast:0,materials:0,controls:0,gridAI:0};["automation","storage","forecast","materials","controls","gridAI"].forEach(k=>{if(g.research[k]==null)g.research[k]=0});
 if(!g.weekly)g.weekly={weekKey:"",progress:0,claimed:false};
-if(g.dispatches==null)g.dispatches=0;if(!g.finalTutorial)g.finalTutorial={step:0,done:false,disabled:false};
+if(g.dispatches==null)g.dispatches=0;if(!g.finalTutorial)g.finalTutorial={step:0,done:false,disabled:false};if(g.finalTutorial.autoStart==null)g.finalTutorial.autoStart=true;
 
 ["generated","sold","lifetimeCash","tapLevel","prestige","boostUntil","lastSeen","lastDaily","eventCooldown"].forEach(k=>{if(g[k]==null)g[k]=0})}migrate();if((g.generated||0)>25&&g.tutorialStep===0)g.tutorialStep=5;
 const money=n=>{if(!isFinite(n))n=0;if(!g||!g.settings||!g.settings.compact)return"$"+n.toLocaleString(undefined,{maximumFractionDigits:1});if(n>=1e12)return"$"+(n/1e12).toFixed(2)+"T";if(n>=1e9)return"$"+(n/1e9).toFixed(2)+"B";if(n>=1e6)return"$"+(n/1e6).toFixed(2)+"M";if(n>=1e3)return"$"+(n/1e3).toFixed(2)+"K";return"$"+n.toFixed(1)};
@@ -1043,6 +1117,48 @@ function autoSellTick(){
   g.stored-=amount;g.cash+=cash;g.lifetimeCash+=cash;g.sold+=amount;
 }
 
+
+
+const GUIDED_TUTORIAL=[
+  {page:"home",sel:".generate",title:"Generate Power",text:"Tap GENERATE POWER. This creates electricity and stores it at Riverbend."},
+  {page:"home",sel:"#sellBtn",title:"Sell to the Grid",text:"Sell stored electricity for cash. Cash funds upgrades, staff, research and new plants."},
+  {page:"plants",sel:"#plantList",title:"Build Your Fleet",text:"Use PLANTS to commission and upgrade Diesel, Steam, Gas, Solar and Nuclear generation."},
+  {page:"map",sel:"#regionList",title:"Expand the Grid",text:"Use MAP to connect new regions. Each region adds permanent production bonuses."},
+  {page:"home",sel:"#contractList",title:"Complete Contracts",text:"Contracts reward cash and experience for supplying the grid."},
+  {page:"company",sel:"#researchTree",title:"Run the Company",text:"HQ lets you hire staff, choose operating policies and unlock research upgrades."},
+  {page:"stats",sel:"#weeklyChallenge",title:"Build an Energy Empire",text:"Track your fleet, complete weekly goals and prestige when you are ready for permanent bonuses."}
+];
+let tutSpotEl=null;
+function clearTutSpot(){if(tutSpotEl){tutSpotEl.classList.remove("tut-spot");tutSpotEl=null}}
+function openTutorialPage(page){
+  const nav=document.querySelector(`[data-nav="${page}"]`);
+  if(nav)showPage(page,nav);
+}
+function renderGuidedTutorial(){
+  const panel=document.getElementById("tutorialPanel2"),mask=document.getElementById("tutorialMask2");
+  if(!panel||!mask)return;
+  if(g.finalTutorial.disabled||g.finalTutorial.done){panel.classList.remove("show");mask.classList.remove("show");clearTutSpot();return}
+  const i=Math.max(0,Math.min(GUIDED_TUTORIAL.length-1,g.finalTutorial.step||0)),s=GUIDED_TUTORIAL[i];
+  openTutorialPage(s.page);
+  panel.classList.add("show");mask.classList.add("show");
+  document.getElementById("tutorialCount2").textContent=`TUTORIAL ${i+1}/${GUIDED_TUTORIAL.length}`;
+  document.getElementById("tutorialTitle2").textContent=s.title;
+  document.getElementById("tutorialText2").textContent=s.text;
+  document.getElementById("tutorialProgress2").style.width=((i+1)/GUIDED_TUTORIAL.length*100)+"%";
+  document.getElementById("tutorialNext2").textContent=i===GUIDED_TUTORIAL.length-1?"FINISH":"NEXT ➜";
+  clearTutSpot();
+  setTimeout(()=>{
+    const el=document.querySelector(s.sel);
+    if(el){tutSpotEl=el;el.classList.add("tut-spot");el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"})}
+  },40);
+}
+function nextGuidedTutorial(){
+  if((g.finalTutorial.step||0)>=GUIDED_TUTORIAL.length-1){g.finalTutorial.done=true;saveGame();renderGuidedTutorial();toast("Tutorial complete!");return}
+  g.finalTutorial.step=(g.finalTutorial.step||0)+1;saveGame();renderGuidedTutorial();
+}
+function prevGuidedTutorial(){g.finalTutorial.step=Math.max(0,(g.finalTutorial.step||0)-1);saveGame();renderGuidedTutorial()}
+function skipGuidedTutorial(){g.finalTutorial.disabled=true;saveGame();renderGuidedTutorial();toast("Tutorial skipped")}
+function restartGuidedTutorial(){g.finalTutorial={step:0,done:false,disabled:false,autoStart:true};saveGame();renderGuidedTutorial()}
 
 const FINAL_TUTORIAL_STEPS=[
 {title:"Welcome to Riverbend",text:"Tap GENERATE POWER to produce your first electricity.",page:"home"},
@@ -1274,10 +1390,10 @@ function render(){updateEvent();updateContract();updateAchievements();updateDayN
 document.getElementById("kpiLifetime").textContent=money(g.lifetimeCash);
 document.getElementById("kpiContracts").textContent=g.contractsCompleted;
 document.getElementById("kpiPrestige").textContent=g.prestige;
-applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderFinalTutorial()}
+applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderGuidedTutorial()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
-console.log("Power Plant Tycoon ONE BUILD FINAL CLEAN LAYOUT loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon FINAL GUIDED TUTORIAL SELECTOR FIX loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 </script>
 </body>
 </html>
