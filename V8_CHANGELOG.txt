@@ -1,0 +1,19 @@
+POWER PLANT TYCOON — GRID DOMINION V8
+
+Major rebuild:
+- New widescreen desktop shell + mobile bottom navigation
+- 11 generation technologies
+- 20 sequential grid expansions through Orbital Energy Relay
+- New contracts page, market page, Power Pass page, HQ systems, stats and store
+- Weather/day-night production effects
+- Market history + forecast chart
+- 8 megaprojects
+- Prestige Grid with Grid Credits
+- 10 research technologies, 6 staff departments, 5 operating policies
+- Expanded missions, achievements, weekly challenge and daily streak
+- Auto Generate migration fix: existing unlocked Level 0 becomes Level 1
+- Permanent browser entitlements separated from normal save progress
+- V7/V7.1 save migration remains on PPT_V5
+- New V8 graphics asset pack
+
+Browser store purchases are still TEST hooks. Real App Store purchases require StoreKit when packaged for iOS.
