@@ -189,7 +189,7 @@ function defaultGame(){return {
   weekly:{weekKey:"",baseGenerated:0,claimed:false},dispatches:0,log:["Riverbend Station connected to the grid."],viewStage:"diesel",
   daily:{streak:0,best:0,lastClaimDay:""},megaProjects:Object.fromEntries(MEGAPROJECTS.map(x=>[x.id,false])),plantSpecialization:Object.fromEntries(PLANTS.map(x=>[x.id,0])),
   powerPass:{xp:0,season:2,premium:false,freeClaimed:{},premiumClaimed:{}},gridCredits:0,prestigeTree:Object.fromEntries(PRESTIGE_TREE.map(x=>[x.id,0])),
-  weather:{id:"clear",lastShift:now()},tutorial:{step:0,version:82,completed:false,skipped:false,rewardClaimed:false,newGuideAvailable:false,trainingGrant:false,upgradeGrant:false,serviceGrant:false},stats:{bestSale:0,bestOutput:0,totalFuelCost:0,totalMaintenance:0,totalBuildSpend:0,totalContractRewards:0,marketSales:0}
+  weather:{id:"clear",lastShift:now()},tutorial:{step:0,version:821,completed:false,skipped:false,rewardClaimed:false,newGuideAvailable:false,trainingGrant:false,upgradeGrant:false,sellEnergyGrant:false,serviceGrant:false,transitioning:false},stats:{bestSale:0,bestOutput:0,totalFuelCost:0,totalMaintenance:0,totalBuildSpend:0,totalContractRewards:0,marketSales:0}
 };}
 
 function loadEntitlements(){
@@ -236,7 +236,7 @@ function migrate(){
   g.megaProjects=Object.assign({},d.megaProjects,g.megaProjects||{});g.prestigeTree=Object.assign({},d.prestigeTree,g.prestigeTree||{});g.plantSpecialization=Object.assign({},d.plantSpecialization,g.plantSpecialization||{});
   g.settings=Object.assign({},d.settings,g.settings||{});g.stats=Object.assign({},d.stats,g.stats||{});g.weather=Object.assign({},d.weather,g.weather||{});g.tutorial=Object.assign({},d.tutorial,g.tutorial||{});
   if(!hadTutorial&&hadProgress){g.tutorial.completed=true;g.tutorial.newGuideAvailable=true;}
-  if((Number(g.tutorial.version)||0)<82){g.tutorial.version=82;if(hadProgress)g.tutorial.newGuideAvailable=true;}
+  if((Number(g.tutorial.version)||0)<821){g.tutorial.version=821;if(hadProgress&&g.tutorial.completed)g.tutorial.newGuideAvailable=true;}
   if(!g.regions)g.regions={riverbend:true};g.regions.riverbend=true;
   if(!g.log)g.log=[];if(!g.missions)g.missions={};if(!g.achievements)g.achievements={};
   if(!PLANTS.find(p=>p.id===g.viewStage)||!plantState(g.viewStage).unlocked){const last=[...PLANTS].reverse().find(p=>plantState(p.id).unlocked);g.viewStage=last?last.id:"diesel";}
@@ -479,22 +479,90 @@ let tutorialTargetEl=null;
 function clearTutorialTarget(){if(tutorialTargetEl){tutorialTargetEl.classList.remove("tutorial-target");tutorialTargetEl=null;}document.querySelectorAll("[data-nav]").forEach(x=>x.classList.remove("tutorial-nav-target"));const s=byId("tutorialSpotlight");if(s)s.classList.remove("show");document.body.classList.remove("tutorial-action-step");}
 function tutorialCurrent(){return TUTORIAL_STEPS[clamp(Number(g.tutorial?.step)||0,0,TUTORIAL_STEPS.length-1)];}
 function prepareTutorialStep(step){
-  if(step.action==="build"&&!g.tutorial.trainingGrant&&unlockedPlantCount()===0&&g.cash<85){const grant=85-g.cash;g.cash+=grant;g.lifetimeCash+=grant;g.tutorial.trainingGrant=true;addLog("Training budget issued: "+money(grant)+".");saveGame();toast("🎓 Construction training budget: "+money(grant));}
-  if(step.action==="upgrade"&&!g.tutorial.upgradeGrant&&plantState("diesel")?.unlocked){const need=plantCost(plantById("diesel"));if(g.cash<need){const grant=need-g.cash;g.cash+=grant;g.lifetimeCash+=grant;g.tutorial.upgradeGrant=true;addLog("Operator training budget issued: "+money(grant)+".");saveGame();toast("🎓 Upgrade training budget: "+money(grant));}}
+  if(!g.tutorial) return;
+  g.tutorial.transitioning=false;
+  if(step.action==="sell"&&g.stored<=0&&!g.tutorial.sellEnergyGrant){
+    g.stored+=2;g.generated+=2;g.tutorial.sellEnergyGrant=true;addLog("Tutorial reserve energy added: 2 kWh.");saveGame();toast("🎓 2 kWh training reserve added for the Sell lesson.");
+  }
+  if(step.action==="build"&&!g.tutorial.trainingGrant&&unlockedPlantCount()===0){
+    const need=plantCost(plantById("diesel"));
+    if(g.cash<need){const grant=(need-g.cash)+15;g.cash+=grant;g.lifetimeCash+=grant;g.tutorial.trainingGrant=true;addLog("Construction training budget issued: "+money(grant)+".");saveGame();toast("🎓 Construction training budget: "+money(grant));}
+  }
+  if(step.action==="upgrade"&&!g.tutorial.upgradeGrant&&plantState("diesel")?.unlocked){
+    const need=plantCost(plantById("diesel"));
+    if(g.cash<need){const grant=(need-g.cash)+10;g.cash+=grant;g.lifetimeCash+=grant;g.tutorial.upgradeGrant=true;addLog("Operator training budget issued: "+money(grant)+".");saveGame();toast("🎓 Upgrade training budget: "+money(grant));}
+  }
 }
-function positionTutorialCoach(el){const coach=byId("tutorialCoach"),spot=byId("tutorialSpotlight");if(!coach)return;if(!el||window.innerWidth<=760){coach.style.removeProperty("left");coach.style.removeProperty("right");coach.style.removeProperty("top");coach.style.removeProperty("bottom");if(spot)spot.classList.remove("show");return;}const r=el.getBoundingClientRect(),gap=24,cw=Math.min(500,window.innerWidth-40),ch=Math.min(coach.offsetHeight||460,window.innerHeight-40);let left=r.right+gap,top=Math.max(20,r.top-18);if(left+cw>window.innerWidth-20)left=r.left-cw-gap;if(left<20){left=window.innerWidth-cw-24;top=20;}if(top+ch>window.innerHeight-20)top=Math.max(20,window.innerHeight-ch-20);coach.style.left=left+"px";coach.style.right="auto";coach.style.top=top+"px";coach.style.bottom="auto";if(spot){spot.style.left=Math.max(5,r.left-9)+"px";spot.style.top=Math.max(5,r.top-9)+"px";spot.style.width=Math.min(window.innerWidth-10,r.width+18)+"px";spot.style.height=Math.min(window.innerHeight-10,r.height+18)+"px";spot.classList.add("show");}}
-function renderTutorialStep(){const overlay=byId("tutorialOverlay");if(!overlay)return;const step=tutorialCurrent(),i=g.tutorial.step||0;overlay.classList.add("show");overlay.classList.toggle("intro",!step.selector);overlay.setAttribute("aria-hidden","false");document.body.classList.add("tutorial-running");document.body.classList.toggle("tutorial-action-step",!!step.action);byId("tutorialStepCount").textContent=`STEP ${i+1} OF ${TUTORIAL_STEPS.length}`;byId("tutorialStepTitle").textContent=step.title;byId("tutorialStepText").textContent=step.text;byId("tutorialProgressBar").style.width=((i+1)/TUTORIAL_STEPS.length*100)+"%";byId("tutorialStepDots").innerHTML=TUTORIAL_STEPS.map((_,n)=>`<i class="${n<i?"done":n===i?"active":""}"></i>`).join("");const task=byId("tutorialTask");task.innerHTML=`<strong>${step.action?"YOUR NEXT ACTION":"WHAT TO KNOW"}</strong>${step.task}`;task.className="tutorial-task "+(step.action?"action":"");byId("tutorialTip").innerHTML="💡 <b>TIP:</b> "+step.tip;byId("tutorialBackBtn").disabled=i===0;const next=byId("tutorialNextBtn");next.disabled=false;next.textContent=step.action?"SHOW ME THE ACTION ➜":(i===TUTORIAL_STEPS.length-1?"FINISH TUTORIAL":"NEXT ➜");clearTutorialTarget();document.body.classList.toggle("tutorial-action-step",!!step.action);const nav=document.querySelector(`[data-nav="${step.page}"]`);if(nav)nav.classList.add("tutorial-nav-target");if(!document.getElementById(step.page)?.classList.contains("active"))showPage(step.page,nav);setTimeout(()=>{clearTutorialTarget();document.body.classList.toggle("tutorial-action-step",!!step.action);if(nav)nav.classList.add("tutorial-nav-target");if(step.selector){const el=document.querySelector(step.selector);if(el){tutorialTargetEl=el;el.classList.add("tutorial-target");el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"});setTimeout(()=>positionTutorialCoach(el),120);}else positionTutorialCoach(null);}else positionTutorialCoach(null);},120);}
-function tutorialAssist(){const step=tutorialCurrent();if(!step.selector)return;const el=document.querySelector(step.selector);if(el){el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"});el.animate([{transform:"scale(1)"},{transform:"scale(1.035)"},{transform:"scale(1)"}],{duration:650});positionTutorialCoach(el);}}
+function tutorialStepSatisfied(step){
+  if(!step?.action)return false;
+  if(step.action==="generate")return (Number(g.generated)||0)>0;
+  if(step.action==="sell")return (Number(g.sold)||0)>0;
+  if(step.action==="build")return !!plantState("diesel")?.unlocked;
+  if(step.action==="upgrade")return (Number(plantState("diesel")?.level)||0)>=2;
+  return false;
+}
+function tutorialRecoverProgress(){
+  let guard=0;
+  while(guard++<4){
+    const step=tutorialCurrent();
+    if(!step?.action||!tutorialStepSatisfied(step))break;
+    if((g.tutorial.step||0)>=TUTORIAL_STEPS.length-1)break;
+    g.tutorial.step++;
+  }
+}
+function positionTutorialCoach(el){
+  const coach=byId("tutorialCoach"),spot=byId("tutorialSpotlight");if(!coach)return;
+  if(!el||window.innerWidth<=760){coach.style.removeProperty("left");coach.style.removeProperty("right");coach.style.removeProperty("top");coach.style.removeProperty("bottom");if(spot)spot.classList.remove("show");return;}
+  const r=el.getBoundingClientRect(),gap=28,cw=Math.min(500,window.innerWidth-48),ch=Math.min(coach.offsetHeight||460,window.innerHeight-48);
+  let left=r.right+gap,top=clamp(r.top-28,24,Math.max(24,window.innerHeight-ch-24));
+  if(left+cw>window.innerWidth-24)left=r.left-cw-gap;
+  if(left<24){left=window.innerWidth-cw-32;top=clamp(r.bottom+18,24,Math.max(24,window.innerHeight-ch-24));}
+  coach.style.left=left+"px";coach.style.right="auto";coach.style.top=top+"px";coach.style.bottom="auto";
+  if(spot){spot.style.left=Math.max(6,r.left-10)+"px";spot.style.top=Math.max(6,r.top-10)+"px";spot.style.width=Math.min(window.innerWidth-12,r.width+20)+"px";spot.style.height=Math.min(window.innerHeight-12,r.height+20)+"px";spot.classList.add("show");}
+}
+function renderTutorialStep(){
+  const overlay=byId("tutorialOverlay");if(!overlay)return;
+  tutorialRecoverProgress();
+  const step=tutorialCurrent(),i=g.tutorial.step||0;prepareTutorialStep(step);
+  overlay.classList.add("show");overlay.classList.toggle("intro",!step.selector);overlay.setAttribute("aria-hidden","false");
+  document.body.classList.add("tutorial-running");document.body.classList.toggle("tutorial-action-step",!!step.action);
+  byId("tutorialStepCount").textContent=`STEP ${i+1} OF ${TUTORIAL_STEPS.length}`;byId("tutorialStepTitle").textContent=step.title;byId("tutorialStepText").textContent=step.text;byId("tutorialProgressBar").style.width=((i+1)/TUTORIAL_STEPS.length*100)+"%";
+  byId("tutorialStepDots").innerHTML=TUTORIAL_STEPS.map((_,n)=>`<i class="${n<i?"done":n===i?"active":""}"></i>`).join("");
+  const task=byId("tutorialTask");task.innerHTML=`<strong>${step.action?"YOUR NEXT ACTION":"WHAT TO KNOW"}</strong>${step.task}`;task.className="tutorial-task "+(step.action?"action":"");
+  byId("tutorialTip").innerHTML="💡 <b>TIP:</b> "+step.tip;
+  byId("tutorialBackBtn").disabled=i===0||!!g.tutorial.transitioning;
+  const next=byId("tutorialNextBtn");next.disabled=!!g.tutorial.transitioning;next.textContent=step.action?"SHOW ME THE ACTION ➜":(i===TUTORIAL_STEPS.length-1?"FINISH TUTORIAL":"NEXT ➜");
+  clearTutorialTarget();document.body.classList.toggle("tutorial-action-step",!!step.action);
+  const nav=document.querySelector(`[data-nav="${step.page}"]`);if(nav)nav.classList.add("tutorial-nav-target");
+  if(!document.getElementById(step.page)?.classList.contains("active"))showPage(step.page,nav);
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    clearTutorialTarget();document.body.classList.toggle("tutorial-action-step",!!step.action);if(nav)nav.classList.add("tutorial-nav-target");
+    if(step.selector){const el=document.querySelector(step.selector);if(el){tutorialTargetEl=el;el.classList.add("tutorial-target");el.scrollIntoView({behavior:"auto",block:"center",inline:"nearest"});requestAnimationFrame(()=>positionTutorialCoach(el));}else positionTutorialCoach(null);}else positionTutorialCoach(null);
+  }));
+  saveGame();
+}
+function tutorialAssist(){const step=tutorialCurrent();if(!step.selector)return;const el=document.querySelector(step.selector);if(el){el.scrollIntoView({behavior:"auto",block:"center",inline:"nearest"});requestAnimationFrame(()=>{positionTutorialCoach(el);el.animate([{transform:"scale(1)"},{transform:"scale(1.035)"},{transform:"scale(1)"}],{duration:520});});}}
 function tutorialPrimary(){const step=tutorialCurrent();if(step.action){tutorialAssist();return;}tutorialNext();}
-function openTutorial(manual=false){migrate();if(manual){g.tutorial.step=0;g.tutorial.completed=false;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;}prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}
+function openTutorial(manual=false){migrate();if(manual){g.tutorial.step=0;g.tutorial.completed=false;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;g.tutorial.transitioning=false;}else tutorialRecoverProgress();prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}
 function openTutorialManual(){openTutorial(true);}
-function closeTutorialUI(){const o=byId("tutorialOverlay");if(o){o.classList.remove("show","intro");o.setAttribute("aria-hidden","true");}document.body.classList.remove("tutorial-running","tutorial-action-step");clearTutorialTarget();}
-function tutorialNext(){const step=tutorialCurrent();if(step.action){tutorialAssist();return;}if((g.tutorial.step||0)>=TUTORIAL_STEPS.length-1){finishTutorial();return;}g.tutorial.step++;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}
-function tutorialBack(){if((g.tutorial.step||0)<=0)return;g.tutorial.step--;saveGame();renderTutorialStep();}
-function skipTutorial(){g.tutorial.completed=true;g.tutorial.skipped=true;g.tutorial.newGuideAvailable=false;saveGame();closeTutorialUI();toast("Tutorial skipped. Use 🎓 GUIDE anytime to replay it.");}
-function finishTutorial(){if(!g.tutorial.rewardClaimed){g.tutorial.rewardClaimed=true;g.cash+=750;g.lifetimeCash+=750;g.boostUntil=Math.max(g.boostUntil,now()+5*60*1000);addLog("Operator Experience tutorial completed. $750 training reward and 5-minute boost received.");}g.tutorial.completed=true;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;saveGame();closeTutorialUI();render();toast("🎓 Tutorial complete • $750 + 5-minute boost!");}
-function tutorialAction(action){if(!byId("tutorialOverlay")?.classList.contains("show"))return;const step=tutorialCurrent();if(step.action!==action)return;const task=byId("tutorialTask");if(task){task.className="tutorial-task done";task.innerHTML="<strong>✓ COMPLETE</strong>Great job — moving to the next lesson.";}clearTutorialTarget();setTimeout(()=>{if((g.tutorial.step||0)<TUTORIAL_STEPS.length-1){g.tutorial.step++;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}else finishTutorial();},600);}
-window.addEventListener("resize",()=>{if(byId("tutorialOverlay")?.classList.contains("show")&&tutorialTargetEl)positionTutorialCoach(tutorialTargetEl);});
+function closeTutorialUI(){const o=byId("tutorialOverlay");if(o){o.classList.remove("show","intro");o.setAttribute("aria-hidden","true");}g.tutorial.transitioning=false;document.body.classList.remove("tutorial-running","tutorial-action-step");clearTutorialTarget();}
+function tutorialNext(){if(g.tutorial.transitioning)return;const step=tutorialCurrent();if(step.action){tutorialAssist();return;}if((g.tutorial.step||0)>=TUTORIAL_STEPS.length-1){finishTutorial();return;}g.tutorial.step++;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}
+function tutorialBack(){if(g.tutorial.transitioning||(g.tutorial.step||0)<=0)return;g.tutorial.step--;saveGame();renderTutorialStep();}
+function skipTutorial(){if(g.tutorial.transitioning)return;g.tutorial.completed=true;g.tutorial.skipped=true;g.tutorial.newGuideAvailable=false;saveGame();closeTutorialUI();toast("Tutorial skipped. Use 🎓 GUIDE anytime to replay it.");}
+function finishTutorial(){if(!g.tutorial.rewardClaimed){g.tutorial.rewardClaimed=true;g.cash+=750;g.lifetimeCash+=750;g.boostUntil=Math.max(g.boostUntil,now()+5*60*1000);addLog("Operator Experience tutorial completed. $750 training reward and 5-minute boost received.");}g.tutorial.completed=true;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;g.tutorial.transitioning=false;saveGame();closeTutorialUI();render();toast("🎓 Tutorial complete • $750 + 5-minute boost!");}
+function tutorialAction(action){
+  const overlay=byId("tutorialOverlay");if(!overlay?.classList.contains("show")||g.tutorial.transitioning)return;
+  const step=tutorialCurrent(),stepIndex=g.tutorial.step||0;if(step.action!==action)return;
+  g.tutorial.transitioning=true;saveGame();
+  const task=byId("tutorialTask");if(task){task.className="tutorial-task done";task.innerHTML="<strong>✓ COMPLETE</strong>Great job — moving to the next lesson.";}
+  const next=byId("tutorialNextBtn"),back=byId("tutorialBackBtn");if(next)next.disabled=true;if(back)back.disabled=true;clearTutorialTarget();
+  setTimeout(()=>{
+    if(!byId("tutorialOverlay")?.classList.contains("show"))return;
+    if((g.tutorial.step||0)!==stepIndex){g.tutorial.transitioning=false;return;}
+    if((g.tutorial.step||0)<TUTORIAL_STEPS.length-1){g.tutorial.step++;g.tutorial.transitioning=false;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}else finishTutorial();
+  },420);
+}
+window.addEventListener("resize",()=>{if(byId("tutorialOverlay")?.classList.contains("show")&&tutorialTargetEl)requestAnimationFrame(()=>positionTutorialCoach(tutorialTargetEl));});
 /* ================= END V8.2 OPERATOR EXPERIENCE TUTORIAL ================= */
 
 function render(){migrate();updateEvent();updateContract();shiftWeather();updateAchievements();renderTop();renderEmpireStrip();renderHero();renderEvent();renderHomeCards();renderPlants();renderRegions();renderContracts();renderMarket();renderCompany();renderGoals();renderStats();renderStore();}

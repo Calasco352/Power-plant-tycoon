@@ -1,0 +1,12 @@
+POWER PLANT TYCOON — GRID DOMINION V8.2.1
+TUTORIAL STABILITY HOTFIX
+
+- Prevents tutorial action steps from jumping or double-advancing.
+- Tutorial action completion is locked during transitions.
+- Recovers correctly if the game refreshes after an action was already completed.
+- Adds 2 kWh training reserve before the Sell Power lesson if needed.
+- Construction and upgrade training budgets now use the real current Diesel cost.
+- Tutorial highlighting uses instant stable scrolling instead of moving during smooth scroll.
+- Coach positioning recalculates after the target is settled.
+- Cache version bumped to 821.
+- Existing saves and permanent entitlements are preserved.
