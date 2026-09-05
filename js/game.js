@@ -20,7 +20,7 @@ const CONTRACTS=[{id:"c1",name:"Town Utility Contract",required:2,duration:60,ra
 const CORPORATE=[{id:"eff",name:"High-Efficiency Operations",desc:"+5% production efficiency per level",base:2500},{id:"maint",name:"Predictive Maintenance",desc:"Slower equipment condition loss",base:4000},{id:"fuel",name:"Fuel Procurement",desc:"Reduces fuel expense by 5% per level",base:6000},{id:"grid",name:"Grid Optimization",desc:"+4% sale value per level",base:8000}];
 const MISSIONS=[{id:"m1",label:"Generate 100 kWh",type:"generated",target:100,reward:150},{id:"m2",label:"Earn $1,000 lifetime cash",type:"lifetimeCash",target:1000,reward:500},{id:"m3",label:"Own 5 plant levels",type:"levels",target:5,reward:1200},{id:"m4",label:"Reach 50 kWh/s",type:"output",target:50,reward:3500},{id:"m5",label:"Complete 3 contracts",type:"contracts",target:3,reward:7500}];
 const ACH=[{id:"a1",label:"First Spark",desc:"Generate your first 10 kWh",type:"generated",target:10},{id:"a2",label:"Plant Operator",desc:"Unlock the Steam Turbine",type:"steam",target:1},{id:"a3",label:"Grid Builder",desc:"Unlock a second region",type:"regions",target:2},{id:"a4",label:"Power Mogul",desc:"Earn $50,000 lifetime cash",type:"lifetimeCash",target:50000},{id:"a5",label:"Nuclear Age",desc:"Unlock the Nuclear Plant",type:"nuclear",target:1},{id:"a6",label:"Master Operator",desc:"Reach operator level 10",type:"operator",target:10}];
-const defaultGame=()=>({cash:0,stored:0,generated:0,sold:0,lifetimeCash:0,tapLevel:0,prestige:0,boostUntil:0,lastSeen:Date.now(),lastDaily:0,starter:false,maintenance:100,engineers:0,operatorXP:0,operatorLevel:1,regions:{riverbend:true},plants:Object.fromEntries(PLANTS.map(p=>[p.id,{unlocked:false,level:0,condition:100}])),corporate:{eff:0,maint:0,fuel:0,grid:0},contractsCompleted:0,activeContract:null,missions:{},achievements:{},event:null,eventCooldown:0,settings:{sound:true,haptics:true,reducedMotion:false,compact:true},
+const defaultGame=()=>({cash:0,stored:0,generated:0,sold:0,lifetimeCash:0,tapLevel:0,prestige:0,boostUntil:0,lastSeen:Date.now(),lastDaily:0,starter:false,autoGenerateUnlocked:false,autoGenerate:false,maintenance:100,engineers:0,operatorXP:0,operatorLevel:1,regions:{riverbend:true},plants:Object.fromEntries(PLANTS.map(p=>[p.id,{unlocked:false,level:0,condition:100}])),corporate:{eff:0,maint:0,fuel:0,grid:0},contractsCompleted:0,activeContract:null,missions:{},achievements:{},event:null,eventCooldown:0,settings:{sound:true,haptics:true,reducedMotion:false,compact:true},
 tutorialStep:0,finalShown:false,endgame:{},
 market:{price:1,demand:1,trend:0,lastShift:Date.now()},
 battery:{level:0,stored:0},
@@ -32,16 +32,23 @@ weekly:{weekKey:"",progress:0,claimed:false},
 dispatches:0,finalTutorial:{step:0,done:false,disabled:false},
 log:["Riverbend Station connected to the grid."]});
 let g;
+
 try{
   const existingSave=localStorage.getItem("PPT_V5");
+
   if(existingSave&&!localStorage.getItem("PPT_FINAL_BACKUP_1")){
     localStorage.setItem("PPT_FINAL_BACKUP_1",existingSave);
   }
-  g=JSON.parse(existingSave)||defaultGame();
+
+  g=existingSave ? JSON.parse(existingSave) : defaultGame();
+
 }catch(e){
   g=defaultGame();
 }
+
 function migrate(){
+if(g.autoGenerateUnlocked==null)g.autoGenerateUnlocked=false;
+if(g.autoGenerate==null)g.autoGenerate=false;
 if(!g.plants)g.plants={};
 PLANTS.forEach(p=>{
   if(!g.plants[p.id])g.plants[p.id]={unlocked:false,level:0,condition:100};
@@ -403,7 +410,34 @@ function renderEndgame(){
   if(complete&&!g.finalShown){g.finalShown=true;saveGame();document.getElementById("finalModal").classList.add("show")}
 }
 
-function tapGenerate(){playPremiumSfx("generate");feedback("tap");const a=tapPower();g.stored+=a;g.generated+=a;addXP(.2);render()}function sellPower(){playPremiumSfx("cash");feedback("big");if(g.stored<=0){toast("Generate some power first.");return}let p=gridSaleMult()*marketSaleMult();if(g.event&&g.event.type==="surge")p*=1.75;if(g.activeContract)p*=g.activeContract.rate;const e=g.stored*p;g.cash+=e;g.lifetimeCash+=e;g.sold+=g.stored;addXP(Math.max(1,g.stored/200));addLog("Sold "+num(g.stored)+" kWh for "+money(e)+".");g.stored=0;saveGame();render();toast("Grid sale: "+money(e))}
+function tapGenerate(){playPremiumSfx("generate");feedback("tap");const a=tapPower();g.stored+=a;g.generated+=a;addXP(.2);render()}
+// ===== AUTO GENERATE POWER =====
+function toggleAutoGenerate(){
+    if(!g.autoGenerateUnlocked){
+        toast("Auto Generate is locked. Purchase it in the Store.");
+        return;
+    }
+
+    g.autoGenerate = !g.autoGenerate;
+    saveGame();
+    render();
+}
+
+function runAutoGenerate(){
+    if(!g.autoGenerateUnlocked || !g.autoGenerate) return;
+
+    const amount = tapPower();
+    g.stored += amount;
+    g.generated += amount;
+
+    if(typeof addXP === "function"){
+        addXP(.2);
+    }
+}
+
+setInterval(runAutoGenerate, 1000);
+
+function sellPower(){playPremiumSfx("cash");feedback("big");if(g.stored<=0){toast("Generate some power first.");return}let p=gridSaleMult()*marketSaleMult();if(g.event&&g.event.type==="surge")p*=1.75;if(g.activeContract)p*=g.activeContract.rate;const e=g.stored*p;g.cash+=e;g.lifetimeCash+=e;g.sold+=g.stored;addXP(Math.max(1,g.stored/200));addLog("Sold "+num(g.stored)+" kWh for "+money(e)+".");g.stored=0;saveGame();render();toast("Grid sale: "+money(e))}
 function upgradeTap(){const c=tapUpgradeCost();if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;g.tapLevel++;addXP(4);addLog("Manual generator upgraded to Level "+(g.tapLevel+1)+".");saveGame();render()}function buildPlant(id){playPremiumSfx("upgrade");feedback("big");const p=PLANTS.find(x=>x.id===id),s=g.plants[id],c=plantCost(p);if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;if(!s.unlocked){s.unlocked=true;g.viewStage=id;s.level=1;s.condition=100;addXP(20);addLog(p.name+" commissioned at Riverbend.");toast(p.name+" ONLINE!")}else{s.level++;s.condition=Math.min(100,s.condition+8);addXP(10);addLog(p.name+" upgraded to Level "+s.level+".")}saveGame();render()}
 function buyRegion(id){feedback("big");const r=REGIONS.find(x=>x.id===id);if(g.regions[id])return;if(g.cash<r.cost){toast("Need "+money(r.cost));return}g.cash-=r.cost;g.regions[id]=true;addXP(30);addLog(r.name+" connected to company grid.");saveGame();render()}
 function performMaintenance(){const c=maintenanceCost();if(g.cash<c){toast("Maintenance requires "+money(c));return}g.cash-=c;g.maintenance=100;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s.unlocked)s.condition=Math.min(100,s.condition+35+g.engineers*5)});addXP(10);addLog("Scheduled maintenance completed.");saveGame();render()}

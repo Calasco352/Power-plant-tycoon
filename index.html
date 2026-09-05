@@ -159,8 +159,10 @@
 </div>
 
 </div>
-<div class="generate-wrap"><button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button></div>
-<div class="cp-equipment">
+<div class="generate-wrap">
+  <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
+  <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
+</div><div class="cp-equipment">
   <div class="cp-equip"><strong>🔥 FUEL SYSTEM</strong><small id="cpFuelText">Ready</small><div class="bar"><i id="cpFuelBar" style="width:85%"></i></div></div>
   <div class="cp-equip"><strong>🌀 TURBINE</strong><small id="cpTurbineText">Online</small><div class="bar"><i id="cpTurbineBar" style="width:92%"></i></div></div>
   <div class="cp-equip"><strong>⚙️ GENERATOR</strong><small id="cpGeneratorText">Online</small><div class="bar"><i id="cpGeneratorBar" style="width:96%"></i></div></div>
