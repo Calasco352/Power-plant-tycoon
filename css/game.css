@@ -1948,3 +1948,263 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
     bottom:6px!important;
   }
 }
+
+/* =========================================================
+   TRUE IPHONE FIX — ACTUAL HTML STRUCTURE
+   ========================================================= */
+
+@media (max-width:760px){
+
+  /* HOME PAGE STACKS NORMALLY */
+  #home .hero{
+    display:flex!important;
+    flex-direction:column!important;
+    width:100%!important;
+    height:auto!important;
+    min-height:0!important;
+    overflow:visible!important;
+  }
+
+  /* SCENE TITLE BECOMES NORMAL BLOCK ABOVE IMAGE */
+  #home .scene-label{
+    position:relative!important;
+    inset:auto!important;
+    order:1!important;
+
+    width:100%!important;
+    max-width:100%!important;
+
+    padding:10px 14px 8px!important;
+    margin:0!important;
+
+    background:#07141d!important;
+
+    z-index:2!important;
+  }
+
+  #home .scene-label h2{
+    font-size:22px!important;
+    line-height:1.05!important;
+    margin:0!important;
+    white-space:normal!important;
+  }
+
+  #home .scene-label p{
+    font-size:11px!important;
+    margin:4px 0 0!important;
+    white-space:normal!important;
+  }
+
+  /* GRID / WEATHER STATUS */
+  #home .statusstrip{
+    position:relative!important;
+    inset:auto!important;
+    order:2!important;
+
+    display:flex!important;
+    flex-wrap:wrap!important;
+    gap:6px!important;
+
+    width:100%!important;
+
+    padding:0 12px 8px!important;
+    margin:0!important;
+
+    background:#07141d!important;
+  }
+
+  #home .statusstrip .pill{
+    position:relative!important;
+    inset:auto!important;
+
+    font-size:9px!important;
+    padding:5px 8px!important;
+  }
+
+  /* REMOVE LARGE PLANT ONLINE CARD ENTIRELY ON IPHONE */
+  #home .cp-plant-status{
+    display:none!important;
+  }
+
+  /* FACILITY ART */
+  #home .yard{
+    order:3!important;
+
+    position:relative!important;
+
+    width:100%!important;
+    height:260px!important;
+    min-height:260px!important;
+    max-height:260px!important;
+
+    margin:0!important;
+
+    overflow:hidden!important;
+
+    background-size:cover!important;
+    background-position:center center!important;
+  }
+
+  /* DON'T CREATE DUPLICATE ONLINE BADGE */
+  #home .yard::before{
+    display:none!important;
+    content:none!important;
+  }
+
+  /* HIDE EXTRA ART LABELS THAT COVER THE PICTURE */
+  #home #stageArtLabel,
+  #home #v10StageLabel,
+  #home .premium-art-badge{
+    display:none!important;
+  }
+
+  /* PLANT SELECTOR — SINGLE HORIZONTAL ROW */
+  #home .cp-stage-rail{
+    position:absolute!important;
+
+    left:8px!important;
+    right:8px!important;
+    bottom:8px!important;
+    top:auto!important;
+
+    width:auto!important;
+    height:52px!important;
+    max-height:52px!important;
+
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    align-items:center!important;
+
+    gap:5px!important;
+
+    padding:4px!important;
+    margin:0!important;
+
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+
+    background:rgba(2,12,18,.78)!important;
+    border-radius:11px!important;
+
+    z-index:50!important;
+  }
+
+  #home .cp-stage{
+    position:relative!important;
+    inset:auto!important;
+
+    flex:0 0 58px!important;
+
+    width:58px!important;
+    min-width:58px!important;
+    max-width:58px!important;
+
+    height:44px!important;
+    min-height:44px!important;
+
+    margin:0!important;
+    padding:3px!important;
+
+    font-size:8px!important;
+
+    transform:none!important;
+  }
+
+  /* LIVE FACILITY BADGE */
+  #home .view-stage-badge{
+    position:absolute!important;
+
+    left:10px!important;
+    bottom:66px!important;
+    top:auto!important;
+
+    max-width:65%!important;
+
+    font-size:7px!important;
+    padding:5px 7px!important;
+
+    z-index:51!important;
+  }
+
+  /* GENERATE BUTTON NOW DIRECTLY BELOW ART */
+  #home .generate-wrap{
+    order:4!important;
+
+    width:100%!important;
+
+    margin:0!important;
+    padding:8px!important;
+
+    background:#07141d!important;
+  }
+
+  #home .generate{
+    width:100%!important;
+
+    min-height:58px!important;
+
+    margin:0!important;
+    padding:12px!important;
+
+    font-size:17px!important;
+    font-weight:900!important;
+
+    border-radius:13px!important;
+  }
+
+  /* EQUIPMENT ROW BELOW BUTTON */
+  #home .cp-equipment{
+    order:5!important;
+
+    display:grid!important;
+    grid-template-columns:repeat(2,minmax(0,1fr))!important;
+
+    gap:6px!important;
+
+    width:100%!important;
+
+    margin:0!important;
+    padding:0 8px 10px!important;
+
+    background:#07141d!important;
+  }
+
+  #home .cp-equip{
+    min-width:0!important;
+    padding:7px!important;
+    font-size:8px!important;
+  }
+
+  /* EVERYTHING ELSE BELOW */
+  #home .tutorial,
+  #home #eventBox{
+    order:6!important;
+  }
+}
+
+/* SMALL IPHONES */
+@media (max-width:390px){
+
+  #home .yard{
+    height:235px!important;
+    min-height:235px!important;
+    max-height:235px!important;
+  }
+
+  #home .scene-label h2{
+    font-size:20px!important;
+  }
+
+  #home .cp-stage{
+    flex-basis:54px!important;
+    width:54px!important;
+    min-width:54px!important;
+    max-width:54px!important;
+  }
+
+  #home .generate{
+    min-height:54px!important;
+    font-size:16px!important;
+  }
+}
