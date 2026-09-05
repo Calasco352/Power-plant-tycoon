@@ -2216,7 +2216,6 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
   gap:10px!important;
   align-items:stretch!important;
 }
-
 #home .auto-generate-btn{
   width:100%;
   min-height:58px;
@@ -2231,46 +2230,11 @@ linear-gradient(#02070ab8,#02070af0),url("../images/plants/nuclear_night.png") c
   letter-spacing:.25px;
   cursor:pointer;
 }
-
-#home .auto-generate-btn:active{
-  transform:translateY(3px);
-  box-shadow:0 4px 0 #07131c;
-}
-
-#home .auto-generate-btn.locked{
-  color:#c5d0d8;
-  background:linear-gradient(180deg,#46515a,#29343c);
-  border-color:#65747d;
-}
-
-#home .auto-generate-btn.on{
-  color:#04170c;
-  background:linear-gradient(180deg,#76f5aa,#2bc86e);
-  border-color:#72f2a5;
-  box-shadow:0 7px 0 #11733d,0 0 22px rgba(46,225,118,.28);
-}
-
-.auto-generate-store{
-  background:linear-gradient(90deg,rgba(165,92,255,.08),transparent);
-}
-
-#autoGenerateStoreBtn:disabled{
-  opacity:.88;
-  cursor:default;
-}
-
+#home .auto-generate-btn:active{transform:translateY(3px);box-shadow:0 4px 0 #07131c}
+#home .auto-generate-btn.locked{color:#c9d4dc;background:linear-gradient(180deg,#3c4850,#202a31);border-color:#596973}
+#home .auto-generate-btn.on{color:#062113;background:linear-gradient(180deg,#65ef9c,#27bd67);border-color:#66ff9f;box-shadow:0 7px 0 #0d6b37,0 0 20px rgba(46,225,118,.25)}
+#autoGeneratePurchaseBtn:disabled{opacity:.72;cursor:default}
 @media(max-width:760px){
-  #home .generate-wrap{
-    grid-template-columns:1fr!important;
-    gap:8px!important;
-  }
-
-  #home .generate,
-  #home .auto-generate-btn{
-    min-height:54px!important;
-  }
-
-  #home .auto-generate-btn{
-    font-size:15px!important;
-  }
+  #home .generate-wrap{grid-template-columns:1fr!important;gap:8px!important}
+  #home .auto-generate-btn{min-height:54px;font-size:15px}
 }

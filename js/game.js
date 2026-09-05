@@ -412,62 +412,72 @@ function renderEndgame(){
 
 function tapGenerate(){playPremiumSfx("generate");feedback("tap");const a=tapPower();g.stored+=a;g.generated+=a;addXP(.2);render()}
 // ===== AUTO GENERATE POWER =====
-const AUTO_GENERATE_PRODUCT_ID="powerplanttycoon.autogenerate";
+function toggleAutoGenerate(){
+    if(!g.autoGenerateUnlocked){
+        toast("Auto Generate is locked. Unlock it in the Store.");
+        const storeNav=document.querySelector('[data-nav="store"]');
+        if(typeof showPage==="function")showPage("store",storeNav);
+        return;
+    }
 
-function grantAutoGeneratePurchase(){
-  g.autoGenerateUnlocked=true;
-  g.autoGenerate=false;
-  addLog("Auto Generate permanently unlocked.");
-  saveGame();
-  render();
-  toast("🤖 Auto Generate unlocked!");
+    g.autoGenerate = !g.autoGenerate;
+    saveGame();
+    render();
+}
+
+function completeAutoGeneratePurchase(){
+    g.autoGenerateUnlocked=true;
+    g.autoGenerate=false;
+    addLog("Auto Generate permanently unlocked.");
+    saveGame();
+    render();
+    toast("🤖 Auto Generate unlocked!");
 }
 
 function purchaseAutoGenerate(){
-  if(g.autoGenerateUnlocked){toast("Auto Generate is already owned.");return}
-
-  // iPhone/App Store build: the native StoreKit wrapper can register this message handler.
-  const iosPurchase=window.webkit?.messageHandlers?.purchaseAutoGenerate;
-  if(iosPurchase){
-    iosPurchase.postMessage({productId:AUTO_GENERATE_PRODUCT_ID});
-    toast("Opening purchase…");
-    return;
-  }
-
-  // Browser/GitHub Pages testing only. No real money is charged here.
-  toast("TEST PURCHASE • Auto Generate");
-  grantAutoGeneratePurchase();
+    if(g.autoGenerateUnlocked){
+        toast("Auto Generate is already unlocked.");
+        return;
+    }
+    // Browser test purchase. When packaged for iPhone, this hook can be replaced by StoreKit.
+    completeAutoGeneratePurchase();
 }
 
-// Native iOS wrapper calls this after StoreKit confirms ownership/purchase.
-window.completeAutoGeneratePurchase=function(success){
-  if(success)grantAutoGeneratePurchase();
-  else toast("Purchase not completed.");
-};
-
-function toggleAutoGenerate(){
-  if(!g.autoGenerateUnlocked){
-    toast("Auto Generate is locked. Purchase it in the Store.");
-    const storeNav=document.querySelector('[data-nav="store"]');
-    if(storeNav)showPage("store",storeNav);
-    return;
-  }
-
-  g.autoGenerate=!g.autoGenerate;
-  addLog("Auto Generate switched "+(g.autoGenerate?"ON":"OFF")+".");
-  saveGame();
-  render();
+function renderAutoGenerateUI(){
+    const btn=document.getElementById("autoGenerateBtn");
+    if(btn){
+        btn.classList.remove("locked","on");
+        if(!g.autoGenerateUnlocked){
+            btn.textContent="🔒 AUTO GENERATE";
+            btn.classList.add("locked");
+        }else if(g.autoGenerate){
+            btn.textContent="🤖 AUTO GENERATE: ON";
+            btn.classList.add("on");
+        }else{
+            btn.textContent="🤖 AUTO GENERATE: OFF";
+        }
+    }
+    const buy=document.getElementById("autoGeneratePurchaseBtn");
+    if(buy){
+        buy.textContent=g.autoGenerateUnlocked?"OWNED":"TEST BUY";
+        buy.disabled=!!g.autoGenerateUnlocked;
+        buy.className="btn "+(g.autoGenerateUnlocked?"dark":"purple");
+    }
 }
 
 function runAutoGenerate(){
-  if(!g.autoGenerateUnlocked||!g.autoGenerate)return;
-  const amount=tapPower();
-  g.stored+=amount;
-  g.generated+=amount;
-  addXP(.2);
+    if(!g.autoGenerateUnlocked || !g.autoGenerate) return;
+
+    const amount = tapPower();
+    g.stored += amount;
+    g.generated += amount;
+
+    if(typeof addXP === "function"){
+        addXP(.2);
+    }
 }
 
-setInterval(runAutoGenerate,1000);
+setInterval(runAutoGenerate, 1000);
 
 function sellPower(){playPremiumSfx("cash");feedback("big");if(g.stored<=0){toast("Generate some power first.");return}let p=gridSaleMult()*marketSaleMult();if(g.event&&g.event.type==="surge")p*=1.75;if(g.activeContract)p*=g.activeContract.rate;const e=g.stored*p;g.cash+=e;g.lifetimeCash+=e;g.sold+=g.stored;addXP(Math.max(1,g.stored/200));addLog("Sold "+num(g.stored)+" kWh for "+money(e)+".");g.stored=0;saveGame();render();toast("Grid sale: "+money(e))}
 function upgradeTap(){const c=tapUpgradeCost();if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;g.tapLevel++;addXP(4);addLog("Manual generator upgraded to Level "+(g.tapLevel+1)+".");saveGame();render()}function buildPlant(id){playPremiumSfx("upgrade");feedback("big");const p=PLANTS.find(x=>x.id===id),s=g.plants[id],c=plantCost(p);if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;if(!s.unlocked){s.unlocked=true;g.viewStage=id;s.level=1;s.condition=100;addXP(20);addLog(p.name+" commissioned at Riverbend.");toast(p.name+" ONLINE!")}else{s.level++;s.condition=Math.min(100,s.condition+8);addXP(10);addLog(p.name+" upgraded to Level "+s.level+".")}saveGame();render()}
@@ -481,7 +491,7 @@ function missionValue(m){if(m.type==="generated")return g.generated;if(m.type===
 function achievementValue(a){if(a.type==="generated")return g.generated;if(a.type==="steam")return g.plants.steam.unlocked?1:0;if(a.type==="regions")return Object.values(g.regions).filter(Boolean).length;if(a.type==="lifetimeCash")return g.lifetimeCash;if(a.type==="nuclear")return g.plants.nuclear.unlocked?1:0;if(a.type==="operator")return g.operatorLevel;return 0}function updateAchievements(){ACH.forEach(a=>{if(!g.achievements[a.id]&&achievementValue(a)>=a.target){g.achievements[a.id]=true;addLog("Achievement unlocked: "+a.label);toast("🏆 "+a.label)}})}
 function dailyReward(){const now=Date.now(),day=86400000;if(now-g.lastDaily<day){toast("Daily reward in "+Math.ceil((day-(now-g.lastDaily))/3600000)+"h");return}const r=Math.max(250,Math.round(500+output()*150));g.cash+=r;g.lifetimeCash+=r;g.lastDaily=now;addXP(5);addLog("Daily supply drop received: "+money(r));saveGame();render()}
 function activateBoost(){if(Date.now()<g.boostUntil){toast("2× boost is already active.");return}g.boostUntil=Date.now()+10*60*1000;addLog("Grid output boost activated.");saveGame();render()}function maintenancePack(){toast("TEST PURCHASE • Maintenance Pack");g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id].unlocked)g.plants[p.id].condition=100});saveGame();render()}function starterPack(){toast("TEST PURCHASE • Starter Pack");if(g.starter){toast("Starter Pack already claimed.");return}g.starter=true;g.cash+=5000;g.lifetimeCash+=5000;g.boostUntil=Math.max(g.boostUntil,Date.now()+10*60*1000);saveGame();render()}
-function prestige(){if(g.lifetimeCash<50000){toast("Earn $50,000 lifetime cash first.");return}askConfirm("Prestige Company","Reset cash, plants and regions for +10% permanent production?",()=>{const p=g.prestige+1,a=g.achievements,settings=g.settings,autoGenerateUnlocked=g.autoGenerateUnlocked;g=defaultGame();g.prestige=p;g.achievements=a;g.settings=settings;g.autoGenerateUnlocked=autoGenerateUnlocked;g.autoGenerate=false;g.tutorialStep=5;g.log=["Company prestiged."];saveGame();render();feedback("big")})}function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{localStorage.removeItem("PPT_V5");g=defaultGame();saveGame();render();toast("Save reset")})}
+function prestige(){if(g.lifetimeCash<50000){toast("Earn $50,000 lifetime cash first.");return}askConfirm("Prestige Company","Reset cash, plants and regions for +10% permanent production?",()=>{const p=g.prestige+1,a=g.achievements,settings=g.settings,autoGenerateUnlocked=g.autoGenerateUnlocked;g=defaultGame();g.prestige=p;g.achievements=a;g.settings=settings;g.autoGenerateUnlocked=autoGenerateUnlocked;g.tutorialStep=5;g.log=["Company prestiged."];saveGame();render();feedback("big")})}function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const autoGenerateUnlocked=g.autoGenerateUnlocked;localStorage.removeItem("PPT_V5");g=defaultGame();g.autoGenerateUnlocked=autoGenerateUnlocked;saveGame();render();toast("Save reset")})}
 function createEvent(){if(g.event||Date.now()<g.eventCooldown||output()<=0||Math.random()>.03)return;const r=Math.random();if(r<.4)g.event={type:"breakdown",title:"⚠ Turbine Breakdown",text:"Automatic production reduced by 50%.",cost:Math.max(300,output()*35)};else if(r<.72)g.event={type:"surge",title:"📈 Demand Surge",text:"Grid demand is elevated. Power sells for 75% more.",expires:Date.now()+60000};else g.event={type:"inspection",title:"🦺 Safety Inspection",text:"Complete the inspection for a cash and XP bonus.",reward:Math.max(150,output()*20)};g.eventCooldown=Date.now()+90000;addLog(g.event.title);render()}
 function resolveEvent(){if(!g.event)return;if(g.event.type==="breakdown"){if(g.cash<g.event.cost){toast("Repair requires "+money(g.event.cost));return}g.cash-=g.event.cost;g.maintenance=Math.max(60,g.maintenance-5);g.event=null;addXP(8)}else if(g.event.type==="inspection"){const r=g.event.reward;g.cash+=r;g.lifetimeCash+=r;g.event=null;addXP(15)}else g.event=null;saveGame();render()}
 function updateEvent(){if(g.event&&g.event.type==="surge"&&Date.now()>g.event.expires)g.event=null}
@@ -604,34 +614,11 @@ if(g.policy==="maximum")d*=1.35;if(g.policy==="reliability")d*=.55;
 d*=1-Math.min(.45,g.research.materials*.07);g.maintenance=Math.max(0,g.maintenance-d);
 g.reliability=Math.max(40,Math.min(100,98-(100-g.maintenance)*.28+g.staff.safety*1.5+g.research.controls*2));PLANTS.forEach(p=>{const s=g.plants[p.id];if(s.unlocked)s.condition=Math.max(35,s.condition-d*.7)})}
 function payOperatingCosts(){const c=fuelCostPerSecond();if(g.cash>=c)g.cash-=c;else{g.cash=0;g.maintenance=Math.max(0,g.maintenance-.03)}}
-function renderAutoGenerateUI(){
-  const homeBtn=document.getElementById("autoGenerateBtn");
-  if(homeBtn){
-    homeBtn.classList.remove("locked","on");
-    if(!g.autoGenerateUnlocked){
-      homeBtn.textContent="🔒 AUTO GENERATE";
-      homeBtn.classList.add("locked");
-    }else if(g.autoGenerate){
-      homeBtn.textContent="🤖 AUTO GENERATE: ON";
-      homeBtn.classList.add("on");
-    }else{
-      homeBtn.textContent="🤖 AUTO GENERATE: OFF";
-    }
-  }
-
-  const storeBtn=document.getElementById("autoGenerateStoreBtn");
-  if(storeBtn){
-    storeBtn.textContent=g.autoGenerateUnlocked?"OWNED":"TEST BUY";
-    storeBtn.disabled=!!g.autoGenerateUnlocked;
-    storeBtn.className="btn "+(g.autoGenerateUnlocked?"green":"purple");
-  }
-}
-
-function render(){updateEvent();updateContract();updateAchievements();updateDayNight();document.getElementById("cash").textContent=money(g.cash);document.getElementById("power").textContent=num(g.stored)+" kWh";document.getElementById("output").textContent=num(output())+"/s";document.getElementById("tapInfo").textContent=num(tapPower())+" kWh/tap";document.getElementById("tapCost").textContent="Next manual generator upgrade: "+money(tapUpgradeCost());document.getElementById("operatorLevel").textContent=g.operatorLevel;document.getElementById("operatorXP").textContent=Math.floor(g.operatorXP)+" / "+(g.operatorLevel*100);document.getElementById("efficiencyValue").textContent=Math.round(totalMult()*100)+"%";document.getElementById("maintenanceValue").textContent=Math.round(g.maintenance)+"%";document.getElementById("fuelCostValue").textContent=money(fuelCostPerSecond())+"/s";document.getElementById("netValue").textContent=money(netValuePerSecond())+"/s";document.getElementById("maintenanceStatus").textContent=g.maintenance>80?"Healthy":g.maintenance>50?"Service Soon":"Maintenance Required";document.getElementById("engineerInfo").textContent="Engineers: "+g.engineers+" • Next hire: "+money(engineerCost())+" • Service cost: "+money(maintenanceCost());document.getElementById("gridStatus").textContent=g.event&&g.event.type==="breakdown"?"● UNIT TRIPPED":"● GRID ONLINE";let rank="GRID ROOKIE";if(g.lifetimeCash>=10000)rank="PLANT MANAGER";if(g.lifetimeCash>=50000)rank="POWER EXECUTIVE";if(g.lifetimeCash>=250000)rank="GRID BARON";if(g.lifetimeCash>=1000000)rank="ENERGY MOGUL";document.getElementById("rank").textContent=rank+" • LV "+g.operatorLevel;document.getElementById("prestigeInfo").innerHTML="Current prestige: <b>"+g.prestige+"</b> • Permanent production bonus: <b>+"+(g.prestige*10)+"%</b><br><span class='small'>Prestige unlocks after $50,000 lifetime cash. Current: "+money(g.lifetimeCash)+"</span>";renderPlants();renderCorporate();renderRegions();renderContracts();renderMissions();renderAchievements();renderEvent();updateFacility();document.getElementById("activityLog").innerHTML=g.log.map(x=>"<div>"+x+"</div>").join("");
+function render(){updateEvent();updateContract();updateAchievements();updateDayNight();document.getElementById("cash").textContent=money(g.cash);document.getElementById("power").textContent=num(g.stored)+" kWh";document.getElementById("output").textContent=num(output())+"/s";document.getElementById("tapInfo").textContent=num(tapPower())+" kWh/tap";document.getElementById("tapCost").textContent="Next manual generator upgrade: "+money(tapUpgradeCost());document.getElementById("operatorLevel").textContent=g.operatorLevel;document.getElementById("operatorXP").textContent=Math.floor(g.operatorXP)+" / "+(g.operatorLevel*100);document.getElementById("efficiencyValue").textContent=Math.round(totalMult()*100)+"%";document.getElementById("maintenanceValue").textContent=Math.round(g.maintenance)+"%";document.getElementById("fuelCostValue").textContent=money(fuelCostPerSecond())+"/s";document.getElementById("netValue").textContent=money(netValuePerSecond())+"/s";document.getElementById("maintenanceStatus").textContent=g.maintenance>80?"Healthy":g.maintenance>50?"Service Soon":"Maintenance Required";document.getElementById("engineerInfo").textContent="Engineers: "+g.engineers+" • Next hire: "+money(engineerCost())+" • Service cost: "+money(maintenanceCost());document.getElementById("gridStatus").textContent=g.event&&g.event.type==="breakdown"?"● UNIT TRIPPED":"● GRID ONLINE";let rank="GRID ROOKIE";if(g.lifetimeCash>=10000)rank="PLANT MANAGER";if(g.lifetimeCash>=50000)rank="POWER EXECUTIVE";if(g.lifetimeCash>=250000)rank="GRID BARON";if(g.lifetimeCash>=1000000)rank="ENERGY MOGUL";document.getElementById("rank").textContent=rank+" • LV "+g.operatorLevel;renderAutoGenerateUI();document.getElementById("prestigeInfo").innerHTML="Current prestige: <b>"+g.prestige+"</b> • Permanent production bonus: <b>+"+(g.prestige*10)+"%</b><br><span class='small'>Prestige unlocks after $50,000 lifetime cash. Current: "+money(g.lifetimeCash)+"</span>";renderPlants();renderCorporate();renderRegions();renderContracts();renderMissions();renderAchievements();renderEvent();updateFacility();document.getElementById("activityLog").innerHTML=g.log.map(x=>"<div>"+x+"</div>").join("");
 document.getElementById("kpiLifetime").textContent=money(g.lifetimeCash);
 document.getElementById("kpiContracts").textContent=g.contractsCompleted;
 document.getElementById("kpiPrestige").textContent=g.prestige;
-applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderAutoGenerateUI();renderGuidedTutorial();renderPremiumAssetState()}
+applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderGuidedTutorial();renderPremiumAssetState()}
 function handleOffline(){const now=Date.now(),s=Math.min(8*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const p=output()*s*.65,c=fuelCostPerSecond()*s*.65;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=num(p)+" kWh";document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at 65% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+num(p)+" kWh.")}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
 
