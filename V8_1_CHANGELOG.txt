@@ -1,0 +1,21 @@
+POWER PLANT TYCOON — GRID DOMINION V8.1
+
+ONBOARDING OVERHAUL
+- New 11-step guided tutorial that teaches one system at a time.
+- Fresh players automatically start the guide. Existing players can replay it with the new GUIDE button.
+- Interactive spotlight targets for Generate, Sell, Build, Grid, Contracts, Market, HQ and Goals.
+- Tutorial actions auto-advance after the player performs them.
+- Small one-time training budget prevents the first plant step from becoming a grind.
+- Tutorial completion reward: $500 + 5-minute 2x boost.
+- Added a permanent quick SELL POWER button on Home to clarify the core generate → sell loop.
+
+GRID VISUAL OVERHAUL
+- New crisp SVG transmission routes over the grid map.
+- Connected routes glow green; the next route animates cyan; locked paths remain subdued.
+- Numbered grid nodes now show region labels for connected/current/hovered nodes.
+- Added map legend and stronger map readability.
+
+SAVE SAFETY
+- Keeps PPT_V5 save compatibility.
+- Existing players are not forced through the tutorial; a one-time notice points to the GUIDE button.
+- Fresh saves get the full guided onboarding automatically.

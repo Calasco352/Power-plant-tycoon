@@ -189,7 +189,7 @@ function defaultGame(){return {
   weekly:{weekKey:"",baseGenerated:0,claimed:false},dispatches:0,log:["Riverbend Station connected to the grid."],viewStage:"diesel",
   daily:{streak:0,best:0,lastClaimDay:""},megaProjects:Object.fromEntries(MEGAPROJECTS.map(x=>[x.id,false])),plantSpecialization:Object.fromEntries(PLANTS.map(x=>[x.id,0])),
   powerPass:{xp:0,premium:false,freeClaimed:{},premiumClaimed:{}},gridCredits:0,prestigeTree:Object.fromEntries(PRESTIGE_TREE.map(x=>[x.id,0])),
-  weather:{id:"clear",lastShift:now()},stats:{bestSale:0,bestOutput:0,totalFuelCost:0,totalMaintenance:0,totalBuildSpend:0,totalContractRewards:0,marketSales:0}
+  weather:{id:"clear",lastShift:now()},tutorial:{step:0,completed:false,skipped:false,rewardClaimed:false,newGuideAvailable:false,trainingGrant:false},stats:{bestSale:0,bestOutput:0,totalFuelCost:0,totalMaintenance:0,totalBuildSpend:0,totalContractRewards:0,marketSales:0}
 };}
 
 function loadEntitlements(){
@@ -206,6 +206,8 @@ try{
 
 function migrate(){
   const d=defaultGame();
+  const hadTutorial=!!(g&&g.tutorial);
+  const hadProgress=!!(g&&(Number(g.lifetimeCash)>0||Number(g.generated)>25||Number(g.companyLevel)>1));
   if(!g||typeof g!=="object")g=d;
   for(const [k,v] of Object.entries(d)){if(g[k]===undefined||g[k]===null)g[k]=deepClone(v);}
   if(!g.plants)g.plants=defaultCorePlants();
@@ -222,7 +224,7 @@ function migrate(){
   g.market=Object.assign({},d.market,g.market||{});if(!Array.isArray(g.market.history)||!g.market.history.length)g.market.history=[Number(g.market.price)||1];
   g.staff=Object.assign({},d.staff,g.staff||{});g.research=Object.assign({},d.research,g.research||{});g.corporate=Object.assign({},d.corporate,g.corporate||{});
   g.megaProjects=Object.assign({},d.megaProjects,g.megaProjects||{});g.prestigeTree=Object.assign({},d.prestigeTree,g.prestigeTree||{});g.plantSpecialization=Object.assign({},d.plantSpecialization,g.plantSpecialization||{});
-  g.settings=Object.assign({},d.settings,g.settings||{});g.stats=Object.assign({},d.stats,g.stats||{});g.weather=Object.assign({},d.weather,g.weather||{});
+  g.settings=Object.assign({},d.settings,g.settings||{});g.stats=Object.assign({},d.stats,g.stats||{});g.weather=Object.assign({},d.weather,g.weather||{});g.tutorial=Object.assign({},d.tutorial,g.tutorial||{});if(!hadTutorial&&hadProgress){g.tutorial.completed=true;g.tutorial.newGuideAvailable=true;}
   if(!g.regions)g.regions={riverbend:true};g.regions.riverbend=true;
   if(!g.log)g.log=[];if(!g.missions)g.missions={};if(!g.achievements)g.achievements={};
   if(!PLANTS.find(p=>p.id===g.viewStage)||!plantState(g.viewStage).unlocked){const last=[...PLANTS].reverse().find(p=>plantState(p.id).unlocked);g.viewStage=last?last.id:"diesel";}
@@ -293,25 +295,25 @@ function addXP(amount){g.operatorXP+=amount;while(g.operatorXP>=g.operatorLevel*
 
 function showPage(id,b){document.querySelectorAll(".page").forEach(p=>p.classList.toggle("active",p.id===id));document.querySelectorAll("[data-nav]").forEach(x=>x.classList.toggle("active",x.dataset.nav===id));window.scrollTo({top:0,behavior:g.settings.reducedMotion?"auto":"smooth"});render();}
 function selectStageView(id){const s=plantState(id);if(!s?.unlocked){toast("Commission this plant first.");return;}g.viewStage=id;saveGame();renderHero();}
-function tapGenerate(){playGameSound("generate");feedback(false);const a=tapPower();g.stored+=a;g.generated+=a;addXP(.2);renderTop();renderHero();}
+function tapGenerate(){playGameSound("generate");feedback(false);const a=tapPower();g.stored+=a;g.generated+=a;addXP(.2);renderTop();renderHero();tutorialAction("generate");}
 function toggleAutoGenerate(){if(!g.autoGenerateUnlocked){toast("Auto Generate is locked. Unlock it in the Store.");showPage("store");return;}g.autoGenerate=!g.autoGenerate;saveGame();renderAutoGenerate();}
 function runAutoGenerate(){if(!g.autoGenerateUnlocked||!g.autoGenerate)return;const a=autoGenerateAmount();g.stored+=a;g.generated+=a;addXP(.32);}
 function completeAutoGeneratePurchase(){entitlements.autoGenerate=true;saveEntitlements();g.autoGenerateUnlocked=true;if(g.autoGenerateLevel<1)g.autoGenerateLevel=1;g.autoGenerate=false;addLog("Auto Generate permanently unlocked.");saveGame();toast("🤖 Auto Generate unlocked!");render();}
 function purchaseAutoGenerate(){if(g.autoGenerateUnlocked){toast("Auto Generate already owned.");return;}completeAutoGeneratePurchase();}
 function upgradeAutoGenerate(){if(!g.autoGenerateUnlocked){toast("Unlock Auto Generate first.");return;}const c=autoGenerateUpgradeCost();if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.autoGenerateLevel++;addXP(5);g.stats.totalBuildSpend+=c;addLog("Auto Generate upgraded to Level "+g.autoGenerateLevel+".");saveGame();render();}
 
-function buildPlant(id){playGameSound("upgrade");const p=plantById(id),s=plantState(id);if(!p||!s)return;if(id==="fusion"&&!g.megaProjects.fusionCampus){toast("Complete Fusion Research Campus first.");return;}const c=plantCost(p);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.stats.totalBuildSpend+=c;if(!s.unlocked){s.unlocked=true;s.level=1;s.condition=100;g.viewStage=id;g.reputation+=4;addXP(25);addLog(p.name+" commissioned.");toast(p.name+" ONLINE!");}else{s.level++;s.condition=Math.min(100,s.condition+6);addXP(12);addLog(p.name+" upgraded to Level "+s.level+".");}feedback(true);saveGame();render();}
+function buildPlant(id){playGameSound("upgrade");const p=plantById(id),s=plantState(id);if(!p||!s)return;if(id==="fusion"&&!g.megaProjects.fusionCampus){toast("Complete Fusion Research Campus first.");return;}const c=plantCost(p);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.stats.totalBuildSpend+=c;if(!s.unlocked){s.unlocked=true;s.level=1;s.condition=100;g.viewStage=id;g.reputation+=4;addXP(25);addLog(p.name+" commissioned.");toast(p.name+" ONLINE!");}else{s.level++;s.condition=Math.min(100,s.condition+6);addXP(12);addLog(p.name+" upgraded to Level "+s.level+".");}feedback(true);saveGame();render();tutorialAction("build");}
 function specializePlant(id){const s=plantState(id);if(!s?.unlocked||s.level<5){toast("Reach Level 5 first.");return;}const lv=g.plantSpecialization[id]||0;if(lv>=4){toast("Specialization maxed.");return;}const c=specializationCost(id);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.plantSpecialization[id]++;g.stats.totalBuildSpend+=c;g.reputation+=3;addXP(15);addLog(plantById(id).name+" specialization advanced to Rank "+g.plantSpecialization[id]+".");saveGame();render();}
 function upgradeTap(){const c=tapUpgradeCost();if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.tapLevel++;g.stats.totalBuildSpend+=c;addXP(4);addLog("Manual generator upgraded to Level "+(g.tapLevel+1)+".");saveGame();render();}
 function buyCorporate(id){const u=CORPORATE.find(x=>x.id===id);if(!u)return;const lv=g.corporate[id]||0;if(lv>=u.max){toast("Upgrade maxed.");return;}const c=corporateCost(u);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.corporate[id]++;g.stats.totalBuildSpend+=c;addXP(18);saveGame();render();}
 
 function regionRequirementMet(r){if(!r.requires)return true;if(r.id==="orbital"&&!g.megaProjects.orbitalOps)return false;return !!g.regions[r.requires];}
-function buyRegion(id){const r=REGIONS.find(x=>x.id===id);if(!r||g.regions[id])return;if(r.id==="orbital"&&!g.megaProjects.orbitalOps){toast("Complete Orbital Operations Authority first.");return;}if(!regionRequirementMet(r)){const p=REGIONS.find(x=>x.id===r.requires);toast("Connect "+(p?.name||"the previous grid")+" first.");return;}const c=regionCost(r);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.regions[id]=true;g.stats.totalBuildSpend+=c;g.reputation+=Math.max(3,Math.round(r.bonus));if(g.policy==="renewable")g.reputation+=5;addXP(30+Math.min(120,r.bonus*5));addLog(r.name+" connected to the company grid.");feedback(true);toast("⚡ "+r.name+" CONNECTED");saveGame();render();}
+function buyRegion(id){const r=REGIONS.find(x=>x.id===id);if(!r||g.regions[id])return;if(r.id==="orbital"&&!g.megaProjects.orbitalOps){toast("Complete Orbital Operations Authority first.");return;}if(!regionRequirementMet(r)){const p=REGIONS.find(x=>x.id===r.requires);toast("Connect "+(p?.name||"the previous grid")+" first.");return;}const c=regionCost(r);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.regions[id]=true;g.stats.totalBuildSpend+=c;g.reputation+=Math.max(3,Math.round(r.bonus));if(g.policy==="renewable")g.reputation+=5;addXP(30+Math.min(120,r.bonus*5));addLog(r.name+" connected to the company grid.");feedback(true);toast("⚡ "+r.name+" CONNECTED");saveGame();render();tutorialAction("region");}
 
-function startContract(id){if(g.activeContract){toast("Finish the current contract first.");return;}const c=CONTRACTS.find(x=>x.id===id);if(!c)return;if(output()<c.required){toast("Requires "+num(c.required)+" kWh/s output.");return;}g.activeContract={id:c.id,name:c.name,rate:c.rate,reward:contractReward(c),end:now()+c.duration*1000,started:now()};addLog("Contract started: "+c.name+".");saveGame();renderContracts();}
+function startContract(id){if(g.activeContract){toast("Finish the current contract first.");return;}const c=CONTRACTS.find(x=>x.id===id);if(!c)return;if(output()<c.required){toast("Requires "+num(c.required)+" kWh/s output.");return;}g.activeContract={id:c.id,name:c.name,rate:c.rate,reward:contractReward(c),end:now()+c.duration*1000,started:now()};addLog("Contract started: "+c.name+".");saveGame();renderContracts();tutorialAction("contract");}
 function updateContract(){if(g.activeContract&&now()>=g.activeContract.end){const c=g.activeContract;g.cash+=c.reward;g.lifetimeCash+=c.reward;g.contractsCompleted++;g.stats.totalContractRewards+=c.reward;g.reputation+=4;addXP(40);addLog("Contract completed: "+c.name+" +"+money(c.reward)+".");g.activeContract=null;toast("Contract complete! "+money(c.reward));}}
 
-function sellPower(){playGameSound("cash");if(g.stored<=0){toast("Generate some power first.");return;}const amount=g.stored;const cash=amount*marketSaleMult();g.cash+=cash;g.lifetimeCash+=cash;g.sold+=amount;g.stored=0;g.stats.marketSales+=cash;g.stats.bestSale=Math.max(g.stats.bestSale,cash);addXP(Math.max(1,amount/300));addLog("Sold "+num(amount)+" kWh for "+money(cash)+".");feedback(true);saveGame();render();toast("Grid sale: "+money(cash));}
+function sellPower(){playGameSound("cash");if(g.stored<=0){toast("Generate some power first.");return;}const amount=g.stored;const cash=amount*marketSaleMult();g.cash+=cash;g.lifetimeCash+=cash;g.sold+=amount;g.stored=0;g.stats.marketSales+=cash;g.stats.bestSale=Math.max(g.stats.bestSale,cash);addXP(Math.max(1,amount/300));addLog("Sold "+num(amount)+" kWh for "+money(cash)+".");feedback(true);saveGame();render();toast("Grid sale: "+money(cash));tutorialAction("sell");}
 function dispatchPower(){if(g.stored<10){toast("Need at least 10 kWh stored.");return;}const amount=Math.min(g.stored,Math.max(10,output()*20));const bonus=1.08+(g.research.gridAI||0)*.035+(g.megaProjects.gridAI ? .04 : 0);const cash=amount*marketSaleMult()*bonus;g.stored-=amount;g.cash+=cash;g.lifetimeCash+=cash;g.sold+=amount;g.dispatches++;g.stats.marketSales+=cash;g.stats.bestSale=Math.max(g.stats.bestSale,cash);g.reputation+=2;addXP(3);addLog("Emergency grid dispatch sold "+num(amount)+" kWh for "+money(cash)+".");saveGame();render();}
 function toggleAutoSell(){if((g.research.automation||0)<1){toast("Research Advanced Automation first.");return;}g.autoSell=!g.autoSell;saveGame();render();}
 function autoSellTick(){if(!g.autoSell||g.stored<=0)return;const threshold=g.megaProjects.gridAI ? .95 : 1.05;if(g.market.price<threshold&&g.policy!=="market")return;const amount=Math.min(g.stored,Math.max(1,output()*4));const cash=amount*marketSaleMult()*(1+(g.research.gridAI||0)*.025);g.stored-=amount;g.cash+=cash;g.lifetimeCash+=cash;g.sold+=amount;g.stats.marketSales+=cash;}
@@ -323,7 +325,7 @@ function upgradeBattery(){const c=batteryUpgradeCost();if(g.cash<c){toast("Batte
 function performMaintenance(){const c=maintenanceCost();if(g.cash<c){toast("Maintenance requires "+money(c));return;}g.cash-=c;g.stats.totalMaintenance+=c;g.maintenance=100;PLANTS.forEach(p=>{const s=plantState(p.id);if(s?.unlocked)s.condition=Math.min(100,s.condition+38+(g.staff.engineer||0)*3);});addXP(10);addLog("Fleet maintenance completed.");saveGame();render();}
 function hireStaff(id){const t=STAFF_TYPES.find(x=>x.id===id);if(!t)return;const c=staffCost(t);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.staff[id]++;g.stats.totalBuildSpend+=c;g.reputation+=2;addXP(12);addLog(t.name+" department expanded to Level "+g.staff[id]+".");saveGame();render();}
 function setPolicy(id){if(!POLICIES.some(p=>p.id===id))return;g.policy=id;addLog("Dispatch policy changed to "+POLICIES.find(p=>p.id===id).name+".");saveGame();render();}
-function buyResearch(id){const r=RESEARCH.find(x=>x.id===id);if(!r)return;const lv=g.research[id]||0;if(lv>=r.max){toast("Research maxed.");return;}const c=researchCost(r);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.research[id]++;g.stats.totalBuildSpend+=c;g.reputation+=3;addXP(20);addLog("Research completed: "+r.name+" Level "+g.research[id]+".");saveGame();render();}
+function buyResearch(id){const r=RESEARCH.find(x=>x.id===id);if(!r)return;const lv=g.research[id]||0;if(lv>=r.max){toast("Research maxed.");return;}const c=researchCost(r);if(g.cash<c){toast("Need "+money(c));return;}g.cash-=c;g.research[id]++;g.stats.totalBuildSpend+=c;g.reputation+=3;addXP(20);addLog("Research completed: "+r.name+" Level "+g.research[id]+".");saveGame();render();tutorialAction("research");}
 function buyMegaProject(id){const m=MEGAPROJECTS.find(x=>x.id===id);if(!m||g.megaProjects[id])return;if(g.cash<m.cost){toast("Need "+money(m.cost));return;}g.cash-=m.cost;g.megaProjects[id]=true;g.stats.totalBuildSpend+=m.cost;g.reputation+=25;addXP(100);addLog("Megaproject completed: "+m.name+".");feedback(true);toast("🌐 "+m.name+" COMPLETE");saveGame();render();}
 function buyPrestigeUpgrade(id){const p=PRESTIGE_TREE.find(x=>x.id===id);if(!p)return;const lv=g.prestigeTree[id]||0;if(lv>=p.max){toast("Legacy upgrade maxed.");return;}const cost=p.cost+Math.floor(lv/2);if(g.gridCredits<cost){toast("Need "+cost+" Grid Credits.");return;}g.gridCredits-=cost;g.prestigeTree[id]++;addLog("Prestige Grid upgraded: "+p.name+" Rank "+g.prestigeTree[id]+".");saveGame();render();}
 function prestigeCreditAward(){if(g.lifetimeCash<50000)return 0;const cashScore=Math.max(1,Math.floor(Math.log10(g.lifetimeCash/50000+1)*3));return cashScore+Math.floor((connectedRegions()-1)/4)+Math.floor(megaCount()/2);}
@@ -382,8 +384,31 @@ function renderHomeContract(){const e=byId("homeContract");if(g.activeContract){
 function renderPlants(){byId("plantCountBadge").textContent=unlockedPlantCount()+" / "+PLANTS.length+" ONLINE";byId("plantList").innerHTML=PLANTS.map(p=>{const s=plantState(p.id),c=plantCost(p),spec=g.plantSpecialization[p.id]||0;return `<div class="plant-card ${s.unlocked?"":"locked"}"><div class="plant-card-bg" style="background-image:url('images/v8/plants/${plantImage(p.id)}.jpg')"></div><div class="plant-card-shade"></div><div class="plant-card-content"><div class="plant-card-head"><strong>${p.icon} ${p.name}</strong><span>${s.unlocked?"LV "+s.level:"LOCKED"}</span></div><p>${p.desc}</p><small>${s.unlocked?`${num(plantBaseOutput(p)*totalMult())}/s fleet contribution • ${Math.round(s.condition)}% condition • Spec ${spec}/4`:"Commission for "+money(c)}</small><div class="plant-actions"><button onclick="buildPlant('${p.id}')">${s.unlocked?"UPGRADE "+money(c):"BUILD "+money(c)}</button>${s.unlocked?`<button class="view" onclick="selectStageView('${p.id}');showPage('home')">VIEW</button>`:""}${s.unlocked&&s.level>=5?`<button class="spec" onclick="specializePlant('${p.id}')" ${spec>=4?"disabled":""}>${spec>=4?"SPECIALIZED":"SPECIALIZE "+money(specializationCost(p.id))}</button>`:""}</div></div></div>`;}).join("");byId("corporateUpgradeList").innerHTML=CORPORATE.map(u=>{const lv=g.corporate[u.id]||0,done=lv>=u.max;return `<div class="upgrade-card"><div class="row"><h4>${u.icon} ${u.name}</h4><b>LV ${lv}/${u.max}</b></div><p>${u.desc}</p><button class="btn ${done?"green":"blue"} wide" onclick="buyCorporate('${u.id}')" ${done?"disabled":""}>${done?"MAXED":money(corporateCost(u))}</button></div>`;}).join("");const award=prestigeCreditAward();byId("prestigeInfo").innerHTML=`<div class="dashboard-grid four"><div class="metric-card"><small>PRESTIGE</small><b>${g.prestige}</b><i>+${g.prestige*12}% legacy production</i></div><div class="metric-card"><small>GRID CREDITS</small><b>${g.gridCredits}</b><i>Spend at Company HQ</i></div><div class="metric-card"><small>NEXT PRESTIGE</small><b>${award||"LOCKED"}</b><i>${award?"Grid Credits":"Need $50K lifetime cash"}</i></div><div class="metric-card"><small>LIFETIME CASH</small><b>${money(g.lifetimeCash)}</b><i>Current company run</i></div></div>`;}
 
 const MAP_POS=[[8,74],[16,62],[24,55],[32,45],[39,35],[47,42],[55,58],[62,47],[69,63],[75,41],[80,55],[85,32],[72,24],[61,18],[51,28],[42,19],[31,25],[22,18],[13,28],[91,18]];
-function renderRegions(){byId("gridConnectedCount").textContent=connectedRegions()+" / "+REGIONS.length;byId("gridBonusValue").textContent="+"+gridBonusPercent()+"%";const nr=nextLockedRegion();byId("gridNextRegion").textContent=nr?nr.name:"GRID COMPLETE";byId("regionList").innerHTML=REGIONS.map((r,i)=>{const owned=!!g.regions[r.id],available=regionRequirementMet(r),prior=REGIONS.find(x=>x.id===r.requires);let action;if(owned)action='<span class="badge">CONNECTED</span>';else if(available)action=`<button class="btn blue" onclick="buyRegion('${r.id}')">CONNECT ${money(regionCost(r))}</button>`;else action=`<button class="btn dark" disabled>REQUIRES ${r.id==="orbital"&&!g.megaProjects.orbitalOps?"ORBITAL AUTHORITY":(prior?.name||"PRIOR GRID")}</button>`;return `<div class="region ${owned?"connected":available?"available":"locked"}"><div class="region-tier">${r.tier} • NODE ${i+1}</div><div class="region-icon">${r.emoji}</div><h4>${r.name}</h4><p>+${Math.round(r.bonus*100)}% production • ${r.desc}</p>${action}</div>`;}).join("");const nextId=nr?.id;byId("mapNodeLayer").innerHTML=REGIONS.map((r,i)=>`<span class="map-node ${g.regions[r.id]?"on":r.id===nextId?"next":""}" style="left:${MAP_POS[i][0]}%;top:${MAP_POS[i][1]}%" title="${r.name}"></span>`).join("");}
-
+function renderRegions(){
+  byId("gridConnectedCount").textContent=connectedRegions()+" / "+REGIONS.length;
+  byId("gridBonusValue").textContent="+"+gridBonusPercent()+"%";
+  const nr=nextLockedRegion();
+  byId("gridNextRegion").textContent=nr?nr.name:"GRID COMPLETE";
+  byId("regionList").innerHTML=REGIONS.map((r,i)=>{
+    const owned=!!g.regions[r.id],available=regionRequirementMet(r),prior=REGIONS.find(x=>x.id===r.requires);
+    let action;
+    if(owned)action='<span class="badge">CONNECTED</span>';
+    else if(available)action=`<button class="btn blue" onclick="buyRegion('${r.id}')">CONNECT ${money(regionCost(r))}</button>`;
+    else action=`<button class="btn dark" disabled>REQUIRES ${r.id==="orbital"&&!g.megaProjects.orbitalOps?"ORBITAL AUTHORITY":(prior?.name||"PRIOR GRID")}</button>`;
+    return `<div class="region ${owned?"connected":available?"available":"locked"}"><div class="region-tier">${r.tier} • NODE ${i+1}</div><div class="region-icon">${r.emoji}</div><h4>${r.name}</h4><p>+${Math.round(r.bonus*100)}% production • ${r.desc}</p>${action}</div>`;
+  }).join("");
+  const nextId=nr?.id;
+  byId("mapNodeLayer").innerHTML=REGIONS.map((r,i)=>`<span class="map-node ${g.regions[r.id]?"on":r.id===nextId?"next":""}" style="left:${MAP_POS[i][0]}%;top:${MAP_POS[i][1]}%" title="${r.name}"><b>${i+1}</b><small>${r.name}</small></span>`).join("");
+  const svg=byId("mapLineLayer");
+  if(svg){
+    svg.innerHTML=REGIONS.slice(1).map((r,i)=>{
+      const a=MAP_POS[i],b=MAP_POS[i+1];
+      const both=!!g.regions[REGIONS[i].id]&&!!g.regions[r.id];
+      const isNext=r.id===nextId;
+      return `<line class="${both?"on":isNext?"next":""}" x1="${a[0]}" y1="${a[1]}" x2="${b[0]}" y2="${b[1]}"/>`;
+    }).join("");
+  }
+}
 function renderContracts(){byId("contractCountLabel").textContent=g.contractsCompleted+" COMPLETED";const active=byId("activeContractPanel");if(g.activeContract){const rem=Math.max(0,Math.ceil((g.activeContract.end-now())/1000)),total=Math.max(1,(g.activeContract.end-g.activeContract.started)/1000);active.innerHTML=`<div class="contract-card active"><div class="row"><h4>📜 ${g.activeContract.name}</h4><strong class="reward">${money(g.activeContract.reward)}</strong></div><p>${rem}s remaining • ${g.activeContract.rate.toFixed(2)}× sales while active</p><div class="progress"><i style="width:${clamp((1-rem/total)*100,0,100)}%"></i></div></div>`;}else active.innerHTML='<div class="small">No active contract. Choose an agreement below.</div>';byId("contractList").innerHTML=CONTRACTS.map(c=>`<div class="contract-card"><div class="row"><h4>${c.icon} ${c.name}</h4><strong class="reward">${money(contractReward(c))}</strong></div><p>Requires ${num(c.required)} kWh/s • ${c.duration}s • ${c.rate.toFixed(2)}× sale multiplier</p><button class="btn ${output()>=c.required&&!g.activeContract?"green":"dark"} wide" onclick="startContract('${c.id}')" ${g.activeContract?"disabled":""}>${g.activeContract?"CONTRACT ACTIVE":output()>=c.required?"ACCEPT":"OUTPUT TOO LOW"}</button></div>`).join("");}
 
 function renderMarket(){const hist=g.market.history;byId("spotPriceLarge").textContent="$"+g.market.price.toFixed(2);byId("gridDemandLarge").textContent=Math.round(g.market.demand*100)+"%";byId("demandBand").textContent=g.market.demand>1.25?"Very High":g.market.demand>1.05?"High":g.market.demand<.82?"Low":"Normal";byId("marketHigh").textContent="$"+Math.max(...hist).toFixed(2);byId("marketLow").textContent="$"+Math.min(...hist).toFixed(2);byId("marketForecastLabel").textContent=g.market.forecast>g.market.price+.04?"RISING FORECAST":g.market.forecast<g.market.price-.04?"FALLING FORECAST":"STABLE FORECAST";drawMarket(byId("marketCanvas"),true);const trend=(g.market.forecast-g.market.price)/Math.max(.01,g.market.price);byId("forecastMetrics").innerHTML=`<div><small>NEXT FORECAST</small><b>$${g.market.forecast.toFixed(2)}</b></div><div><small>PRICE MOMENTUM</small><b>${trend>=0?"+":""}${(trend*100).toFixed(1)}%</b></div><div><small>WEATHER IMPACT</small><b>${weatherObj().icon} ${weatherObj().label}</b></div><div><small>TRADER LEVEL</small><b>LV ${g.staff.trader}</b></div>`;const cap=batteryCapacity(),pct=cap?clamp(g.battery.stored/cap*100,0,100):0;byId("batteryLevel").textContent="LV "+g.battery.level;byId("batteryStored").textContent=num(g.battery.stored)+" kWh";byId("batteryCapacityText").textContent="Capacity "+num(cap)+" kWh";document.querySelector(".battery-ring")?.style.setProperty("--battery-pct",pct+"%");byId("autoSellBtn").textContent="AUTO SELL: "+(g.autoSell?"ON":"OFF");byId("autoSellBtn").className="btn "+(g.autoSell?"green":"dark")+" wide";byId("autoSellState").textContent=g.autoSell?"AUTO SELL ONLINE":"AUTO SELL OFF";}
@@ -401,6 +426,77 @@ function renderDaily(){const rewards=[800,1200,1800,2800,4200,6500,10000];const 
 function renderPass(){const tier=powerPassTier(),next=POWER_PASS_REWARDS.find(r=>r.tier===Math.min(POWER_PASS_REWARDS.length,tier+1));byId("powerPassPanel").innerHTML=`<div class="pass-shell"><div class="pass-summary"><div><small>PASS XP</small><b>${num(g.powerPass.xp)}</b></div><div><small>CURRENT TIER</small><b>${tier} / ${POWER_PASS_REWARDS.length}</b></div><div><small>PREMIUM</small><b>${g.powerPass.premium?"OWNED":"LOCKED"}</b></div><div><small>NEXT TIER</small><b>${next?num(next.xp)+" XP":"COMPLETE"}</b></div></div><div class="pass-track">${POWER_PASS_REWARDS.map(r=>{const unlocked=g.powerPass.xp>=r.xp;return `<div class="pass-tier ${unlocked?"unlocked":""}"><div class="pass-tier-top"><strong>TIER ${r.tier}</strong><span>${num(r.xp)} XP</span></div><div class="pass-lanes"><button class="pass-reward ${g.powerPass.freeClaimed[r.tier]?"claimed":""}" onclick="claimPowerPass(${r.tier},'free')" ${!unlocked?"disabled":""}>FREE • ${g.powerPass.freeClaimed[r.tier]?"CLAIMED":r.free.label+" "+money(r.free.cash||0)}</button><button class="pass-reward premium ${g.powerPass.premiumClaimed[r.tier]?"claimed":""}" onclick="claimPowerPass(${r.tier},'premium')" ${!unlocked||!g.powerPass.premium?"disabled":""}>PREMIUM • ${g.powerPass.premiumClaimed[r.tier]?"CLAIMED":r.premium.label+(r.premium.cash?" "+money(r.premium.cash):"")}</button></div></div>`;}).join("")}</div></div>`;const pb=byId("premiumPassBuyBtn");if(pb){pb.textContent=g.powerPass.premium?"OWNED":"TEST BUY";pb.disabled=g.powerPass.premium;}}
 function renderStore(){renderDaily();renderAutoGenerate();renderPass();applySettings();}
 
+
+
+/* ================= V8.1 GUIDED TUTORIAL ================= */
+const TUTORIAL_STEPS=[
+  {page:"home",title:"Welcome to Your Energy Empire",text:"Power Plant Tycoon has a lot of depth, but you do not need to learn everything at once. We will focus on one system at a time.",task:"Your core loop is simple: generate power → sell it → build plants → expand the grid.",tip:"Advanced systems such as research, megaprojects, prestige and the Power Pass can wait until you are comfortable."},
+  {page:"home",selector:".generate",action:"generate",title:"Generate Your First Power",text:"Start with the yellow Generate Power button. Manual generation gives you stored electricity that can be sold for cash.",task:"ACTION: Tap GENERATE POWER once.",tip:"Your power plants will eventually generate automatically. Manual generation just gets your company moving."},
+  {page:"home",selector:"#quickSellBtn",action:"sell",title:"Turn Electricity Into Cash",text:"Stored power is useful, but cash is what builds your company. Sell your stored electricity whenever you want immediate money.",task:"ACTION: Tap SELL POWER.",tip:"Later, market prices, contracts, batteries and Auto Sell give you better ways to decide when to sell."},
+  {page:"plants",selector:"#plantList .plant-card:first-child .plant-actions button",action:"build",title:"Build Your First Plant",text:"Plants are your main source of automatic production. Diesel is cheap and is designed to get a new company started.",task:"ACTION: Build or upgrade the Diesel Generator.",tip:"Training budget unlocked for this step so a new player can learn without grinding the tutorial."},
+  {page:"plants",selector:"#plantList",title:"Grow Your Generation Fleet",text:"Every plant has a role. Upgrade levels increase output, condition affects performance, and higher-level plants can specialize.",task:"For now, just remember: upgrade the plants you can afford. New technologies unlock as your company grows.",tip:"Do not worry about specialization yet. It becomes useful later."},
+  {page:"map",selector:".grid-map-card",title:"Expand the Power Grid",text:"Grid regions permanently increase production and open the path toward national, global and orbital expansion.",task:"The glowing NEXT TARGET node shows the next region in your expansion chain.",tip:"You do not need to buy a region immediately. Return when you can afford the connection cost."},
+  {page:"contracts",selector:"#contractList",title:"Use Contracts for Bigger Rewards",text:"Contracts are timed utility agreements. Meet the required output, accept one, and keep your plants operating until it completes.",task:"Look for a contract whose output requirement you already meet.",tip:"Contracts become one of your strongest sources of money and reputation as the company grows."},
+  {page:"market",selector:"#marketCanvas",title:"Learn the Energy Market",text:"The spot price and demand change over time. Selling during strong market conditions pays more, while batteries let you hold energy for later.",task:"Watch price, demand and forecast. You can come back to trading after learning the basics.",tip:"Auto Sell and advanced market tools are optional systems unlocked through research."},
+  {page:"company",selector:"#researchTree",title:"HQ Is Your Long-Term Upgrade Center",text:"Company HQ contains staff, policies, research, megaprojects and Prestige Grid upgrades. These systems make a mature company much stronger.",task:"You only need to know where HQ is right now. Add upgrades as you can afford them.",tip:"Research Automation, Storage and Market Forecasting are good early choices."},
+  {page:"goals",selector:"#missionList",title:"Let Goals Tell You What To Do Next",text:"If you ever feel lost, open Goals. Missions and achievements naturally lead you through production, expansion, contracts and company growth.",task:"Your NEXT TARGET on Home and Missions here are your two best guides.",tip:"The Power Pass is extra rewards layered on normal play — it is not required to progress."},
+  {page:"home",title:"You Are Ready",text:"That is the whole foundation. Generate, sell, build, expand and take contracts. Everything else can be learned when you are ready for it.",task:"Tutorial complete. Keep following the NEXT TARGET at the top of Home to grow your empire.",tip:"You can replay this guide at any time with the 🎓 GUIDE button."}
+];
+let tutorialTargetEl=null;
+function clearTutorialTarget(){if(tutorialTargetEl){tutorialTargetEl.classList.remove("tutorial-target");tutorialTargetEl=null;}document.querySelectorAll("[data-nav]").forEach(x=>x.classList.remove("tutorial-nav-target"));}
+function tutorialCurrent(){return TUTORIAL_STEPS[clamp(Number(g.tutorial?.step)||0,0,TUTORIAL_STEPS.length-1)];}
+function prepareTutorialStep(step){
+  if(step.action==="build"&&!g.tutorial.trainingGrant&&unlockedPlantCount()===0&&g.cash<75){
+    const grant=75-g.cash;g.cash+=grant;g.lifetimeCash+=grant;g.tutorial.trainingGrant=true;addLog("Training budget issued: "+money(grant)+".");saveGame();toast("🎓 Training budget: "+money(grant));
+  }
+}
+function renderTutorialStep(){
+  const overlay=byId("tutorialOverlay");if(!overlay)return;
+  const step=tutorialCurrent(),i=g.tutorial.step||0;
+  overlay.classList.add("show");overlay.classList.toggle("intro",!step.selector);overlay.setAttribute("aria-hidden","false");document.body.classList.add("tutorial-running");
+  byId("tutorialStepCount").textContent=`STEP ${i+1} OF ${TUTORIAL_STEPS.length}`;
+  byId("tutorialStepTitle").textContent=step.title;
+  byId("tutorialStepText").textContent=step.text;
+  byId("tutorialProgressBar").style.width=((i+1)/TUTORIAL_STEPS.length*100)+"%";
+  const task=byId("tutorialTask");task.innerHTML=`<strong>${step.action?"YOUR NEXT ACTION":"WHAT TO KNOW"}</strong>${step.task}`;task.className="tutorial-task "+(step.action?"action":"");
+  byId("tutorialTip").innerHTML="💡 <b>TIP:</b> "+step.tip;
+  byId("tutorialBackBtn").disabled=i===0;
+  const next=byId("tutorialNextBtn");next.disabled=!!step.action;next.textContent=step.action?"DO THE HIGHLIGHTED ACTION":(i===TUTORIAL_STEPS.length-1?"FINISH TUTORIAL":"NEXT ➜");
+  clearTutorialTarget();
+  const nav=document.querySelector(`[data-nav="${step.page}"]`);if(nav)nav.classList.add("tutorial-nav-target");
+  if(!document.getElementById(step.page)?.classList.contains("active"))showPage(step.page,nav);
+  setTimeout(()=>{
+    clearTutorialTarget();if(nav)nav.classList.add("tutorial-nav-target");
+    if(step.selector){const el=document.querySelector(step.selector);if(el){tutorialTargetEl=el;el.classList.add("tutorial-target");el.scrollIntoView({behavior:g.settings.reducedMotion?"auto":"smooth",block:"center"});}}
+  },80);
+}
+function openTutorial(manual=false){
+  migrate();
+  if(manual){g.tutorial.step=0;g.tutorial.completed=false;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;}
+  prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();
+}
+function openTutorialManual(){openTutorial(true);}
+function closeTutorialUI(){const o=byId("tutorialOverlay");if(o){o.classList.remove("show","intro");o.setAttribute("aria-hidden","true");}document.body.classList.remove("tutorial-running");clearTutorialTarget();}
+function tutorialNext(){
+  const step=tutorialCurrent();if(step.action)return;
+  if((g.tutorial.step||0)>=TUTORIAL_STEPS.length-1){finishTutorial();return;}
+  g.tutorial.step++;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();
+}
+function tutorialBack(){if((g.tutorial.step||0)<=0)return;g.tutorial.step--;saveGame();renderTutorialStep();}
+function skipTutorial(){g.tutorial.completed=true;g.tutorial.skipped=true;g.tutorial.newGuideAvailable=false;saveGame();closeTutorialUI();toast("Tutorial skipped. Use 🎓 GUIDE anytime to replay it.");}
+function finishTutorial(){
+  if(!g.tutorial.rewardClaimed){g.tutorial.rewardClaimed=true;g.cash+=500;g.lifetimeCash+=500;g.boostUntil=Math.max(g.boostUntil,now()+5*60*1000);addLog("Guided tutorial completed. $500 training reward and 5-minute boost received.");}
+  g.tutorial.completed=true;g.tutorial.skipped=false;g.tutorial.newGuideAvailable=false;saveGame();closeTutorialUI();render();toast("🎓 Tutorial complete • $500 + 5-minute boost!");
+}
+function tutorialAction(action){
+  if(!byId("tutorialOverlay")?.classList.contains("show"))return;
+  const step=tutorialCurrent();if(step.action!==action)return;
+  const task=byId("tutorialTask");if(task){task.className="tutorial-task done";task.innerHTML="<strong>✓ COMPLETE</strong>Great job — moving to the next step.";}
+  clearTutorialTarget();
+  setTimeout(()=>{if((g.tutorial.step||0)<TUTORIAL_STEPS.length-1){g.tutorial.step++;prepareTutorialStep(tutorialCurrent());saveGame();renderTutorialStep();}else finishTutorial();},650);
+}
+/* ================= END V8.1 GUIDED TUTORIAL ================= */
+
 function render(){migrate();updateEvent();updateContract();shiftWeather();updateAchievements();renderTop();renderEmpireStrip();renderHero();renderEvent();renderHomeCards();renderPlants();renderRegions();renderContracts();renderMarket();renderCompany();renderGoals();renderStats();renderStore();}
 
 function handleOffline(){const seconds=Math.min(8*3600,Math.max(0,(now()-g.lastSeen)/1000));if(seconds<30||output()<=0){g.lastSeen=now();return;}let eff=.65+(g.research.automation||0)*.025+(g.staff.operator||0)*.008+(g.prestigeTree.offline||0)*.04+(g.autoGenerateUnlocked ? .03 : 0);eff=clamp(eff,.65,.95);const prod=output()*seconds*eff,autogen=g.autoGenerateUnlocked?autoGenerateAmount()*Math.min(seconds,3600)*.15:0,cost=fuelCostPerSecond()*seconds*eff;g.stored+=prod+autogen;g.generated+=prod+autogen;g.cash=Math.max(0,g.cash-cost);byId("offlineAmount").textContent=num(prod+autogen)+" kWh";byId("offlineText").textContent=`Operated for ${Math.floor(seconds/60)} minutes at ${Math.round(eff*100)}% offline efficiency. Fuel cost: ${money(cost)}.`;byId("offlineModal").classList.add("show");addLog("Offline production added "+num(prod+autogen)+" kWh.");}
@@ -409,8 +505,16 @@ function closeOffline(){byId("offlineModal").classList.remove("show");saveGame()
 function gameTick(){const p=output();g.stored+=p;g.generated+=p;runAutoGenerate();payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();g.stats.bestOutput=Math.max(g.stats.bestOutput,p);saveGame();render();}
 function marketTick(){shiftMarket();shiftWeather();saveGame();render();}
 
-window.addEventListener("load",()=>{const splash=byId("bootSplash");setTimeout(()=>{splash?.classList.add("hide");setTimeout(()=>splash?.remove(),700);},900);handleOffline();render();});
+window.addEventListener("load",()=>{const splash=byId("bootSplash");setTimeout(()=>{splash?.classList.add("hide");setTimeout(()=>splash?.remove(),700);},900);handleOffline();render();initializeV81Guide();});
 document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame();});
 setInterval(gameTick,1000);
 setInterval(marketTick,15000);
-console.log("Power Plant Tycoon GRID DOMINION V8 loaded");
+
+function initializeV81Guide(){
+  setTimeout(()=>{
+    if(!g.tutorial.completed&&!g.tutorial.skipped)openTutorial(false);
+    else if(g.tutorial.newGuideAvailable){toast("🎓 New guided tutorial available — click GUIDE anytime.");g.tutorial.newGuideAvailable=false;saveGame();}
+  },1400);
+}
+
+console.log("Power Plant Tycoon GRID DOMINION V8.1 loaded");

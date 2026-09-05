@@ -4,14 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#06111b">
-<title>Power Plant Tycoon — Grid Dominion V8</title>
-<link rel="stylesheet" href="css/game.css?v=8">
+<title>Power Plant Tycoon — Grid Dominion V8.1</title>
+<link rel="stylesheet" href="css/game.css?v=81">
 </head>
 <body>
 <div id="bootSplash" class="boot-splash">
   <div class="boot-card">
     <div class="boot-logo">⚡ POWER PLANT <span>TYCOON</span></div>
-    <h1>GRID DOMINION V8</h1>
+    <h1>GRID DOMINION V8.1</h1>
     <p>Bigger plants. Deeper systems. A global energy empire.</p>
     <div class="boot-load"><i></i></div>
   </div>
@@ -28,19 +28,20 @@
     <button data-nav="goals" onclick="showPage('goals',this)"><i>🎯</i><span>Goals</span></button>
     <button data-nav="stats" onclick="showPage('stats',this)"><i>📊</i><span>Stats</span></button>
     <button data-nav="pass" onclick="showPage('pass',this)"><i>⭐</i><span>Power Pass</span></button>
+    <button class="guide-nav-btn" onclick="openTutorialManual()"><i>🎓</i><span>Guide</span></button>
     <button data-nav="store" onclick="showPage('store',this)"><i>🛒</i><span>Store</span></button>
   </aside>
 
   <div class="app">
     <header class="topbar">
-      <div class="top-title"><strong>POWER PLANT <span>TYCOON</span></strong><small>GRID DOMINION V8</small></div>
+      <div class="top-title"><strong>POWER PLANT <span>TYCOON</span></strong><small>GRID DOMINION V8.1</small></div>
       <div class="top-stats">
         <div class="top-stat cash"><small>CASH</small><b id="cash">$0</b><i id="incomeRate">$0/s</i></div>
         <div class="top-stat power"><small>STORED POWER</small><b id="power">0 kWh</b><i id="batteryMini">Battery 0</i></div>
         <div class="top-stat"><small>OUTPUT</small><b id="output">0/s</b><i id="gridBonusMini">Grid +0%</i></div>
         <div class="top-stat"><small>COMPANY</small><b id="companyLevelTop">LV 1</b><i id="companyXPTop">0 / 75 XP</i></div>
       </div>
-      <div class="rank-wrap"><b id="rank">GRID ROOKIE</b><small id="weatherTop">☀ CLEAR</small></div>
+      <div class="rank-wrap"><b id="rank">GRID ROOKIE</b><small id="weatherTop">☀ CLEAR</small><button class="top-guide-btn" onclick="openTutorialManual()" title="Guided Tutorial">🎓 GUIDE</button></div>
     </header>
 
     <main class="content">
@@ -69,6 +70,7 @@
           </div>
           <div class="hero-actions">
             <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
+            <button id="quickSellBtn" class="quick-sell-btn" onclick="sellPower()">💵 SELL POWER</button>
             <button id="autoGenerateBtn" class="auto-generate-btn locked" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
           </div>
           <div class="hero-bottom-stats">
@@ -120,7 +122,13 @@
       <section id="map" class="page">
         <div class="page-hero map-hero"><div><small>TRANSMISSION EMPIRE</small><h1>Power Grid Expansion</h1><p>Connect regional markets, interconnect continents, and ultimately build an orbital energy network.</p></div></div>
         <div class="dashboard-grid three map-kpis"><div class="metric-card"><small>CONNECTED</small><b id="gridConnectedCount">1 / 20</b><i>Grid nodes online</i></div><div class="metric-card"><small>GRID BONUS</small><b id="gridBonusValue">+0%</b><i>Production multiplier</i></div><div class="metric-card"><small>NEXT CONNECTION</small><b id="gridNextRegion">Coastal Grid</b><i>Sequential expansion</i></div></div>
-        <div class="card grid-map-card"><div class="grid-map-visual"><div id="mapNodeLayer"></div></div></div>
+        <div class="card grid-map-card">
+          <div class="grid-map-visual">
+            <svg id="mapLineLayer" class="map-line-layer" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div id="mapNodeLayer"></div>
+            <div class="grid-map-legend"><span class="connected-key">● CONNECTED</span><span class="next-key">● NEXT TARGET</span><span class="locked-key">● LOCKED</span></div>
+          </div>
+        </div>
         <div class="card"><div class="section-title"><h3>⚡ Transmission Expansion</h3><span>20 GRID REGIONS</span></div><div id="regionList" class="region-grid"></div></div>
       </section>
 
@@ -181,10 +189,33 @@
           <div class="store-card"><i>⚡</i><div><h3>2× Grid Output</h3><p>10 minute production boost.</p></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
           <div class="store-card danger"><i>♻</i><div><h3>Reset Save</h3><p>Reset gameplay while keeping browser entitlements.</p></div><button class="btn red" onclick="resetGame()">RESET</button></div>
         </div>
-        <div class="card"><div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div><div class="settings-grid"><div><b>Sound</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div><div><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div><div><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div><div><b>Compact Numbers</b><button id="compactToggle" class="toggle" onclick="toggleSetting('compact')">ON</button></div></div><div class="btnrow"><button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button><button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button></div><p class="small">Real App Store purchases still require native StoreKit integration when you publish.</p></div>
+        <div class="card"><div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div><div class="settings-grid"><div><b>Sound</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div><div><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div><div><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div><div><b>Compact Numbers</b><button id="compactToggle" class="toggle" onclick="toggleSetting('compact')">ON</button></div></div><div class="btnrow"><button class="btn blue" onclick="openTutorialManual()">🎓 REPLAY GUIDED TUTORIAL</button><button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button><button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button></div><p class="small">Real App Store purchases still require native StoreKit integration when you publish.</p></div>
       </section>
     </main>
   </div>
+</div>
+
+<div id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+  <div class="tutorial-dim"></div>
+  <aside id="tutorialCoach" class="tutorial-coach">
+    <div class="tutorial-top">
+      <div><small id="tutorialStepCount">STEP 1 OF 10</small><h2 id="tutorialStepTitle">Welcome to Power Plant Tycoon</h2></div>
+      <button class="tutorial-close" onclick="skipTutorial()" title="Skip tutorial">×</button>
+    </div>
+    <div class="tutorial-progress"><i id="tutorialProgressBar"></i></div>
+    <div class="tutorial-advisor">
+      <div class="advisor-icon">⚡</div>
+      <div><b>RIVERBEND ENERGY ADVISOR</b><p id="tutorialStepText"></p></div>
+    </div>
+    <div id="tutorialTask" class="tutorial-task"></div>
+    <div id="tutorialTip" class="tutorial-tip"></div>
+    <div class="tutorial-actions">
+      <button id="tutorialBackBtn" class="btn dark" onclick="tutorialBack()">BACK</button>
+      <button class="btn dark" onclick="skipTutorial()">SKIP</button>
+      <button id="tutorialNextBtn" class="btn green" onclick="tutorialNext()">NEXT ➜</button>
+    </div>
+    <div class="tutorial-footer">You can replay this guide anytime with the 🎓 GUIDE button.</div>
+  </aside>
 </div>
 
 <nav class="mobile-nav">
@@ -203,6 +234,6 @@
 <div id="toast" class="toast"></div>
 <div id="confirmModal" class="modal"><div class="modalbox"><h2 id="confirmTitle">Confirm</h2><p id="confirmText"></p><div class="btnrow"><button class="btn red" id="confirmYes">CONFIRM</button><button class="btn dark" onclick="closeConfirm()">CANCEL</button></div></div></div>
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power empire kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green wide" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=8"></script>
+<script src="js/game.js?v=81"></script>
 </body>
 </html>
