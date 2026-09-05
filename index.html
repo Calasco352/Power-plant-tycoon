@@ -162,7 +162,8 @@
 <div class="generate-wrap">
   <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
   <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
-</div><div class="cp-equipment">
+</div>
+<div class="cp-equipment">
   <div class="cp-equip"><strong>🔥 FUEL SYSTEM</strong><small id="cpFuelText">Ready</small><div class="bar"><i id="cpFuelBar" style="width:85%"></i></div></div>
   <div class="cp-equip"><strong>🌀 TURBINE</strong><small id="cpTurbineText">Online</small><div class="bar"><i id="cpTurbineBar" style="width:92%"></i></div></div>
   <div class="cp-equip"><strong>⚙️ GENERATOR</strong><small id="cpGeneratorText">Online</small><div class="bar"><i id="cpGeneratorBar" style="width:96%"></i></div></div>
@@ -298,6 +299,7 @@
 <section id="store" class="page"><div class="card"><div class="section-title"><h3>🛒 Power Shop</h3><span>TEST STORE</span></div>
 <div class="storeitem"><div><strong>🎁 Daily Supply Drop</strong><small>Free cash once per day</small></div><button class="btn green" onclick="dailyReward()">CLAIM</button></div>
 <div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>10 minute production boost</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
+<div class="storeitem auto-generate-store"><div><strong>🤖 Auto Generate</strong><small>Automatically generates manual tap power once per second • permanent unlock</small></div><button id="autoGenerateStoreBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
 <div class="storeitem"><div><strong>🧰 Maintenance Pack</strong><small>Restore all equipment condition</small></div><button class="btn orange" onclick="maintenancePack()">TEST BUY</button></div>
 <div class="storeitem"><div><strong>🚀 Starter Pack</strong><small>$5,000 + 10 minute boost</small></div><button class="btn purple" onclick="starterPack()">TEST BUY</button></div>
 <div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress</small></div><button class="btn red" onclick="resetGame()">RESET</button></div>
@@ -318,7 +320,7 @@
     <button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button>
     <button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button>
   </div>
-  <p class="small">Store buttons are test hooks only. Real ads and Apple in-app purchases still require native App Store integration.</p>
+  <p class="small">Store buttons are test hooks in the browser. Auto Generate is wired with an iOS purchase bridge so StoreKit can replace the test unlock when the App Store build is created.</p>
 </div>
 
 </main></div>
