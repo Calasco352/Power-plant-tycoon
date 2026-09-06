@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 850">
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071927"/><stop offset=".48" stop-color="#0a2436"/><stop offset="1" stop-color="#03111d"/></linearGradient>
+ <radialGradient id="land" cx="45%" cy="45%" r="70%"><stop stop-color="#16445a"/><stop offset="1" stop-color="#082231"/></radialGradient>
+ <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+ <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse"><path d="M80 0H0V80" fill="none" stroke="#2c6177" stroke-opacity=".12"/></pattern>
+</defs>
+<rect width="1600" height="850" fill="url(#bg)"/><rect width="1600" height="850" fill="url(#grid)"/>
+<path d="M95 210L185 118 356 82 520 115 650 85 835 132 1025 110 1190 165 1370 202 1495 305 1460 438 1320 520 1222 650 1072 720 880 700 735 765 560 715 420 650 260 625 145 530 92 410Z" fill="url(#land)" stroke="#23647e" stroke-width="4"/>
+<g fill="none" stroke="#30687e" stroke-width="2" opacity=".75">
+ <path d="M130 555C295 415 372 355 520 315S840 215 1020 285 1280 430 1480 300"/>
+ <path d="M255 625C370 490 485 452 650 438S945 440 1125 610"/>
+ <path d="M175 260C345 220 490 215 655 275S995 390 1290 240"/>
+ <path d="M430 650C525 555 615 510 760 500S1055 525 1320 520"/>
+ <path d="M356 82C425 205 520 315 650 438S880 700 1072 720"/>
+ <path d="M650 85C695 210 760 300 880 385S1100 500 1222 650"/>
+ <path d="M1025 110C1030 240 1040 345 1070 455S1140 585 1222 650"/>
+</g>
+<g fill="#53dfff" opacity=".45" filter="url(#glow)">
+ <circle cx="130" cy="555" r="5"/><circle cx="255" cy="625" r="4"/><circle cx="175" cy="260" r="4"/><circle cx="356" cy="82" r="4"/><circle cx="520" cy="315" r="5"/><circle cx="650" cy="438" r="5"/><circle cx="760" cy="500" r="4"/><circle cx="880" cy="385" r="5"/><circle cx="1020" cy="285" r="5"/><circle cx="1070" cy="455" r="4"/><circle cx="1125" cy="610" r="5"/><circle cx="1290" cy="240" r="5"/><circle cx="1320" cy="520" r="5"/><circle cx="1480" cy="300" r="4"/>
+</g>
+<g font-family="Arial" font-weight="700" font-size="28" fill="#a8d4e5" opacity=".35"><text x="165" y="160">WESTERN INTERCONNECT</text><text x="675" y="190">CONTINENTAL GRID</text><text x="1090" y="185">EASTERN INTERCONNECT</text><text x="565" y="810">RIVERBEND ENERGY • TRANSMISSION COMMAND</text></g>
+</svg>
