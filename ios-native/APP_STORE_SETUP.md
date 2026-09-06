@@ -1,4 +1,4 @@
-# Power Plant Tycoon — iOS Monetization + Balance RC3
+# Power Plant Tycoon — iOS Monetization RC2
 
 This folder is the native iPhone wrapper source for the current Power Plant Tycoon release candidate.
 

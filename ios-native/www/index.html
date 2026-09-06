@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Balance RC3</title>
+<title>Power Plant Tycoon — App Store Transition RC1</title>
 <link rel="stylesheet" href="css/game.css?v=12"></head>
 <body>
 <div id="bootSplashPremium">
@@ -180,8 +180,7 @@
 <div class="card"><div class="section-title"><h3>📊 Operations Dashboard</h3><span>LIVE</span></div><div class="dashboard">
 <div class="dash"><small>OPERATOR LEVEL</small><b id="operatorLevel">1</b></div>
 <div class="dash"><small>OPERATOR XP</small><b id="operatorXP">0 / 100</b></div>
-<div class="dash"><small>FLEET EFFICIENCY</small><b id="efficiencyValue">100%</b></div>
-<div class="dash"><small>TOTAL PRODUCTION MULT</small><b id="productionMultiplierValue">1.00×</b></div>
+<div class="dash"><small>EFFICIENCY</small><b id="efficiencyValue">100%</b></div>
 <div class="dash"><small>MAINTENANCE</small><b id="maintenanceValue">100%</b></div>
 <div class="dash"><small>FUEL COST</small><b id="fuelCostValue">$0/s</b></div>
 <div class="dash"><small>NET VALUE</small><b id="netValue">$0/s</b></div>
@@ -257,6 +256,7 @@
 <div class="card automation-core-card"><div class="section-title"><h3>🤖 Automation Core</h3><span>AUTO GENERATE</span></div><div id="automationCore"></div></div>
 <div class="card"><div class="section-title"><h3>⚙ Corporate Upgrades</h3><span>PERMANENT BONUSES</span></div><div id="corporateUpgradeList"></div></div>
 <div class="card prestige-v6"><div class="section-title"><h3>♻ Prestige</h3><span>REBUILD STRONGER</span></div><p id="prestigeInfo"></p><button class="btn purple" style="width:100%" onclick="prestige()">PRESTIGE COMPANY</button></div>
+<div class="card legacy-grid-card"><div class="section-title"><h3>💠 Legacy Grid</h3><span>GRID CREDITS</span></div><div id="legacyGrid"></div></div>
 </section>
 <section id="map" class="page">
 <div class="page-hero grid-hero"><div><small>TRANSMISSION DIVISION</small><h2>Expand the Grid</h2><p>Connect regional markets, then finance massive infrastructure projects.</p></div><div class="page-hero-icon">🗺️</div></div>
@@ -264,13 +264,13 @@
 <div class="card mega-project-card"><div class="section-title"><h3>🌐 Mega Grid Projects</h3><span>STRATEGIC INFRASTRUCTURE</span></div><div id="megaProjectList"></div></div>
 </section>
 <section id="goals" class="page">
-<div class="page-hero goals-hero"><div><small>BOARD OBJECTIVES</small><h2>Empire Roadmap</h2><p>$65M is only the beginning. Progression now extends through quadrillions with multi-requirement gates.</p></div><div class="page-hero-icon">🏆</div></div>
+<div class="page-hero goals-hero"><div><small>BOARD OBJECTIVES</small><h2>Empire Roadmap</h2><p>$65M is only the beginning. Progression now extends through decillions, Grid Credits, prestige milestones and repeatable Empire Levels.</p></div><div class="page-hero-icon">🏆</div></div>
 <div class="card phase-card"><div class="section-title"><h3>🧭 Strategic Progression</h3><span>MULTI-GATE</span></div><div id="nextPhase"></div></div>
 <div class="card"><div class="section-title"><h3>🎯 Missions</h3><span>CASH REWARDS</span></div><div id="missionList"></div></div>
 <div class="card"><div class="section-title"><h3>🏆 Achievements</h3><span>CAREER MILESTONES</span></div><div id="achievementList"></div></div>
 <div class="card endgame empire-roadmap">
   <div class="section-title"><h3>⚡ Empire Milestones</h3><span>LONG-TERM</span></div>
-  <p class="small">There is no quick finish line. Build the fleet, master assets, complete contracts, fund mega projects and advance through the $100Qa roadmap.</p>
+  <p class="small">There is no quick finish line. Build the fleet, master assets, complete contracts, fund mega projects and advance from millions through decillions. Prestige, Grid Credits and Empire Levels continue beyond the listed milestones.</p>
   <div id="endgameList"></div>
 </div>
 <div class="card dynasty-card"><div class="section-title"><h3>👑 Empire Level</h3><span>REPEATABLE</span></div><div id="empireAscension"></div></div>

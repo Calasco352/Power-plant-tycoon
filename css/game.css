@@ -2289,7 +2289,7 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 .storekit-status{margin-top:10px;padding:10px 12px;border-radius:12px;border:1px solid #245578;background:#081a28;color:#9fd8ff;font-size:12px;font-weight:800;text-align:center}
 
 
-/* ===== MONETIZATION + BALANCE RC3 ===== */
+/* ===== MONETIZATION RC2 ===== */
 .rewarded-ad-card{border-color:rgba(47,157,245,.42)!important;background:linear-gradient(145deg,rgba(9,42,65,.96),rgba(5,19,30,.98))!important}
 .ad-reward-item{border-color:rgba(47,157,245,.48)!important}
 .remove-ads-storeitem{border-color:rgba(255,211,75,.48)!important;background:linear-gradient(135deg,rgba(69,51,11,.42),rgba(9,25,38,.95))!important}
@@ -2305,3 +2305,13 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
   .rewarded-ad-card .storeitem small,.premium-store-card .storeitem small,.consumable-store-card .storeitem small{font-size:9px!important;line-height:1.35!important;margin-top:3px!important}
   .rewarded-ad-card .btn,.premium-store-card .btn,.consumable-store-card .btn{min-width:82px!important;padding:10px 9px!important;font-size:10px!important}
 }
+
+/* ===== RC2.1 LATE-GAME STABILITY / LEGACY GRID ===== */
+.legacy-grid-card{border-color:#6559b8;background:linear-gradient(145deg,#111a36,#091424 72%)}
+.legacy-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:12px}
+.legacy-summary>div{padding:12px;border-radius:14px;background:#0b2233;border:1px solid #2f6a8d;min-width:0}
+.legacy-summary small{display:block;color:#91afc2;font-size:10px;font-weight:900;letter-spacing:.8px}
+.legacy-summary strong{display:block;margin-top:5px;font-size:19px;color:#72eaff;overflow:hidden;text-overflow:ellipsis}
+.legacy-upgrade{display:grid;grid-template-columns:42px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;margin-top:9px;border-radius:15px;background:linear-gradient(145deg,#0d2638,#091823);border:1px solid #285b78}
+.legacy-upgrade strong,.legacy-upgrade small{display:block}.legacy-upgrade small{margin-top:4px;color:#9eb9cb;font-size:11px}.legacy-icon{font-size:25px;text-align:center}
+@media(max-width:520px){.legacy-summary{grid-template-columns:1fr 1fr}.legacy-upgrade{grid-template-columns:36px minmax(0,1fr);}.legacy-upgrade button{grid-column:1/-1;width:100%}}
