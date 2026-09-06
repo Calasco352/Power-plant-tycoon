@@ -28,7 +28,7 @@ final class PowerPlantAdsBridge: NSObject, WKScriptMessageHandler {
 
     func bootstrap() async {
 #if canImport(GoogleMobileAds)
-        MobileAds.shared.start()
+        await MobileAds.shared.start()
         await loadInterstitial()
         await loadRewarded()
         send(["status": "ready"])

@@ -38,8 +38,39 @@ final class PowerPlantStoreKitBridge: NSObject, WKScriptMessageHandler {
                                didReceive message: WKScriptMessage) {
         guard let body = message.body as? [String: Any],
               let action = body["action"] as? String else { return }
-        let productID = body["productID"] as? String
+        let rawProductID = body["productID"] as? String
 
+        let productID: String? = {
+            guard let raw = rawProductID else { return nil }
+
+            let key = raw.lowercased().filter { $0.isLetter || $0.isNumber }
+
+            if key.contains("remove") && key.contains("ad") {
+                return Self.removeAdsProductID
+            }
+
+            if key.contains("auto") && key.contains("generate") {
+                return Self.autoGenerateProductID
+            }
+
+            if key.contains("executive") && key.contains("license") {
+                return Self.executiveLicenseProductID
+            }
+
+            if key.contains("turbo") && key.contains("grid") {
+                return Self.turboGridProductID
+            }
+
+            if key.contains("maintenance") && key.contains("crate") {
+                return Self.maintenanceCrateProductID
+            }
+
+            if key.contains("capital") && key.contains("injection") {
+                return Self.capitalInjectionProductID
+            }
+
+            return raw
+        }()
         Task { @MainActor in
             switch action {
             case "status": await sendEntitlements(status: "ready")
