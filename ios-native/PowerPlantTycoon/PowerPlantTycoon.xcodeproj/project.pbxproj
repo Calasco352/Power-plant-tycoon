@@ -18,7 +18,6 @@
 		9C94FFCC304DA794007172B8 /* Exceptions for "PowerPlantTycoon" folder in "PowerPlantTycoon" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Assets.xcassets,
 				Info.plist,
 			);
 			target = 9C94FF35304D9DB3007172B8 /* PowerPlantTycoon */;
