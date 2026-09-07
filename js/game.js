@@ -764,15 +764,9 @@ function renderMegaSystems(){
 const ENDGAME=EMPIRE_MILESTONES;
 
 function beep(freq=520,duration=.05){
-  if(!g.settings.sound)return;
-  try{
-    const A=window.AudioContext||window.webkitAudioContext;
-    if(!A)return;
-    const c=new A(),o=c.createOscillator(),v=c.createGain();
-    o.frequency.value=freq;v.gain.value=.03;o.connect(v);v.connect(c.destination);o.start();
-    v.gain.exponentialRampToValueAtTime(.0001,c.currentTime+duration);
-    o.stop(c.currentTime+duration);
-  }catch(e){}
+  /* Build 2: disabled synthesized oscillator tone.
+     File-based SFX remain active. This avoids persistent WebAudio buzzing on iOS. */
+  return;
 }
 function feedback(type="tap"){
   if(g.settings.haptics&&navigator.vibrate)navigator.vibrate(type==="big"?45:15);
@@ -1184,7 +1178,7 @@ function setPremiumVolume(type,value){
 function applyPremiumVolumes(){
   const mv=(g.settings.musicVolume??16)/100,sv=(g.settings.sfxVolume??22)/100;
   premiumAudio.day.volume=mv;premiumAudio.night.volume=mv;premiumAudio.storm.volume=mv;
-  premiumAudio.alarm.volume=sv*.8;premiumAudio.generate.volume=sv;premiumAudio.cash.volume=sv;premiumAudio.upgrade.volume=sv;
+  premiumAudio.alarm.volume=sv*.25;premiumAudio.generate.volume=sv*.55;premiumAudio.cash.volume=sv*.60;premiumAudio.upgrade.volume=sv*.60;
   const m=document.getElementById("musicVolume"),s=document.getElementById("sfxVolume");
   if(m)m.value=g.settings.musicVolume??16;if(s)s.value=g.settings.sfxVolume??22;
 }
@@ -1193,7 +1187,12 @@ let premiumAmbience=null;
 function playPremiumSfx(name){
   if(!g?.settings?.sound)return;
   const a=premiumAudio[name];if(!a)return;
-  try{a.currentTime=0;a.play().catch(()=>{})}catch(e){}
+  try{
+    a.loop=false;
+    a.pause();
+    a.currentTime=0;
+    a.play().catch(()=>{});
+  }catch(e){}
 }
 function updatePremiumAmbience(){
   if(!g?.settings?.sound){Object.values(premiumAudio).forEach(a=>{if(a.loop)a.pause()});return}
