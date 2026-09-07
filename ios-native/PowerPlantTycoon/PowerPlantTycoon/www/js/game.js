@@ -35,12 +35,12 @@ function b10LicenseMult(){return currentB10License().bonus}
 const PPT_STOREKIT={
   bridgeName:"powerPlantStoreKit",
   products:{
-    autoGenerate:"com.calasco352.powerplanttycoon.autogenerate",
-    removeAds:"com.calasco352.powerplanttycoon.removeads",
-    executiveLicense:"com.calasco352.powerplanttycoon.executivelicense",
-    turboGrid:"com.calasco352.powerplanttycoon.turbogrid",
-    maintenanceCrate:"com.calasco352.powerplanttycoon.maintenancecrate",
-    capitalInjection:"com.calasco352.powerplanttycoon.capitalinjection"
+    autoGenerate:"com.calascointeractive.powerplanttycoon.autogenerate",
+    removeAds:"com.calascointeractive.powerplanttycoon.removeads",
+    executiveLicense:"com.calascointeractive.powerplanttycoon.executivelicense",
+    turboGrid:"com.calascointeractive.powerplanttycoon.turbogrid",
+    maintenanceCrate:"com.calascointeractive.powerplanttycoon.maintenancecrate",
+    capitalInjection:"com.calascointeractive.powerplanttycoon.capitalinjection"
   },
   permanentKeys:["autoGenerate","removeAds","executiveLicense"],
   consumableKeys:["turboGrid","maintenanceCrate","capitalInjection"],
