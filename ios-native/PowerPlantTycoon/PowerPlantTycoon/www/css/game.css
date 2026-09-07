@@ -2381,3 +2381,417 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;bac
 }
 /* ===== END PPT TEST BUILD HUD FIX ===== */
 
+
+
+/* =========================================================
+   BUILD 10 — CONTROL ROOM / CAREER / OPERATIONS OVERHAUL
+   ========================================================= */
+:root{--b10-cyan:#67ddff;--b10-green:#51ee99;--b10-amber:#ffd25b;--b10-red:#ff6670;--b10-violet:#a989ff}
+body{background-image:radial-gradient(circle at 50% -10%,rgba(58,169,225,.13),transparent 34%),linear-gradient(180deg,#06131e 0%,#030a11 100%)}
+body.b10-peak-load .topbar{border-bottom-color:rgba(255,210,91,.48)!important;box-shadow:0 12px 42px rgba(255,166,30,.08),0 12px 40px rgba(0,0,0,.45)!important}
+body.b10-grid-critical .topbar{border-bottom-color:rgba(255,102,112,.62)!important;box-shadow:0 12px 42px rgba(255,75,92,.12),0 12px 40px rgba(0,0,0,.45)!important}
+body.b10-grid-critical #b10AlertState{color:#fff;background:linear-gradient(180deg,#d94350,#8f202c);border-color:#ff8790;animation:b10-alert-pulse 1.3s infinite}
+@keyframes b10-alert-pulse{50%{box-shadow:0 0 18px rgba(255,85,99,.45)}}
+
+/* Make the facility feel like a live control-room viewport. */
+#home .yard:before{content:"";position:absolute;inset:0;z-index:3;pointer-events:none;background:linear-gradient(180deg,rgba(103,221,255,.035),transparent 28%,transparent 72%,rgba(0,0,0,.17)),repeating-linear-gradient(90deg,transparent 0 79px,rgba(103,221,255,.025) 80px);mix-blend-mode:screen}
+#home .yard:after{content:"LIVE • RIVERBEND SCADA";position:absolute;right:10px;bottom:9px;z-index:16;padding:4px 8px;border-radius:999px;border:1px solid rgba(103,221,255,.3);background:rgba(3,14,22,.72);color:#9be9ff;font-size:7px;font-weight:1000;letter-spacing:1.1px;pointer-events:none}
+#home .generate{background:linear-gradient(180deg,#5eeaff,#20aee0)!important;color:#04151d!important;border-color:#91efff!important;box-shadow:0 7px 0 #0c6686,0 0 25px rgba(71,216,255,.22)!important}
+#home .generate:active{box-shadow:0 3px 0 #0c6686,0 0 13px rgba(71,216,255,.18)!important}
+
+.b10-command-deck{position:relative;margin:10px 0 0;padding:13px;border:1px solid rgba(103,221,255,.38);border-radius:18px;background:linear-gradient(145deg,rgba(9,31,46,.98),rgba(5,17,28,.98));box-shadow:0 15px 36px rgba(0,0,0,.27),inset 0 1px rgba(255,255,255,.04);overflow:hidden}
+.b10-command-deck:before{content:"";position:absolute;width:180px;height:180px;right:-90px;top:-110px;border-radius:50%;background:radial-gradient(circle,rgba(103,221,255,.18),transparent 68%);pointer-events:none}
+.b10-deck-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.b10-deck-head small{display:block;color:#7ca6bc;font-size:8px;font-weight:1000;letter-spacing:1.4px}.b10-deck-head strong{display:block;margin-top:2px;font-size:15px;letter-spacing:.4px}.b10-deck-head>span{position:relative;z-index:2;padding:5px 8px;border-radius:999px;background:#0d332a;border:1px solid #2d7858;color:#70f0a6;font-size:8px;font-weight:1000;letter-spacing:.7px}
+.b10-pulse-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px}.b10-pulse{min-width:0;padding:9px;border-radius:12px;background:rgba(5,20,31,.9);border:1px solid rgba(73,135,168,.36)}.b10-pulse small{display:block;color:#819eaf;font-size:7px;font-weight:1000;letter-spacing:.75px;white-space:nowrap}.b10-pulse strong{display:block;margin-top:4px;color:#eefaff;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.b10-meter{height:4px;margin-top:7px;border-radius:99px;overflow:hidden;background:#02080d}.b10-meter i{display:block;height:100%;background:linear-gradient(90deg,#25b8ff,#60e9a4);transition:width .35s ease}.b10-market-trend{margin-top:5px;color:#91b4c7;font-size:7px;font-weight:1000;letter-spacing:.5px}
+
+.b10-shift-card{border-color:rgba(81,238,153,.35)!important;background:linear-gradient(145deg,rgba(8,38,36,.97),rgba(5,18,29,.98))!important}.b10-shift-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:9px}.b10-shift-summary>div{padding:9px;border-radius:12px;background:#071b25;border:1px solid rgba(61,121,146,.38);text-align:center}.b10-shift-summary small{display:block;color:#7fa2b4;font-size:7px;font-weight:1000;letter-spacing:.7px}.b10-shift-summary strong{display:block;margin-top:3px;color:#f2fbff;font-size:12px}.b10-shift-objectives{display:grid;gap:7px}.b10-objective{padding:9px;border-radius:11px;background:#071722;border:1px solid #24475d}.b10-objective.done{border-color:rgba(81,238,153,.45);background:linear-gradient(145deg,#0b3027,#071c20)}.b10-objective>div:first-child{display:flex;justify-content:space-between;gap:9px;font-size:9px}.b10-objective span{font-weight:1000;color:#bfd7e5}.b10-objective b{color:#f1f7fa;text-align:right}.b10-objective-meter{height:5px;margin-top:6px;border-radius:999px;overflow:hidden;background:#02090e}.b10-objective-meter i{display:block;height:100%;background:linear-gradient(90deg,#31baff,#50eb9a,#ffd25b);transition:width .4s ease}
+
+.b10-license-card{border-color:rgba(169,137,255,.4)!important;background:linear-gradient(145deg,rgba(31,23,62,.96),rgba(6,18,31,.98))!important}.b10-license-current{display:grid;grid-template-columns:46px minmax(0,1fr) auto;gap:10px;align-items:center;padding:11px;border-radius:15px;background:#0b1b2b;border:1px solid rgba(169,137,255,.32)}.b10-license-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:14px;background:linear-gradient(145deg,#17354c,#171f42);font-size:23px}.b10-license-current small{display:block;color:#927fcb;font-size:8px;font-weight:1000;letter-spacing:1px}.b10-license-current strong{display:block;margin-top:3px;font-size:14px;color:#f0ebff}.b10-license-current p{margin:4px 0 0;color:#9fb5c5;font-size:9px}.b10-license-current>span{padding:5px 7px;border-radius:999px;background:#211b45;border:1px solid #5f50a3;color:#cbbdff;font-size:8px;font-weight:1000}.b10-license-next{margin-top:9px;padding:10px;border-radius:13px;background:#071722;border:1px solid #263d63}.b10-license-next>div:first-child{display:flex;justify-content:space-between;gap:9px;font-size:9px}.b10-license-next span{font-weight:1000;color:#b7c8d6}.b10-license-next b{color:#ffd25b}.b10-license-meter{height:6px;margin:8px 0 6px;border-radius:999px;overflow:hidden;background:#02080e}.b10-license-meter i{display:block;height:100%;background:linear-gradient(90deg,#33b8ff,#a989ff,#ffd25b)}.b10-license-next small{color:#88a5b6;font-size:8px}.b10-license-max{margin-top:10px;padding:10px;border:1px solid rgba(81,238,153,.4);border-radius:12px;background:#0b2d25;color:#65f0a1;text-align:center;font-size:9px;font-weight:1000;letter-spacing:1px}
+
+/* Only one onboarding system is visible in Build 10. */
+#tutorialBox,#tutorialFinal{display:none!important}.b10-tutorial-objective{margin:9px 0 2px;padding:8px 10px;border-radius:10px;background:rgba(32,91,117,.28);border:1px solid rgba(103,221,255,.27);color:#8ee6ff;font-size:9px;font-weight:1000;letter-spacing:.45px}
+.tut-panel{border-color:rgba(103,221,255,.48)!important;box-shadow:0 24px 70px rgba(0,0,0,.55),0 0 30px rgba(72,196,255,.08)!important}.tut-spot{box-shadow:0 0 0 3px rgba(103,221,255,.82),0 0 0 9999px rgba(0,8,14,.55),0 0 30px rgba(103,221,255,.36)!important}
+
+/* Build 10 fleet identity: strategic cards feel more like technology tiers. */
+.plant-v7{transform:translateZ(0);transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease}.plant-v7:hover{transform:translateY(-2px);box-shadow:0 18px 42px rgba(0,0,0,.34),0 0 18px rgba(81,181,231,.07)}.plant-era{color:#8ee8ff!important}.plant-v7.strategic-asset .plant-card-level{background:rgba(87,57,133,.82)!important;border-color:rgba(174,140,255,.52)!important}
+
+@media(max-width:760px){
+  .b10-command-deck{margin-top:8px;padding:10px;border-radius:15px}.b10-pulse-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.b10-pulse{padding:8px}.b10-pulse strong{font-size:13px}.b10-deck-head strong{font-size:13px}
+  .b10-shift-summary{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.b10-shift-summary>div{padding:8px 4px}.b10-shift-summary strong{font-size:10px}.b10-objective>div:first-child{font-size:8px}
+  .b10-license-current{grid-template-columns:38px minmax(0,1fr);gap:8px}.b10-license-icon{width:38px;height:38px;font-size:20px}.b10-license-current>span{grid-column:1/-1;justify-self:start}.b10-license-current strong{font-size:12px}
+}
+@media(max-width:390px){.b10-pulse small{font-size:6px}.b10-pulse strong{font-size:12px}.b10-deck-head small{font-size:7px}.b10-shift-summary{grid-template-columns:1fr 1fr}.b10-shift-summary>div:last-child{grid-column:1/-1}}
+/* ===== END BUILD 10 MAJOR UPGRADE ===== */
+
+/* ===== BUILD 10 IPHONE HOME FIT ===== */
+@media (max-width:760px){
+  #home .yard{
+    height:190px!important;
+    min-height:190px!important;
+    max-height:190px!important;
+  }
+
+  #home .scene-label{
+    padding:6px 12px 5px!important;
+  }
+
+  #home .scene-label h2{
+    font-size:18px!important;
+  }
+
+  #home .scene-label p{
+    font-size:9px!important;
+  }
+
+  #home .statusstrip{
+    padding:0 8px 5px!important;
+  }
+
+  #home .statusstrip .pill{
+    padding:4px 6px!important;
+    font-size:8px!important;
+  }
+
+  #home .generate-wrap{
+    padding:6px 8px!important;
+  }
+
+  #home .generate{
+    min-height:52px!important;
+    font-size:16px!important;
+  }
+}
+
+@media (max-width:390px){
+  #home .yard{
+    height:175px!important;
+    min-height:175px!important;
+    max-height:175px!important;
+  }
+}
+/* ===== END BUILD 10 IPHONE HOME FIT ===== */
+
+/* ===== BUILD 10 TUTORIAL HIGHLIGHT FIX ===== */
+.tut-spot{
+  outline:3px solid #67ddff!important;
+  outline-offset:4px!important;
+  animation:b10TutorialPulse .8s ease-in-out infinite alternate!important;
+}
+
+#home .generate.tut-spot{
+  outline:4px solid #ffffff!important;
+  outline-offset:4px!important;
+  box-shadow:
+    0 0 0 5px #38d9ff,
+    0 0 32px 12px rgba(56,217,255,.75),
+    0 7px 0 #0c6686!important;
+  filter:brightness(1.2)!important;
+}
+
+@keyframes b10TutorialPulse{
+  from{filter:brightness(1)}
+  to{filter:brightness(1.3)}
+}
+/* ===== END BUILD 10 TUTORIAL HIGHLIGHT FIX ===== */
+
+/* ===== BUILD 10 TUTORIAL TARGET EMPHASIS ===== */
+.tut-panel{
+  border-color:rgba(103,221,255,.24)!important;
+  box-shadow:0 18px 45px rgba(0,0,0,.55)!important;
+  background:linear-gradient(145deg,#0a2232,#06131d)!important;
+}
+
+#home .generate.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+  border:3px solid #ffffff!important;
+  outline:5px solid #57e6ff!important;
+  outline-offset:5px!important;
+  box-shadow:
+    0 0 0 8px rgba(87,230,255,.30),
+    0 0 38px 16px rgba(87,230,255,.95),
+    0 7px 0 #0c6686!important;
+  animation:b10TargetPulse .65s ease-in-out infinite alternate!important;
+}
+
+#home .generate.tut-spot::after{
+  content:"TAP HERE";
+  position:absolute;
+  right:12px;
+  top:-28px;
+  padding:4px 9px;
+  border-radius:999px;
+  background:#ffffff;
+  color:#06202a;
+  font-size:10px;
+  font-weight:1000;
+  letter-spacing:.8px;
+  box-shadow:0 0 18px rgba(255,255,255,.75);
+  pointer-events:none;
+}
+
+@keyframes b10TargetPulse{
+  from{
+    filter:brightness(1.05);
+    transform:scale(1);
+  }
+  to{
+    filter:brightness(1.4);
+    transform:scale(1.025);
+  }
+}
+/* ===== END BUILD 10 TUTORIAL TARGET EMPHASIS ===== */
+
+/* ===== BUILD 10 MATCH TUTORIAL TARGET STYLE ===== */
+#home .generate.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+  transform:none!important;
+  filter:brightness(1.12)!important;
+
+  border:3px solid #9fffe4!important;
+  outline:3px solid #5de7ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    0 0 0 3px rgba(93,231,255,.28),
+    0 0 22px 8px rgba(93,231,255,.55)!important;
+
+  animation:b10TutorialPulse .8s ease-in-out infinite alternate!important;
+}
+
+#home .generate.tut-spot::after{
+  content:none!important;
+  display:none!important;
+}
+/* ===== END BUILD 10 MATCH TUTORIAL TARGET STYLE ===== */
+
+/* ===== BUILD 10 MATCH TUTORIAL TARGET STYLE ===== */
+#home .generate.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+  transform:none!important;
+  filter:brightness(1.12)!important;
+
+  border:3px solid #9fffe4!important;
+  outline:3px solid #5de7ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    0 0 0 3px rgba(93,231,255,.28),
+    0 0 22px 8px rgba(93,231,255,.55)!important;
+
+  animation:b10TutorialPulse .8s ease-in-out infinite alternate!important;
+}
+
+#home .generate.tut-spot::after{
+  content:none!important;
+  display:none!important;
+}
+/* ===== END BUILD 10 MATCH TUTORIAL TARGET STYLE ===== */
+
+/* ===== BUILD 10 DIESEL TUTORIAL SPOTLIGHT ===== */
+button[data-tutorial="build-diesel"].tut-spot{
+  position:relative!important;
+  z-index:250!important;
+  opacity:1!important;
+  filter:brightness(1.45)!important;
+
+  outline:4px solid #67e7ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    0 0 0 4px rgba(103,231,255,.35),
+    0 0 28px 12px rgba(103,231,255,.85),
+    0 0 0 9999px rgba(0,8,14,.52)!important;
+
+  animation:none!important;
+}
+/* ===== END BUILD 10 DIESEL TUTORIAL SPOTLIGHT ===== */
+
+/* ===== BUILD 10 TUTORIAL 4 SELL-STYLE TARGET ===== */
+button[data-tutorial="build-diesel"].tut-spot{
+  opacity:1!important;
+  color:#ffffff!important;
+  font-weight:1000!important;
+
+  background:
+    linear-gradient(180deg,#7cf47c 0%,#34d966 52%,#18a94b 100%)!important;
+
+  border:3px solid #a8fff1!important;
+  outline:3px solid #5de7ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.65),
+    0 0 0 3px rgba(93,231,255,.35),
+    0 0 28px 10px rgba(93,231,255,.70),
+    0 0 0 9999px rgba(0,8,14,.55)!important;
+
+  filter:brightness(1.12)!important;
+  animation:none!important;
+}
+/* ===== END BUILD 10 TUTORIAL 4 SELL-STYLE TARGET ===== */
+
+/* ===== BUILD 10 PLANT TUTORIAL STACKING FIX ===== */
+
+/* Let the tutorial target escape the plant-card stacking context */
+#plantList .plant-v7:has(button[data-tutorial="build-diesel"].tut-spot){
+  transform:none!important;
+  overflow:visible!important;
+  z-index:auto!important;
+}
+
+#plantList .plant-v7:has(button[data-tutorial="build-diesel"].tut-spot) .plant-card-content{
+  z-index:auto!important;
+}
+
+/* Now the real BUILD button can sit ABOVE the tutorial mask */
+#plantList button[data-tutorial="build-diesel"].tut-spot{
+  position:relative!important;
+  z-index:250!important;
+
+  background:linear-gradient(
+    180deg,
+    #7cff83 0%,
+    #35dc68 52%,
+    #18a84c 100%
+  )!important;
+
+  color:#fff!important;
+  opacity:1!important;
+  filter:brightness(1.18)!important;
+
+  border:3px solid #a8fff1!important;
+  outline:3px solid #58d8ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    0 0 0 3px rgba(88,216,255,.38),
+    0 0 28px 10px rgba(88,216,255,.72)!important;
+
+  animation:none!important;
+}
+/* ===== END BUILD 10 PLANT TUTORIAL STACKING FIX ===== */
+
+
+/* ===== BUILD 10 STEP 1 EXACT DIESEL-STYLE SPOTLIGHT ===== */
+
+/* Lift the Generate area above the tutorial dimming layer */
+#home .generate-wrap:has(.generate.tut-spot){
+  position:relative!important;
+  z-index:250!important;
+  overflow:visible!important;
+  transform:none!important;
+}
+
+/* Match the final stable Diesel tutorial treatment */
+#home .generate.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+
+  background:linear-gradient(
+    180deg,
+    #7cff83 0%,
+    #35dc68 52%,
+    #18a84c 100%
+  )!important;
+
+  color:#ffffff!important;
+  opacity:1!important;
+  font-weight:1000!important;
+  filter:brightness(1.18)!important;
+
+  border:3px solid #a8fff1!important;
+  outline:3px solid #58d8ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.65),
+    0 0 0 3px rgba(88,216,255,.38),
+    0 0 28px 10px rgba(88,216,255,.72),
+    0 0 0 9999px rgba(0,8,14,.55)!important;
+
+  animation:none!important;
+  transform:none!important;
+}
+
+#home .generate.tut-spot::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* ===== END BUILD 10 STEP 1 EXACT DIESEL-STYLE SPOTLIGHT ===== */
+
+/* ===== BUILD 10 KEEP TUTORIAL PANEL ABOVE SPOTLIGHT ===== */
+.tut-panel{
+  position:fixed!important;
+  z-index:500!important;
+  opacity:1!important;
+  filter:none!important;
+}
+/* ===== END BUILD 10 KEEP TUTORIAL PANEL ABOVE SPOTLIGHT ===== */
+
+/* ===== BUILD 10 TUTORIAL 6 DISPATCH SPOTLIGHT ===== */
+#tutorialDispatchBtn.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+
+  background:linear-gradient(
+    180deg,
+    #7cff83 0%,
+    #35dc68 52%,
+    #18a84c 100%
+  )!important;
+
+  color:#ffffff!important;
+  opacity:1!important;
+  font-weight:1000!important;
+  filter:brightness(1.18)!important;
+
+  border:3px solid #a8fff1!important;
+  outline:3px solid #58d8ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.65),
+    0 0 0 3px rgba(88,216,255,.38),
+    0 0 28px 10px rgba(88,216,255,.72),
+    0 0 0 9999px rgba(0,8,14,.55)!important;
+
+  animation:none!important;
+  transform:none!important;
+}
+/* ===== END BUILD 10 TUTORIAL 6 DISPATCH SPOTLIGHT ===== */
+
+/* ===== BUILD 10 TUTORIAL 6 DISPATCH SPOTLIGHT ===== */
+#tutorialDispatchBtn.tut-spot{
+  position:relative!important;
+  z-index:250!important;
+
+  background:linear-gradient(
+    180deg,
+    #7cff83 0%,
+    #35dc68 52%,
+    #18a84c 100%
+  )!important;
+
+  color:#ffffff!important;
+  opacity:1!important;
+  font-weight:1000!important;
+  filter:brightness(1.18)!important;
+
+  border:3px solid #a8fff1!important;
+  outline:3px solid #58d8ff!important;
+  outline-offset:3px!important;
+
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.65),
+    0 0 0 3px rgba(88,216,255,.38),
+    0 0 28px 10px rgba(88,216,255,.72),
+    0 0 0 9999px rgba(0,8,14,.55)!important;
+
+  animation:none!important;
+  transform:none!important;
+}
+/* ===== END BUILD 10 TUTORIAL 6 DISPATCH SPOTLIGHT ===== */

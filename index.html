@@ -4,8 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — App Store Transition RC1</title>
-<link rel="stylesheet" href="css/game.css?v=12"></head>
+<title>Power Plant Tycoon — Build 10 Major Upgrade</title>
+<link rel="stylesheet" href="css/game.css?v=13"></head>
 <body>
 <div id="bootSplashPremium">
   <div class="boot-card">
@@ -16,7 +16,7 @@
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">RELEASE CANDIDATE 1</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">BUILD 10</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
@@ -161,7 +161,17 @@
 <div class="generate-wrap">
   <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
   <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
-</div><div class="cp-equipment">
+</div>
+<div id="b10CommandDeck" class="b10-command-deck">
+  <div class="b10-deck-head"><div><small>RIVERBEND CONTROL ROOM</small><strong>LIVE GRID PULSE</strong></div><span id="b10AlertState">NORMAL</span></div>
+  <div class="b10-pulse-grid">
+    <div class="b10-pulse"><small>GRID LOAD</small><strong id="b10GridLoad">100%</strong><div class="b10-meter"><i id="b10GridLoadBar"></i></div></div>
+    <div class="b10-pulse"><small>RESERVE MARGIN</small><strong id="b10ReserveMargin">25%</strong><div class="b10-meter"><i id="b10ReserveBar"></i></div></div>
+    <div class="b10-pulse"><small>FLEET HEALTH</small><strong id="b10FleetHealth">100%</strong><div class="b10-meter"><i id="b10HealthBar"></i></div></div>
+    <div class="b10-pulse"><small>SPOT MARKET</small><strong id="b10MarketPrice">$1.00×</strong><div class="b10-market-trend" id="b10MarketSignal">STABLE</div></div>
+  </div>
+</div>
+<div class="cp-equipment">
   <div class="cp-equip"><strong>🔥 FUEL SYSTEM</strong><small id="cpFuelText">Ready</small><div class="bar"><i id="cpFuelBar" style="width:85%"></i></div></div>
   <div class="cp-equip"><strong>🌀 TURBINE</strong><small id="cpTurbineText">Online</small><div class="bar"><i id="cpTurbineBar" style="width:92%"></i></div></div>
   <div class="cp-equip"><strong>⚙️ GENERATOR</strong><small id="cpGeneratorText">Online</small><div class="bar"><i id="cpGeneratorBar" style="width:96%"></i></div></div>
@@ -176,6 +186,7 @@
 </div>
 
 <div id="eventBox" class="event"><h3 id="eventTitle">⚠ Plant Event</h3><p id="eventText"></p><button id="eventButton" class="btn orange" onclick="resolveEvent()">RESOLVE</button></div>
+<div class="card b10-shift-card"><div class="section-title"><h3>🎛 Operations Shift</h3><span id="b10ShiftBadge">ACTIVE SHIFT</span></div><div id="b10OpsShift"></div></div>
 <div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button id="sellBtn" class="btn green" onclick="sellPower()">💵 Sell All Power</button><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
 <div class="card"><div class="section-title"><h3>📊 Operations Dashboard</h3><span>LIVE</span></div><div class="dashboard">
 <div class="dash"><small>OPERATOR LEVEL</small><b id="operatorLevel">1</b></div>
@@ -213,7 +224,7 @@
   </div>
   <div class="final-toolbar">
     <button id="autoSellBtn" class="btn dark" onclick="toggleAutoSell()">AUTO SELL: OFF</button>
-    <button class="btn blue" onclick="dispatchPower()">⚡ DISPATCH TO GRID</button>
+    <button id="tutorialDispatchBtn" class="btn blue" onclick="dispatchPower()">⚡ DISPATCH TO GRID</button>
   </div>
 </div>
 
@@ -266,6 +277,7 @@
 <section id="goals" class="page">
 <div class="page-hero goals-hero"><div><small>BOARD OBJECTIVES</small><h2>Empire Roadmap</h2><p>$65M is only the beginning. Progression now extends through decillions, Grid Credits, prestige milestones and repeatable Empire Levels.</p></div><div class="page-hero-icon">🏆</div></div>
 <div class="card phase-card"><div class="section-title"><h3>🧭 Strategic Progression</h3><span>MULTI-GATE</span></div><div id="nextPhase"></div></div>
+<div class="card b10-license-card"><div class="section-title"><h3>🪪 Grid Authority License</h3><span>CAREER PROGRESSION</span></div><div id="b10LicenseProgress"></div></div>
 <div class="card"><div class="section-title"><h3>🎯 Missions</h3><span>CASH REWARDS</span></div><div id="missionList"></div></div>
 <div class="card"><div class="section-title"><h3>🏆 Achievements</h3><span>CAREER MILESTONES</span></div><div id="achievementList"></div></div>
 <div class="card endgame empire-roadmap">
@@ -403,6 +415,7 @@
   </div>
   <h3 id="tutorialTitle2">Welcome to Riverbend</h3>
   <p id="tutorialText2">Generate your first electricity.</p>
+  <div id="tutorialObjective2" class="b10-tutorial-objective">OBJECTIVE • Generate power</div>
   <div class="tut-progress"><i id="tutorialProgress2" style="width:14%"></i></div>
   <div class="tut-actions">
     <button class="secondary" onclick="prevGuidedTutorial()">BACK</button>
@@ -432,5 +445,5 @@
 </div>
 
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=12"></script></body>
+<script src="js/game.js?v=13"></script></body>
 </html>
