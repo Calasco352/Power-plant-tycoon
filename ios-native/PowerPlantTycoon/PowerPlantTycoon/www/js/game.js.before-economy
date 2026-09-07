@@ -1,10 +1,10 @@
 
 const PLANTS=[
-{id:"diesel",icon:"⛽",name:"Diesel Generator",unlock:75,base:1.5,fuel:.08,reliability:98,scene:true,thumb:"diesel",era:"RIVERBEND"},
-{id:"steam",icon:"🌀",name:"Steam Turbine",unlock:500,base:6,fuel:.18,reliability:95,scene:true,thumb:"steam",era:"RIVERBEND"},
-{id:"gas",icon:"🔥",name:"Gas Turbine",unlock:3125,base:22,fuel:.55,reliability:96,scene:true,thumb:"gas",era:"RIVERBEND"},
-{id:"solar",icon:"☀️",name:"Solar Farm",unlock:15000,base:80,fuel:0,reliability:99,scene:true,thumb:"solar",era:"RIVERBEND"},
-{id:"nuclear",icon:"☢️",name:"Nuclear Plant",unlock:93750,base:320,fuel:2.1,reliability:93,scene:true,thumb:"nuclear",era:"RIVERBEND"},
+{id:"diesel",icon:"⛽",name:"Diesel Generator",unlock:60,base:1.5,fuel:.08,reliability:98,scene:true,thumb:"diesel",era:"RIVERBEND"},
+{id:"steam",icon:"🌀",name:"Steam Turbine",unlock:400,base:6,fuel:.18,reliability:95,scene:true,thumb:"steam",era:"RIVERBEND"},
+{id:"gas",icon:"🔥",name:"Gas Turbine",unlock:2500,base:22,fuel:.55,reliability:96,scene:true,thumb:"gas",era:"RIVERBEND"},
+{id:"solar",icon:"☀️",name:"Solar Farm",unlock:12000,base:80,fuel:0,reliability:99,scene:true,thumb:"solar",era:"RIVERBEND"},
+{id:"nuclear",icon:"☢️",name:"Nuclear Plant",unlock:75000,base:320,fuel:2.1,reliability:93,scene:true,thumb:"nuclear",era:"RIVERBEND"},
 {id:"offshore",icon:"🌬️",name:"Offshore Wind Array",unlock:350000,base:1600,fuel:0,reliability:97,scene:false,thumb:"solar",era:"REGIONAL"},
 {id:"hydro",icon:"💧",name:"Pumped Hydro Complex",unlock:2500000,base:7200,fuel:.2,reliability:98,scene:false,thumb:"steam",era:"REGIONAL"},
 {id:"smr",icon:"⚛️",name:"SMR Reactor Campus",unlock:18000000,base:38000,fuel:18,reliability:97,scene:false,thumb:"nuclear",era:"NATIONAL"},
@@ -377,11 +377,11 @@ const POWER_DISPLAY_UNITS=[
 function energy(n){return formatElectricalUnit(n,ENERGY_DISPLAY_UNITS)}
 function powerRate(kwhPerSecond){return formatElectricalUnit(kwhPerSecond*3600,POWER_DISPLAY_UNITS)}
 function missionDisplay(m,v){if(m.type==="generated")return energy(v);if(m.type==="output")return powerRate(v);if(m.type==="lifetimeCash")return money(v);return num(v)}
-function prestigeMult(){return 1+.08*Math.pow(Math.max(0,g.prestige||0),.72)}function operatorMult(){return 1+Math.max(0,g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function premiumLicenseMult(){return g.executiveLicenseUnlocked?1.25:1}function totalMult(){const core=1+(prestigeMult()-1)+(operatorMult()-1)+(efficiencyMult()-1)+(regionMult()-1)+(staffProductionMult()-1)+(researchProductionMult()-1)+(empireBonusMult()-1)+(premiumLicenseMult()-1)+(legacyProductionMult()-1);const result=core*boostMult()*eventMult()*maintenanceMult()*policyProductionMult();return Number.isFinite(result)?Math.max(.05,result):1}function tapPower(){return(1+g.tapLevel*2.5)*(1+(prestigeMult()-1)+(operatorMult()-1)+(legacyProductionMult()-1))*boostMult()}function tapUpgradeCost(){return 30*Math.pow(1.72,g.tapLevel)}
-function rawOutput(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=plantBaseContribution(p,s)*(.6+.4*s.condition/100)});return Number.isFinite(n)?n:1e300}function output(){const n=rawOutput()*totalMult();return Number.isFinite(n)?Math.min(1e300,n):1e300}function fuelCostPerSecond(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=p.fuel*s.level});return n*Math.max(.35,1-g.corporate.fuel*.05-g.research.superconductors*.015)}function gridSaleMult(){return(1+g.corporate.grid*.04+g.research.quantumGrid*.08)*(g.executiveLicenseUnlocked?1.10:1)*legacySaleMult()}function netValuePerSecond(){return Math.max(0,output()*gridSaleMult()-fuelCostPerSecond())}function plantCost(p){const s=g.plants[p.id];if(!s.unlocked)return p.unlock;return p.unlock*.85*Math.pow(1.66,Math.max(1,s.level)-1)}function totalLevels(){return PLANTS.reduce((a,p)=>a+(g.plants[p.id].unlocked?g.plants[p.id].level:0),0)}function maintenanceCost(){return Math.max(300,rawOutput()*25+(100-g.maintenance)*22)}function engineerCost(){return 2500*Math.pow(1.75,g.engineers)}function corporateCost(up){return up.base*Math.pow(1.9,g.corporate[up.id]||0)}
+function prestigeMult(){return 1+.08*Math.pow(Math.max(0,g.prestige||0),.72)}function operatorMult(){return 1+Math.max(0,g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function premiumLicenseMult(){return g.executiveLicenseUnlocked?1.25:1}function totalMult(){const core=1+(prestigeMult()-1)+(operatorMult()-1)+(efficiencyMult()-1)+(regionMult()-1)+(staffProductionMult()-1)+(researchProductionMult()-1)+(empireBonusMult()-1)+(premiumLicenseMult()-1)+(legacyProductionMult()-1);const result=core*boostMult()*eventMult()*maintenanceMult()*policyProductionMult();return Number.isFinite(result)?Math.max(.05,result):1}function tapPower(){return(1+g.tapLevel*2.5)*(1+(prestigeMult()-1)+(operatorMult()-1)+(legacyProductionMult()-1))*boostMult()}function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel)}
+function rawOutput(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=plantBaseContribution(p,s)*(.6+.4*s.condition/100)});return Number.isFinite(n)?n:1e300}function output(){const n=rawOutput()*totalMult();return Number.isFinite(n)?Math.min(1e300,n):1e300}function fuelCostPerSecond(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=p.fuel*s.level});return n*Math.max(.35,1-g.corporate.fuel*.05-g.research.superconductors*.015)}function gridSaleMult(){return(1+g.corporate.grid*.04+g.research.quantumGrid*.08)*(g.executiveLicenseUnlocked?1.10:1)*legacySaleMult()}function netValuePerSecond(){return Math.max(0,output()*gridSaleMult()-fuelCostPerSecond())}function plantCost(p){const s=g.plants[p.id];if(!s.unlocked)return p.unlock;return p.unlock*.7*Math.pow(1.62,Math.max(1,s.level)-1)}function totalLevels(){return PLANTS.reduce((a,p)=>a+(g.plants[p.id].unlocked?g.plants[p.id].level:0),0)}function maintenanceCost(){return Math.max(250,rawOutput()*20+(100-g.maintenance)*18)}function engineerCost(){return 2500*Math.pow(1.75,g.engineers)}function corporateCost(up){return up.base*Math.pow(1.9,g.corporate[up.id]||0)}
 function saveGame(){repairLateGameState();g.lastSeen=Date.now();localStorage.setItem("PPT_V5",JSON.stringify(g))}function toast(t){const e=document.getElementById("toast");if(!e)return;e.textContent=t;e.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove("show"),1800)}function addLog(t){if(!Array.isArray(g.log))g.log=[];const x=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});g.log.unshift(x+" • "+t);g.log=g.log.slice(0,25)}function addXP(a){a=Number(a);if(!Number.isFinite(a)||a<=0)return;let req=operatorXPRequirement(),gain=Math.min(a,Math.max(250,req*.5));g.operatorXP+=gain;let levels=0;while(g.operatorXP>=req&&levels<25){g.operatorXP-=req;g.operatorLevel++;levels++;req=operatorXPRequirement()}if(levels){addLog("Company advanced "+levels+" level"+(levels===1?"":"s")+" to Level "+g.operatorLevel+".");toast("⭐ Company Level "+g.operatorLevel)}if(g.operatorXP>=req)g.operatorXP=Math.min(g.operatorXP,req*.95)}
 function saleXPGain(amount){amount=Math.max(0,Number(amount)||0);return Math.max(1,15+Math.log10(1+amount)*18)}
-function safeSaleMultiplier(){let p=.85*gridSaleMult()*marketSaleMult();if(g.event&&g.event.type==="surge")p*=1.75;if(g.activeContract)p*=g.activeContract.rate;return Math.max(.25,Math.min(25,Number.isFinite(p)?p:1))}
+function safeSaleMultiplier(){let p=gridSaleMult()*marketSaleMult();if(g.event&&g.event.type==="surge")p*=1.75;if(g.activeContract)p*=g.activeContract.rate;return Math.max(.25,Math.min(25,Number.isFinite(p)?p:1))}
 function recordEarnedCash(amount){amount=Number(amount);if(!Number.isFinite(amount)||amount<=0)return 0;amount=Math.min(1e300,amount);g.cash=Math.min(1e300,g.cash+amount);g.lifetimeCash=Math.min(1e300,g.lifetimeCash+amount);g.prestigeRunCash=Math.min(1e300,(g.prestigeRunCash||0)+amount);return amount}
 
 
@@ -451,7 +451,7 @@ function dispatchPower(){
   if(g.stored<10){toast("Need at least 10 kWh stored.");return}
   const amount=Math.min(g.stored,Math.max(10,output()*20));
   const bonus=1.08+g.research.gridAI*.03;
-  const cash=amount*.85*gridSaleMult()*marketSaleMult()*bonus;
+  const cash=amount*gridSaleMult()*marketSaleMult()*bonus;
   g.stored-=amount;recordEarnedCash(cash);g.sold+=amount;g.dispatches++;
   g.reputation+=2;addXP(3);addLog("Grid dispatch sold "+energy(amount)+" for "+money(cash)+".");feedback("big");saveGame();render();
 }
@@ -466,7 +466,7 @@ function chargeBattery(){
 function dischargeBattery(){
   if(g.battery.stored<=0){toast("Battery is empty.");return}
   const amount=g.battery.stored;
-  const cash=amount*.85*gridSaleMult()*marketSaleMult()*1.12;
+  const cash=amount*gridSaleMult()*marketSaleMult()*1.12;
   g.battery.stored=0;recordEarnedCash(cash);g.sold+=amount;g.reputation+=1;
   addLog("Battery discharged "+energy(amount)+" for "+money(cash)+".");saveGame();render();
 }
@@ -509,7 +509,7 @@ function autoSellTick(){
   if(!g.autoSell||g.stored<=0)return;
   if(g.market.price<1.05&&g.policy!=="market")return;
   const amount=Math.min(g.stored,Math.max(1,output()*3));
-  const cash=amount*.85*gridSaleMult()*marketSaleMult()*(1+g.research.gridAI*.02);
+  const cash=amount*gridSaleMult()*marketSaleMult()*(1+g.research.gridAI*.02);
   g.stored-=amount;recordEarnedCash(cash);g.sold+=amount;
 }
 
@@ -908,7 +908,7 @@ function renderNextPhase(){
   el.innerHTML=`<div class="phase-head"><div><small>NEXT STRATEGIC PHASE</small><strong>${p.name}</strong></div><span>${companyTier()}</span></div><div class="phase-grid">${items.map(([n,v,t,f])=>{const done=v>=t,pct=t?Math.min(100,v/t*100):100;return`<div class="phase-item ${done?"done":""}"><div><span>${done?"✓":"○"} ${n}</span><b>${f(v)} / ${f(t)}</b></div><div class="phase-meter"><i style="width:${pct}%"></i></div></div>`}).join("")}</div>`;
 }
 
-function createEvent(){if(g.event||Date.now()<g.eventCooldown||output()<=0||Math.random()>.03)return;const r=Math.random();if(r<.4)g.event={type:"breakdown",title:"⚠ Turbine Breakdown",text:"Automatic production reduced by 50%.",cost:Math.max(400,output()*45)};else if(r<.72)g.event={type:"surge",title:"📈 Demand Surge",text:"Grid demand is elevated. Power sells for 75% more.",expires:Date.now()+60000};else g.event={type:"inspection",title:"🦺 Safety Inspection",text:"Complete the inspection for a cash and XP bonus.",reward:Math.max(150,output()*20)};g.eventCooldown=Date.now()+90000;addLog(g.event.title);render()}
+function createEvent(){if(g.event||Date.now()<g.eventCooldown||output()<=0||Math.random()>.03)return;const r=Math.random();if(r<.4)g.event={type:"breakdown",title:"⚠ Turbine Breakdown",text:"Automatic production reduced by 50%.",cost:Math.max(300,output()*35)};else if(r<.72)g.event={type:"surge",title:"📈 Demand Surge",text:"Grid demand is elevated. Power sells for 75% more.",expires:Date.now()+60000};else g.event={type:"inspection",title:"🦺 Safety Inspection",text:"Complete the inspection for a cash and XP bonus.",reward:Math.max(150,output()*20)};g.eventCooldown=Date.now()+90000;addLog(g.event.title);render()}
 function resolveEvent(){if(!g.event)return;if(g.event.type==="breakdown"){if(g.cash<g.event.cost){toast("Repair requires "+money(g.event.cost));return}g.cash-=g.event.cost;g.maintenance=Math.max(60,g.maintenance-5);g.event=null;addXP(8)}else if(g.event.type==="inspection"){const r=g.event.reward;recordEarnedCash(r);g.event=null;addXP(15)}else g.event=null;saveGame();render()}
 function updateEvent(){if(g.event&&g.event.type==="surge"&&Date.now()>g.event.expires)g.event=null}
 function updateDayNight(){const n=Math.floor(Date.now()/45000)%2===1;document.body.classList.toggle("night",n);document.getElementById("weather").textContent=n?"🌙 NIGHT SHIFT":"☀ CLEAR"}

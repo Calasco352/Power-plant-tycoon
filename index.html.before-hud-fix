@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#07111b">
+<title>Power Plant Tycoon — App Store Transition RC1</title>
+<link rel="stylesheet" href="css/game.css?v=12"></head>
+<body>
+<div id="bootSplashPremium">
+  <div class="boot-card">
+    <h1>POWER PLANT <span>TYCOON</span></h1>
+    <p>PREMIUM ASSET EDITION</p>
+    <div class="boot-load"><i></i></div>
+  </div>
+</div>
+<div class="app">
+<header class="topbar">
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">RELEASE CANDIDATE 1</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="stats">
+<div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
+<div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
+<div class="stat"><small>OUTPUT</small><b id="output">0 kW</b></div>
+</div>
+
+<div id="marketTicker"><span id="tickerText">⚡ Riverbend Power Market initializing...</span></div>
+
+</header>
+<main class="content">
+<section id="home" class="page active">
+<div class="hero">
+<div class="sky"><div class="sunmoon"></div></div>
+<div class="hills"></div>
+<div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
+<div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
+
+
+  <div id="cpSteam" class="cp-stage"><i>🌀</i>STEAM</div>
+  <div id="cpGas" class="cp-stage"><i>🔥</i>GAS</div>
+  <div id="cpSolar" class="cp-stage"><i>☀️</i>SOLAR</div>
+  <div id="cpNuclear" class="cp-stage"><i>☢️</i>NUCLEAR</div>
+</div>
+
+<div id="stageArtLabel" class="stage-art-label">RIVERBEND GENERATION SITE</div>
+<div id="tutorialFinal" class="tutorial-overlay-final">
+  <div class="tutorial-avatar">👷‍♂️</div>
+  <div class="tutorial-card-final">
+    <small id="tutorialFinalStep">TUTORIAL 1/7</small>
+    <h3 id="tutorialFinalTitle">Welcome to Power Plant Tycoon</h3>
+    <p id="tutorialFinalText">Generate power to begin operating Riverbend Station.</p>
+    <div class="tutorial-actions">
+      <button id="tutorialFinalNext" onclick="nextFinalTutorial()">NEXT ➜</button>
+      <button class="secondary" onclick="skipFinalTutorial()">SKIP</button>
+    </div>
+  </div>
+</div>
+<div class="cp-plant-status">
+  <h4 id="cpOnline">● PLANT ONLINE</h4>
+  <div class="r"><span>Efficiency</span><b id="cpEff">100%</b></div>
+  <div class="r"><span>Reliability</span><b id="cpRel">100%</b></div>
+  <div class="r"><span>Output</span><b id="cpOut">0/s</b></div>
+  <div class="r"><span>Demand</span><b id="cpDemand">100%</b></div>
+</div>
+<div class="yard">
+<div class="cinematic-fx"><i></i><i></i><i></i></div>
+<div id="viewStageBadge" class="view-stage-badge">LIVE FACILITY</div>
+<div class="cp-stage-rail">
+  <button id="cpDiesel" class="cp-stage" onclick="selectStageView('diesel')" title="View Diesel facility"><i>⛽</i>DIESEL</button>
+
+<svg class="plant-art" viewBox="0 0 760 430" preserveAspectRatio="xMidYMid slice" aria-label="Riverbend power station">
+<defs>
+  <linearGradient id="v10ground" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d4a4b"/><stop offset="1" stop-color="#182b2f"/></linearGradient>
+  <linearGradient id="v10steel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#445b64"/><stop offset=".45" stop-color="#bcc7ca"/><stop offset=".72" stop-color="#687c84"/><stop offset="1" stop-color="#30464f"/></linearGradient>
+  <linearGradient id="v10darksteel" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#263b44"/><stop offset=".55" stop-color="#536b75"/><stop offset="1" stop-color="#1e3037"/></linearGradient>
+  <linearGradient id="v10concrete" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d5dcdd"/><stop offset="1" stop-color="#77878b"/></linearGradient>
+  <linearGradient id="v10yellow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffd95a"/><stop offset="1" stop-color="#be8517"/></linearGradient>
+  <filter id="v10shadow"><feDropShadow dx="0" dy="7" stdDeviation="5" flood-color="#000" flood-opacity=".55"/></filter>
+</defs>
+<rect x="0" y="250" width="760" height="180" fill="url(#v10ground)"/>
+<path d="M0 320 H760 V430 H0Z" fill="#202a2d"/>
+<path d="M0 353 H760" stroke="#65767c" stroke-width="5"/>
+<path d="M0 390 H760" stroke="#d8ae2f" stroke-width="4" stroke-dasharray="34 28"/>
+<g opacity=".55"><path d="M0 328 l18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22 18-22 18 22" fill="none" stroke="#748a92" stroke-width="2"/></g>
+
+<g id="dieselStage" class="stage">
+  <g filter="url(#v10shadow)">
+    <rect x="20" y="298" width="76" height="42" rx="3" fill="url(#v10darksteel)" stroke="#9aabb1" stroke-width="2"/>
+    <rect class="window" x="30" y="312" width="15" height="10" fill="#eacb56"/><rect class="window" x="50" y="312" width="15" height="10" fill="#eacb56"/>
+    <text x="29" y="307" fill="#e9f3f7" font-size="7" font-weight="700">SECURITY</text>
+  </g>
+  <g filter="url(#v10shadow)">
+    <rect x="108" y="260" width="145" height="80" rx="3" fill="url(#v10darksteel)" stroke="#9db0b6" stroke-width="2"/>
+    <rect x="118" y="282" width="48" height="31" fill="#14272e" stroke="#74858b"/>
+    <g stroke="#b7c4c8" stroke-width="5"><line x1="123" y1="286" x2="123" y2="309"/><line x1="135" y1="286" x2="135" y2="309"/><line x1="147" y1="286" x2="147" y2="309"/><line x1="159" y1="286" x2="159" y2="309"/></g>
+    <rect x="181" y="279" width="53" height="22" rx="3" fill="#1b3037" stroke="#8da0a7"/><text x="184" y="294" fill="#ffd64e" font-size="8" font-weight="900">DIESEL GEN</text>
+  </g>
+  <g filter="url(#v10shadow)"><ellipse cx="83" cy="274" rx="34" ry="11" fill="#aab6b9"/><rect x="49" y="274" width="68" height="52" fill="url(#v10steel)"/><ellipse cx="83" cy="326" rx="34" ry="11" fill="#586d74"/><path d="M50 294 H116" stroke="#6b7f86" stroke-width="3"/></g>
+  <g filter="url(#v10shadow)"><rect x="270" y="288" width="70" height="52" rx="2" fill="#30474f" stroke="#8da0a8" stroke-width="2"/><g fill="#aebdc2"><rect x="279" y="270" width="8" height="23"/><rect x="298" y="270" width="8" height="23"/><rect x="317" y="270" width="8" height="23"/></g></g>
+</g>
+
+<g id="steamStage" class="stage">
+  <g filter="url(#v10shadow)">
+    <rect x="265" y="177" width="282" height="163" rx="3" fill="url(#v10steel)" stroke="#a6b6bb" stroke-width="2"/>
+    <rect x="292" y="154" width="230" height="24" fill="#344b54" stroke="#81949b" stroke-width="2"/>
+    <rect x="284" y="208" width="246" height="23" fill="#20363e" stroke="#6f8289"/>
+    <g fill="#e7c957" class="glow"><rect class="window" x="293" y="214" width="17" height="11"/><rect class="window" x="318" y="214" width="17" height="11"/><rect class="window" x="343" y="214" width="17" height="11"/><rect class="window" x="368" y="214" width="17" height="11"/><rect class="window" x="393" y="214" width="17" height="11"/><rect class="window" x="418" y="214" width="17" height="11"/><rect class="window" x="443" y="214" width="17" height="11"/><rect class="window" x="468" y="214" width="17" height="11"/><rect class="window" x="493" y="214" width="17" height="11"/></g>
+    <text x="295" y="196" fill="#edf6fa" font-size="11" font-weight="900">STEAM TURBINE HALL</text>
+    <g fill="url(#v10steel)" stroke="#748891"><rect x="310" y="136" width="16" height="18" rx="2"/><rect x="360" y="136" width="16" height="18" rx="2"/><rect x="410" y="136" width="16" height="18" rx="2"/><rect x="460" y="136" width="16" height="18" rx="2"/></g>
+  </g>
+  <g filter="url(#v10shadow)"><rect x="200" y="80" width="45" height="260" fill="#e2e7e8" stroke="#9aa8ad" stroke-width="2"/><rect x="200" y="112" width="45" height="38" fill="#c94838"/><rect x="200" y="192" width="45" height="38" fill="#c94838"/><path d="M194 112 H251 M194 152 H251 M194 192 H251 M194 232 H251" stroke="#263940" stroke-width="4"/><circle class="blink" cx="222" cy="75" r="4" fill="#ff4545"/></g>
+  <g class="steamPuff"><circle cx="220" cy="55" r="31" fill="#e8f0f0" opacity=".48"/><circle cx="245" cy="35" r="39" fill="#e8f0f0" opacity=".34"/><circle cx="205" cy="22" r="33" fill="#e8f0f0" opacity=".27"/></g>
+  <g filter="url(#v10shadow)"><rect x="317" y="258" width="185" height="69" rx="9" fill="#415a64" stroke="#aab9be" stroke-width="2"/><circle cx="355" cy="292" r="27" fill="#1e343c" stroke="#d2dcdf" stroke-width="3"/><g class="fan" stroke="#f3c53d" stroke-width="5"><line x1="355" y1="268" x2="355" y2="316"/><line x1="331" y1="292" x2="379" y2="292"/><line x1="338" y1="275" x2="372" y2="309"/><line x1="372" y1="275" x2="338" y2="309"/></g><rect x="391" y="270" width="94" height="43" rx="5" fill="#263c44" stroke="#748891"/><text x="404" y="295" fill="#dfeaed" font-size="8" font-weight="900">GENERATOR</text></g>
+  <g class="metal"><path d="M110 245 H600" stroke="#d6e0e2" stroke-width="9" stroke-linecap="round"/><path d="M110 259 H600" stroke="#83979f" stroke-width="8" stroke-linecap="round"/><path d="M110 273 H600" stroke="#a9b9be" stroke-width="7" stroke-linecap="round"/><g stroke="#6f858d" stroke-width="4"><line x1="145" y1="235" x2="145" y2="303"/><line x1="230" y1="235" x2="230" y2="303"/><line x1="565" y1="235" x2="565" y2="303"/></g></g>
+</g>
+
+<g id="gasStage" class="stage">
+  <g filter="url(#v10shadow)"><rect x="540" y="225" width="150" height="115" fill="url(#v10darksteel)" stroke="#8da0a7" stroke-width="2"/><text x="555" y="245" fill="#f1f7fa" font-size="10" font-weight="900">GAS TURBINE BLOCK</text><rect x="555" y="265" width="118" height="30" rx="4" fill="#17313a" stroke="#72878f"/></g>
+  <g filter="url(#v10shadow)"><rect x="662" y="124" width="28" height="216" fill="#c7d0d2" stroke="#8b9a9f" stroke-width="2"/><path d="M657 164 H695 M657 205 H695 M657 246 H695" stroke="#31454d" stroke-width="4"/><circle class="blink" cx="676" cy="118" r="4" fill="#ff4a4a"/></g>
+  <g class="steamPuff s2"><circle cx="676" cy="96" r="23" fill="#dfe8e8" opacity=".3"/><circle cx="697" cy="78" r="28" fill="#dfe8e8" opacity=".22"/></g>
+  <g filter="url(#v10shadow)"><ellipse cx="598" cy="208" rx="36" ry="12" fill="#c9d2d4"/><rect x="562" y="208" width="72" height="91" fill="url(#v10steel)"/><ellipse cx="598" cy="299" rx="36" ry="12" fill="#586c73"/></g>
+</g>
+
+<g id="solarStage" class="stage">
+  <g transform="translate(505 275) skewX(-14)" filter="url(#v10shadow)"><g fill="#123f67" stroke="#86a5b6" stroke-width="2"><rect x="0" y="0" width="76" height="34"/><rect x="84" y="0" width="76" height="34"/><rect x="18" y="43" width="76" height="34"/><rect x="102" y="43" width="76" height="34"/></g></g>
+  <g stroke="#7d9299" stroke-width="4" fill="none"><path d="M620 210 V333 M680 210 V333 M735 210 V333"/><path d="M597 235 H755 M597 265 H755"/></g>
+  <g class="pulse" fill="#8edcff"><circle cx="620" cy="235" r="4"/><circle cx="680" cy="265" r="4"/><circle cx="735" cy="235" r="4"/></g>
+</g>
+
+<g id="nuclearStage" class="stage">
+  <g filter="url(#v10shadow)"><path d="M80 340 V230 Q80 160 150 160 Q220 160 220 230 V340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><rect x="104" y="241" width="92" height="62" rx="5" fill="#65777c" stroke="#9aa8ad"/><text x="150" y="282" text-anchor="middle" fill="#ffe04f" font-size="33">☢</text></g>
+  <g filter="url(#v10shadow)"><path d="M235 340 L255 130 L335 130 L355 340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><path d="M345 340 L372 105 L466 105 L493 340Z" fill="url(#v10concrete)" stroke="#9aa8ad" stroke-width="3"/><ellipse cx="295" cy="130" rx="40" ry="8" fill="#475a60"/><ellipse cx="419" cy="105" rx="47" ry="9" fill="#475a60"/></g>
+  <g class="steamPuff s2"><circle cx="294" cy="95" r="32" fill="#edf5f5" opacity=".43"/><circle cx="317" cy="68" r="42" fill="#edf5f5" opacity=".28"/></g>
+  <g class="steamPuff s3"><circle cx="419" cy="65" r="38" fill="#edf5f5" opacity=".45"/><circle cx="447" cy="35" r="49" fill="#edf5f5" opacity=".26"/></g>
+</g>
+
+<g><g stroke="#637981" stroke-width="5"><line x1="48" y1="352" x2="48" y2="265"/><line x1="382" y1="352" x2="382" y2="256"/><line x1="718" y1="352" x2="718" y2="266"/></g><g fill="#ffe484" class="glow"><rect x="38" y="258" width="20" height="7" rx="3"/><rect x="372" y="249" width="20" height="7" rx="3"/><rect x="708" y="259" width="20" height="7" rx="3"/></g><g class="lampGlow" opacity=".15" fill="#ffe997"><path d="M48 265 l-40 88 h80Z"/><path d="M382 256 l-44 97 h88Z"/><path d="M718 266 l-40 87 h80Z"/></g></g>
+<g class="truckmove" filter="url(#v10shadow)"><rect x="5" y="365" width="62" height="27" rx="4" fill="url(#v10yellow)"/><rect x="45" y="350" width="25" height="20" rx="4" fill="#b98218"/><circle cx="18" cy="394" r="8" fill="#111"/><circle cx="55" cy="394" r="8" fill="#111"/></g>
+<g class="alarm" opacity="0"><circle cx="525" cy="169" r="8" fill="#ff4949" class="blink"/></g>
+
+<g id="ultraDetails" pointer-events="none">
+ <g opacity=".32">
+  <path d="M0 344 H760" stroke="#8fdcff" stroke-width="1"/>
+  <path d="M0 348 H760" stroke="#061016" stroke-width="2"/>
+ </g>
+ <g fill="#d9edf4" opacity=".72">
+  <circle cx="116" cy="350" r="2"/><circle cx="145" cy="350" r="2"/><circle cx="613" cy="350" r="2"/><circle cx="642" cy="350" r="2"/>
+ </g>
+ <g opacity=".75" filter="url(#v10shadow)">
+   <rect x="18" y="337" width="104" height="17" rx="3" fill="#071820" stroke="#4b778d"/>
+   <text x="70" y="349" text-anchor="middle" fill="#d6eef7" font-size="7" font-weight="900">RIVERBEND ENERGY</text>
+ </g>
+</g>
+
+</svg>
+<div id="v10StageLabel" class="v10-stage-label">RIVERBEND STARTER SITE</div>
+<div class="premium-art-badge">PREMIUM FACILITY ART</div>
+
+</div>
+
+</div>
+<div class="generate-wrap">
+  <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
+  <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
+</div><div class="cp-equipment">
+  <div class="cp-equip"><strong>🔥 FUEL SYSTEM</strong><small id="cpFuelText">Ready</small><div class="bar"><i id="cpFuelBar" style="width:85%"></i></div></div>
+  <div class="cp-equip"><strong>🌀 TURBINE</strong><small id="cpTurbineText">Online</small><div class="bar"><i id="cpTurbineBar" style="width:92%"></i></div></div>
+  <div class="cp-equip"><strong>⚙️ GENERATOR</strong><small id="cpGeneratorText">Online</small><div class="bar"><i id="cpGeneratorBar" style="width:96%"></i></div></div>
+  <div class="cp-equip"><strong>⚡ GRID LINK</strong><small id="cpGridText">Stable</small><div class="bar"><i id="cpGridBar" style="width:98%"></i></div></div>
+</div>
+
+
+<div id="tutorialBox" class="tutorial">
+  <strong id="tutorialTitle">Welcome to Riverbend</strong>
+  <p id="tutorialText" class="small">Generate power, sell it to the grid, then build your first generator.</p>
+  <button class="btn green" style="width:100%" onclick="tutorialNext()">CONTINUE</button>
+</div>
+
+<div id="eventBox" class="event"><h3 id="eventTitle">⚠ Plant Event</h3><p id="eventText"></p><button id="eventButton" class="btn orange" onclick="resolveEvent()">RESOLVE</button></div>
+<div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button id="sellBtn" class="btn green" onclick="sellPower()">💵 Sell All Power</button><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
+<div class="card"><div class="section-title"><h3>📊 Operations Dashboard</h3><span>LIVE</span></div><div class="dashboard">
+<div class="dash"><small>OPERATOR LEVEL</small><b id="operatorLevel">1</b></div>
+<div class="dash"><small>OPERATOR XP</small><b id="operatorXP">0 / 100</b></div>
+<div class="dash"><small>EFFICIENCY</small><b id="efficiencyValue">100%</b></div>
+<div class="dash"><small>MAINTENANCE</small><b id="maintenanceValue">100%</b></div>
+<div class="dash"><small>FUEL COST</small><b id="fuelCostValue">$0/s</b></div>
+<div class="dash"><small>NET VALUE</small><b id="netValue">$0/s</b></div>
+</div>
+<div class="kpi-row">
+  <div class="kpi"><small>LIFETIME CASH</small><b id="kpiLifetime">$0</b></div>
+  <div class="kpi"><small>CONTRACTS</small><b id="kpiContracts">0</b></div>
+  <div class="kpi"><small>PRESTIGE</small><b id="kpiPrestige">0</b></div>
+</div>
+
+<div class="empire-command-card">
+  <div class="empire-command-top">
+    <div><small>COMPANY TIER</small><strong id="empireTier">LOCAL UTILITY</strong></div>
+    <div class="empire-mult"><small>EMPIRE OUTPUT</small><strong id="empireMultiplier">1.00×</strong></div>
+  </div>
+  <div class="empire-progress"><i id="empireProgressBar"></i></div>
+  <div class="empire-command-foot"><span id="empireNextMilestone">Next milestone: $65M</span><span id="empireLevelLabel">Empire LV 0</span></div>
+</div>
+</div>
+<div class="card"><div class="section-title"><h3>📜 Power Contracts</h3><span>CUSTOMERS</span></div><div id="contractList"></div></div>
+<div class="card"><div class="section-title"><h3>🛠 Maintenance</h3><span id="maintenanceStatus">Healthy</span></div><div class="btnrow"><button class="btn orange" onclick="performMaintenance()">🔧 SERVICE PLANT</button><button class="btn dark" onclick="hireEngineer()">👷 HIRE ENGINEER</button></div><p id="engineerInfo" class="small"></p></div>
+
+<div class="card">
+  <div class="section-title"><h3>📈 Live Power Market</h3><span id="marketTrend">LIVE</span></div>
+  <div class="uf-statbar">
+    <div class="uf-panel"><small>SPOT PRICE</small><div id="spotPrice" class="uf-value uf-gold">$1.00</div></div>
+    <div class="uf-panel"><small>GRID DEMAND</small><div id="gridDemand" class="uf-value">100%</div></div>
+    <div class="uf-panel"><small>REPUTATION</small><div id="reputationValue" class="uf-value uf-cyan">0</div></div>
+    <div class="uf-panel"><small>RELIABILITY</small><div id="reliabilityValue" class="uf-value uf-green">100%</div></div>
+  </div>
+  <div class="final-toolbar">
+    <button id="autoSellBtn" class="btn dark" onclick="toggleAutoSell()">AUTO SELL: OFF</button>
+    <button class="btn blue" onclick="dispatchPower()">⚡ DISPATCH TO GRID</button>
+  </div>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>🔋 Grid Battery</h3><span>ENERGY STORAGE</span></div>
+  <div class="uf-grid">
+    <div class="uf-panel">
+      <small>STORED IN BATTERY</small>
+      <div id="batteryStored" class="uf-value uf-cyan">0 kWh</div>
+      <div class="uf-meter"><i id="batteryMeter"></i></div>
+      <p id="batteryCapacityText">Capacity 0 kWh</p>
+    </div>
+    <div class="uf-panel">
+      <small>BATTERY LEVEL</small>
+      <div id="batteryLevel" class="uf-value">LV 0</div>
+      <p>Stores surplus energy and can discharge during high prices.</p>
+    </div>
+  </div>
+  <div class="btnrow" style="margin-top:10px">
+    <button class="btn green" onclick="chargeBattery()">CHARGE BATTERY</button>
+    <button class="btn orange" onclick="dischargeBattery()">SELL BATTERY POWER</button>
+  </div>
+  <button class="btn purple" style="width:100%;margin-top:10px" onclick="upgradeBattery()">UPGRADE BATTERY</button>
+</div>
+
+<div class="card">
+  <div class="section-title"><h3>🏢 Company Management</h3><span>STAFF & POLICY</span></div>
+  <div class="uf-grid">
+    <div class="uf-panel"><small>STAFF</small><div id="staffCount" class="uf-value">0</div><p>Engineers, traders, safety and operations specialists.</p></div>
+    <div class="uf-panel"><small>COMPANY RATING</small><div id="companyRating" class="uf-value uf-gold">C</div><p>Improves with reliability, cash, contracts and reputation.</p></div>
+  </div>
+  <button class="btn blue" style="width:100%;margin-top:10px" onclick="showPage('company',document.querySelector('[data-nav=company]'))">OPEN COMPANY HQ</button>
+</div>
+
+<div class="card"><div class="section-title"><h3>📋 Activity Log</h3><span>LIVE</span></div><div id="activityLog" class="log"></div></div>
+</section>
+<section id="plants" class="page">
+<div class="page-hero empire-hero"><div><small>GENERATION DIVISION</small><h2>Build the Fleet</h2><p>Scale from Riverbend equipment through offshore, advanced nuclear, fusion and orbital generation.</p></div><div class="page-hero-icon">🏭</div></div>
+<div class="card"><div class="section-title"><h3>🏭 Generating Assets</h3><span>BUILD THE COMPLEX</span></div><div id="plantList"></div></div>
+<div class="card automation-core-card"><div class="section-title"><h3>🤖 Automation Core</h3><span>AUTO GENERATE</span></div><div id="automationCore"></div></div>
+<div class="card"><div class="section-title"><h3>⚙ Corporate Upgrades</h3><span>PERMANENT BONUSES</span></div><div id="corporateUpgradeList"></div></div>
+<div class="card prestige-v6"><div class="section-title"><h3>♻ Prestige</h3><span>REBUILD STRONGER</span></div><p id="prestigeInfo"></p><button class="btn purple" style="width:100%" onclick="prestige()">PRESTIGE COMPANY</button></div>
+<div class="card legacy-grid-card"><div class="section-title"><h3>💠 Legacy Grid</h3><span>GRID CREDITS</span></div><div id="legacyGrid"></div></div>
+</section>
+<section id="map" class="page">
+<div class="page-hero grid-hero"><div><small>TRANSMISSION DIVISION</small><h2>Expand the Grid</h2><p>Connect regional markets, then finance massive infrastructure projects.</p></div><div class="page-hero-icon">🗺️</div></div>
+<div class="card"><div class="section-title"><h3>🗺 Power Grid Expansion</h3><span>REGIONAL BONUSES</span></div><div id="regionList" class="mapgrid"></div></div>
+<div class="card mega-project-card"><div class="section-title"><h3>🌐 Mega Grid Projects</h3><span>STRATEGIC INFRASTRUCTURE</span></div><div id="megaProjectList"></div></div>
+</section>
+<section id="goals" class="page">
+<div class="page-hero goals-hero"><div><small>BOARD OBJECTIVES</small><h2>Empire Roadmap</h2><p>$65M is only the beginning. Progression now extends through decillions, Grid Credits, prestige milestones and repeatable Empire Levels.</p></div><div class="page-hero-icon">🏆</div></div>
+<div class="card phase-card"><div class="section-title"><h3>🧭 Strategic Progression</h3><span>MULTI-GATE</span></div><div id="nextPhase"></div></div>
+<div class="card"><div class="section-title"><h3>🎯 Missions</h3><span>CASH REWARDS</span></div><div id="missionList"></div></div>
+<div class="card"><div class="section-title"><h3>🏆 Achievements</h3><span>CAREER MILESTONES</span></div><div id="achievementList"></div></div>
+<div class="card endgame empire-roadmap">
+  <div class="section-title"><h3>⚡ Empire Milestones</h3><span>LONG-TERM</span></div>
+  <p class="small">There is no quick finish line. Build the fleet, master assets, complete contracts, fund mega projects and advance from millions through decillions. Prestige, Grid Credits and Empire Levels continue beyond the listed milestones.</p>
+  <div id="endgameList"></div>
+</div>
+<div class="card dynasty-card"><div class="section-title"><h3>👑 Empire Level</h3><span>REPEATABLE</span></div><div id="empireAscension"></div></div>
+</section>
+
+<section id="company" class="page">
+  <div class="uf-banner">
+    <h3>🏢 Riverbend Energy Headquarters</h3>
+    <p>Hire specialists, set operating policy, and improve the company behind the power plants.</p>
+  </div>
+  <div class="card boardroom-card">
+    <div class="section-title"><h3>💼 Executive Board</h3><span>EMPIRE STATUS</span></div>
+    <div id="boardroomStatus"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>👷 Workforce</h3><span>STAFF</span></div>
+    <div id="staffList" class="uf-list"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>🎛 Dispatch Policy</h3><span>OPERATIONS</span></div>
+    <div id="policyList" class="uf-grid"></div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>🧪 Research & Development</h3><span>TECH TREE</span></div>
+    <div id="researchTree" class="uf-research"></div>
+  </div>
+</section>
+
+<section id="stats" class="page">
+  <div class="uf-banner">
+    <h3>📊 Company Analytics</h3>
+    <p>Lifetime production, earnings, reliability and expansion performance.</p>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>Company Snapshot</h3><span>LIVE</span></div>
+    <div class="uf-statbar">
+      <div class="uf-panel"><small>LIFETIME ENERGY</small><div id="statsEnergy" class="uf-value">0</div></div>
+      <div class="uf-panel"><small>LIFETIME CASH</small><div id="statsCash" class="uf-value">$0</div></div>
+      <div class="uf-panel"><small>CONTRACTS</small><div id="statsContracts" class="uf-value">0</div></div>
+      <div class="uf-panel"><small>PRESTIGES</small><div id="statsPrestige" class="uf-value">0</div></div>
+    </div>
+  </div>
+  <div class="card empire-stats-card">
+    <div class="section-title"><h3>🌐 Empire Analytics</h3><span>LONG GAME</span></div>
+    <div class="uf-statbar">
+      <div class="uf-panel"><small>COMPANY TIER</small><div id="statsTier" class="uf-value uf-gold">LOCAL</div></div>
+      <div class="uf-panel"><small>MEGA PROJECTS</small><div id="statsProjects" class="uf-value">0</div></div>
+      <div class="uf-panel"><small>EMPIRE LEVEL</small><div id="statsEmpireLevel" class="uf-value uf-cyan">0</div></div>
+      <div class="uf-panel"><small>EMPIRE BONUS</small><div id="statsEmpireBonus" class="uf-value uf-green">+0%</div></div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="section-title"><h3>⚙ Plant Fleet</h3><span>CAPACITY</span></div>
+    <div id="fleetStats" class="uf-list"></div>
+  </div>
+  <div class="card uf-weekly">
+    <div class="section-title"><h3>🗓 Weekly Challenge</h3><span id="weeklyTimer">7 DAYS</span></div>
+    <div id="weeklyChallenge"></div>
+  </div>
+</section>
+
+<section id="store" class="page">
+<div class="page-hero store-hero"><div><small>POWER SHOP</small><h2>Operator Supply Center</h2><p>Premium upgrades, optional rewarded ads, and App Store-ready purchases.</p></div><div class="page-hero-icon">🛒</div></div>
+<div class="card daily-streak-card"><div class="section-title"><h3>🎁 7-Day Supply Streak</h3><span>FREE DAILY</span></div><div id="dailyStreakUI"></div><button id="dailyClaimBtn" class="btn green" style="width:100%;margin-top:12px" onclick="dailyReward()">CLAIM DAILY DROP</button></div>
+
+<div class="card rewarded-ad-card"><div class="section-title"><h3>🎬 Rewarded Operations</h3><span>OPTIONAL AD</span></div>
+<div class="storeitem ad-reward-item"><div><strong>⚡ Watch Ad • Grid Overdrive</strong><small>Optional rewarded ad • activates 2× output for 10 minutes</small></div><button id="rewardedAdBtn" class="btn blue" onclick="watchRewardedAd()">TEST AD</button></div>
+<div id="adStatus" class="storekit-status ad-status">Browser ad simulation active.</div>
+</div>
+
+<div class="card premium-store-card"><div class="section-title"><h3>💎 Permanent Upgrades</h3><span>NON-CONSUMABLE</span></div>
+<div class="storeitem remove-ads-storeitem"><div><strong>🚫 Remove Ads</strong><small>Permanently removes forced interstitial ads. Optional rewarded ads remain available.</small></div><button id="removeAdsPurchaseBtn" class="btn gold" onclick="purchaseRemoveAds()">TEST BUY</button></div>
+<div class="storeitem featured-storeitem"><div><strong>🤖 Auto Generate</strong><small>Permanent unlock • automatically generates power every second</small></div><button id="autoGeneratePurchaseBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
+<div class="storeitem executive-storeitem"><div><strong>👔 Executive License</strong><small>Permanent +25% generation and +10% grid sale value</small></div><button id="executivePurchaseBtn" class="btn purple" onclick="purchaseExecutiveLicense()">TEST BUY</button></div>
+<div class="storeitem"><div><strong>↻ Restore Purchases</strong><small>Restore all permanent Apple purchases on this device</small></div><button id="restorePurchasesBtn" class="btn dark" onclick="restorePurchases()">TEST RESTORE</button></div>
+<div id="storeKitStatus" class="storekit-status">Browser test store active.</div>
+</div>
+
+<div class="card consumable-store-card"><div class="section-title"><h3>📦 Operations Packs</h3><span>CONSUMABLE</span></div>
+<div class="storeitem"><div><strong>⚡ Turbo Grid Pack</strong><small>Adds 60 minutes of 2× generation</small></div><button id="turboGridPurchaseBtn" class="btn blue" onclick="purchaseTurboGridPack()">TEST BUY</button></div>
+<div class="storeitem"><div><strong>🧰 Maintenance Crate</strong><small>Fully repairs the fleet + adds a 15 minute 2× boost</small></div><button id="maintenanceCratePurchaseBtn" class="btn orange" onclick="purchaseMaintenanceCrate()">TEST BUY</button></div>
+<div class="storeitem"><div><strong>💵 Capital Injection</strong><small>Instant cash equal to at least 30 minutes of current operating value</small></div><button id="capitalInjectionPurchaseBtn" class="btn green" onclick="purchaseCapitalInjection()">TEST BUY</button></div>
+<p class="small store-note">Consumable purchases can be bought again. Permanent purchases can be restored.</p>
+</div>
+
+<div id="devTestStore" class="card"><div class="section-title"><h3>🧪 Browser Development Tools</h3><span>TEST ONLY</span></div>
+<div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>Free 10 minute development boost</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
+<div class="storeitem"><div><strong>🧰 Maintenance Test</strong><small>Restore all equipment condition</small></div><button class="btn orange" onclick="maintenancePack()">TEST</button></div>
+<div class="storeitem"><div><strong>🚀 Starter Test</strong><small>$5,000 + 10 minute boost</small></div><button class="btn purple" onclick="starterPack()">TEST</button></div>
+</div>
+
+<div class="card danger-zone"><div class="section-title"><h3>⚠ Save Controls</h3><span>LOCAL DATA</span></div><div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress. Permanent test entitlements remain; native ownership is restored by Apple.</small></div><button class="btn red" onclick="resetGame()">RESET</button></div></div>
+
+<div class="card">
+  <div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div>
+  <div class="settings-grid">
+    <div class="setting"><b>Sound Effects</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div>
+    <div class="setting"><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div>
+    <div class="setting premium-setting"><b>Music Volume</b><input id="musicVolume" type="range" min="0" max="100" value="16" oninput="setPremiumVolume('music',this.value)"></div>
+    <div class="setting premium-setting"><b>SFX Volume</b><input id="sfxVolume" type="range" min="0" max="100" value="22" oninput="setPremiumVolume('sfx',this.value)"></div>
+    <div class="setting"><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div>
+    <div class="setting"><b>Compact Numbers</b><button id="compactToggle" class="toggle on" onclick="toggleSetting('compact')">ON</button></div>
+  </div>
+  <div class="final-toolbar">
+    <button class="btn blue" onclick="restartGuidedTutorial()">🎓 RESTART TUTORIAL</button>
+    <button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button>
+    <button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button>
+  </div>
+  <p class="small">GitHub Pages uses safe purchase/ad simulations. The native iPhone wrapper uses Apple StoreKit and Google Mobile Ads test units until production IDs are configured.</p>
+</div>
+</section>
+
+</main></div>
+<nav class="nav" style="grid-template-columns:repeat(7,1fr)">
+<button class="active" data-nav="home" onclick="showPage('home',this)"><i>🏠</i>HOME</button>
+<button data-nav="plants" onclick="showPage('plants',this)"><i>🏭</i>PLANTS</button>
+<button data-nav="map" onclick="showPage('map',this)"><i>🗺️</i>MAP</button>
+<button data-nav="goals" onclick="showPage('goals',this)"><i>🎯</i>GOALS</button>
+<button data-nav="company" onclick="showPage('company',this)"><i>🏢</i>HQ</button>
+<button data-nav="stats" onclick="showPage('stats',this)"><i>📊</i>STATS</button>
+<button data-nav="store" onclick="showPage('store',this)"><i>🛒</i>STORE</button>
+</nav>
+<div id="toast" class="toast"></div>
+
+<div id="tutorialMask2" class="tut-mask"></div>
+<div id="tutorialPanel2" class="tut-panel">
+  <div class="tut-head">
+    <small id="tutorialCount2">TUTORIAL 1/7</small>
+    <button class="btn dark" style="min-height:auto;padding:6px 9px" onclick="skipGuidedTutorial()">SKIP</button>
+  </div>
+  <h3 id="tutorialTitle2">Welcome to Riverbend</h3>
+  <p id="tutorialText2">Generate your first electricity.</p>
+  <div class="tut-progress"><i id="tutorialProgress2" style="width:14%"></i></div>
+  <div class="tut-actions">
+    <button class="secondary" onclick="prevGuidedTutorial()">BACK</button>
+    <button id="tutorialNext2" onclick="nextGuidedTutorial()">NEXT ➜</button>
+  </div>
+</div>
+
+
+<div id="confirmModal" class="modal">
+  <div class="modalbox">
+    <h2 id="confirmTitle">Confirm</h2>
+    <p id="confirmText"></p>
+    <div class="btnrow">
+      <button class="btn red" id="confirmYes">CONFIRM</button>
+      <button class="btn dark" onclick="closeConfirm()">CANCEL</button>
+    </div>
+  </div>
+</div>
+<div id="finalModal" class="modal">
+  <div class="modalbox">
+    <h2>🏆 Empire Tier Achieved</h2>
+    <p>You cleared the current roadmap tier. The company keeps growing from here.</p>
+    <div class="bigmoney">KEEP BUILDING</div>
+    <p class="small">New regions, mega projects, Empire Levels and repeatable progression continue far beyond this milestone.</p>
+    <button class="btn purple" style="width:100%" onclick="document.getElementById('finalModal').classList.remove('show')">KEEP BUILDING</button>
+  </div>
+</div>
+
+<div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
+<script src="js/game.js?v=12"></script></body>
+</html>
