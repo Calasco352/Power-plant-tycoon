@@ -1166,7 +1166,7 @@ const premiumAudio={
   cash:new Audio("audio/sfx/cash.wav"),
   upgrade:new Audio("audio/sfx/upgrade.wav")
 };
-["day","night","storm"].forEach(k=>{premiumAudio[k].loop=true;premiumAudio[k].volume=.16});
+["day","night","storm"].forEach(k=>{premiumAudio[k].loop=false;premiumAudio[k].volume=0});
 premiumAudio.alarm.volume=.16;premiumAudio.generate.volume=.22;premiumAudio.cash.volume=.20;premiumAudio.upgrade.volume=.20;
 
 function setPremiumVolume(type,value){
@@ -1177,7 +1177,7 @@ function setPremiumVolume(type,value){
 }
 function applyPremiumVolumes(){
   const mv=(g.settings.musicVolume??16)/100,sv=(g.settings.sfxVolume??22)/100;
-  premiumAudio.day.volume=mv;premiumAudio.night.volume=mv;premiumAudio.storm.volume=mv;
+  premiumAudio.day.volume=0;premiumAudio.night.volume=0;premiumAudio.storm.volume=0;
   premiumAudio.alarm.volume=sv*.25;premiumAudio.generate.volume=sv*.55;premiumAudio.cash.volume=sv*.60;premiumAudio.upgrade.volume=sv*.60;
   const m=document.getElementById("musicVolume"),s=document.getElementById("sfxVolume");
   if(m)m.value=g.settings.musicVolume??16;if(s)s.value=g.settings.sfxVolume??22;
@@ -1194,14 +1194,19 @@ function playPremiumSfx(name){
     a.play().catch(()=>{});
   }catch(e){}
 }
+function stopPremiumAmbience(){
+  [premiumAudio.day,premiumAudio.night,premiumAudio.storm].forEach(a=>{
+    try{
+      a.loop=false;
+      a.pause();
+      a.currentTime=0;
+      a.volume=0;
+    }catch(e){}
+  });
+  premiumAmbience=null;
+}
 function updatePremiumAmbience(){
-  if(!g?.settings?.sound){Object.values(premiumAudio).forEach(a=>{if(a.loop)a.pause()});return}
-  const wanted=document.body.classList.contains("storm-visual")?premiumAudio.storm:(document.body.classList.contains("night")?premiumAudio.night:premiumAudio.day);
-  if(premiumAmbience!==wanted){
-    [premiumAudio.day,premiumAudio.night,premiumAudio.storm].forEach(a=>a.pause());
-    premiumAmbience=wanted;
-    wanted.play().catch(()=>{});
-  }
+  stopPremiumAmbience();
 }
 function renderPremiumAssetState(){applyPremiumVolumes();
   document.body.classList.toggle("prestige-visual",(g.prestige||0)>0);
@@ -1209,6 +1214,8 @@ function renderPremiumAssetState(){applyPremiumVolumes();
   updatePremiumAmbience();
 }
 document.addEventListener("pointerdown",()=>updatePremiumAmbience(),{once:true});
+document.addEventListener("visibilitychange",()=>{if(document.hidden)stopPremiumAmbience()});
+window.addEventListener("pagehide",stopPremiumAmbience);
 window.addEventListener("load",()=>{
   const splash=document.getElementById("bootSplashPremium");
   if(splash)setTimeout(()=>{splash.classList.add("hide");setTimeout(()=>splash.remove(),700)},1150);
