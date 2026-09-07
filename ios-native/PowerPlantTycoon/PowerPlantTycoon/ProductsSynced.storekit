@@ -1,0 +1,132 @@
+{
+  "appPolicies" : {
+    "eula" : "",
+    "policies" : [
+      {
+        "locale" : "en_US",
+        "policyText" : "",
+        "policyURL" : ""
+      }
+    ]
+  },
+  "identifier" : "2C66593B",
+  "nonRenewingSubscriptions" : [
+
+  ],
+  "products" : [
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6809250885",
+      "localizations" : [
+        {
+          "description" : "Automatically generates power for your plant",
+          "displayName" : "Auto Generate",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.autogenerate",
+      "referenceName" : "Auto Generate",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "4.99",
+      "familyShareable" : false,
+      "internalID" : "6809253372",
+      "localizations" : [
+        {
+          "description" : "Instantly adds a cash boost to your power company",
+          "displayName" : "Capital Injection",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.capitalinjection",
+      "referenceName" : "Capital Injection",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "6.99",
+      "familyShareable" : false,
+      "internalID" : "6809253058",
+      "localizations" : [
+        {
+          "description" : "Unlocks premium executive benefits for your company.",
+          "displayName" : "Executive License",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.executivelicense",
+      "referenceName" : "Executive License",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6809253361",
+      "localizations" : [
+        {
+          "description" : "Provides maintenance resources for your power plants",
+          "displayName" : "Maintenance Crate",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.maintenancecrate",
+      "referenceName" : "Maintenance Crate",
+      "type" : "Consumable"
+    },
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "6809166345",
+      "localizations" : [
+        {
+          "description" : "Permanently removes forced ads.",
+          "displayName" : "Remove Ads",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.removeads",
+      "referenceName" : "Remove Ads",
+      "type" : "NonConsumable"
+    },
+    {
+      "displayPrice" : "1.99",
+      "familyShareable" : false,
+      "internalID" : "6809253287",
+      "localizations" : [
+        {
+          "description" : "Boosts grid performance with extra power resources",
+          "displayName" : "Turbo Grid Pack",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "com.calascointeractive.powerplanttycoon.turbogrid",
+      "referenceName" : "Turbo Grid Pack",
+      "type" : "Consumable"
+    }
+  ],
+  "settings" : {
+    "_applicationInternalID" : "6809161844",
+    "_askToBuyEnabled" : false,
+    "_billingGracePeriodEnabled" : false,
+    "_billingIssuesEnabled" : false,
+    "_developerTeamID" : "Y9FGGL7R64",
+    "_disableDialogs" : false,
+    "_failTransactionsEnabled" : false,
+    "_lastSynchronizedDate" : 810464542.52799594,
+    "_locale" : "en_US",
+    "_renewalBillingIssuesEnabled" : false,
+    "_storefront" : "USA",
+    "_storeKitErrors" : [
+
+    ],
+    "_timeRate" : 0
+  },
+  "subscriptionGroups" : [
+
+  ],
+  "version" : {
+    "major" : 5,
+    "minor" : 0
+  }
+}
