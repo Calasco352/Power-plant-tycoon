@@ -4,9 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="theme-color" content="#07111b">
-<title>Power Plant Tycoon — Build 10 Major Upgrade</title>
-<link rel="stylesheet" href="css/game.css?v=13"></head>
+<title>Power Plant Tycoon — Build 4 Cinematic Industrial</title>
+<link rel="stylesheet" href="css/game.css?v=plants-art-v2"></head>
 <body>
+<!-- PPT BUILD 4 CINEMATIC -->
+<!-- PPT BUILD 4 TOP HUD FIX HTML -->
 <div id="bootSplashPremium">
   <div class="boot-card">
     <h1>POWER PLANT <span>TYCOON</span></h1>
@@ -16,13 +18,19 @@
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span> <small style="font-size:10px;color:#8fb4c9">BUILD 10</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span><small>CLEANER ENERGY • A BRIGHTER TOMORROW</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
-<div class="stat power"><small>POWER</small><b id="power">0 kWh</b></div>
+<div class="stat power"><small>STORED POWER</small><b id="power">0 kWh</b></div>
 <div class="stat"><small>OUTPUT</small><b id="output">0 kW</b></div>
 </div>
 
+<div class="b4-ops-strip">
+  <div><small>⚡ GRID DEMAND</small><b id="b4Grid">GRID ONLINE</b></div>
+  <div><small>☁ WEATHER</small><b id="b4Weather">CLEAR</b></div>
+  <div><small>● CONDITIONS</small><b id="b4Condition">OPTIMAL</b></div>
+  <div><small>◷ LOCAL TIME</small><b id="b4Clock">--:--</b></div>
+</div>
 <div id="marketTicker"><span id="tickerText">⚡ Riverbend Power Market initializing...</span></div>
 
 </header>
@@ -31,7 +39,7 @@
 <div class="hero">
 <div class="sky"><div class="sunmoon"></div></div>
 <div class="hills"></div>
-<div class="scene-label"><h2>Riverbend Station</h2><p id="sceneSub">Build your first generating unit.</p></div>
+<div class="scene-label"><small>YOUR PLANT</small><h2>RIVERDALE</h2><h3>POWER STATION</h3><p id="sceneSub">Reliable energy for a brighter tomorrow.</p></div>
 <div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
 
 
@@ -61,7 +69,10 @@
   <div class="r"><span>Output</span><b id="cpOut">0/s</b></div>
   <div class="r"><span>Demand</span><b id="cpDemand">100%</b></div>
 </div>
-<div class="yard">
+<!-- PPT HOME ACTION ORDER V3 --><div class="generate-wrap">
+  <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
+  <!-- PPT SELL POSITION V4 --><button id="sellBtn" class="btn green" onclick="sellPower()">💵 Sell All Power</button><button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
+</div><div class="yard">
 <div class="cinematic-fx"><i></i><i></i><i></i></div>
 <div id="viewStageBadge" class="view-stage-badge">LIVE FACILITY</div>
 <div class="cp-stage-rail">
@@ -158,10 +169,7 @@
 </div>
 
 </div>
-<div class="generate-wrap">
-  <button class="generate" onclick="tapGenerate()">⚡ GENERATE POWER</button>
-  <button id="autoGenerateBtn" class="auto-generate-btn" onclick="toggleAutoGenerate()">🔒 AUTO GENERATE</button>
-</div>
+
 <div id="b10CommandDeck" class="b10-command-deck">
   <div class="b10-deck-head"><div><small>RIVERBEND CONTROL ROOM</small><strong>LIVE GRID PULSE</strong></div><span id="b10AlertState">NORMAL</span></div>
   <div class="b10-pulse-grid">
@@ -179,6 +187,15 @@
 </div>
 
 
+<div class="b4-myplants">
+  <div class="b4-myplants-head"><strong>🏭 MY PLANTS</strong><span>FACILITY SELECT</span></div>
+  <div class="b4-plant-cards">
+    <button class="b4-plant-card" data-stage="steam" onclick="selectStageView('steam')"><b>RIVERDALE</b><small>STEAM FACILITY</small></button>
+    <button class="b4-plant-card" data-stage="gas" onclick="selectStageView('gas')"><b>PINE RIDGE</b><small>GAS FACILITY</small></button>
+    <button class="b4-plant-card" data-stage="solar" onclick="selectStageView('solar')"><b>SUNCREST</b><small>SOLAR FACILITY</small></button>
+    <button class="b4-plant-card" data-stage="nuclear" onclick="selectStageView('nuclear')"><b>BLACKRIDGE</b><small>NUCLEAR FACILITY</small></button>
+  </div>
+</div>
 <div id="tutorialBox" class="tutorial">
   <strong id="tutorialTitle">Welcome to Riverbend</strong>
   <p id="tutorialText" class="small">Generate power, sell it to the grid, then build your first generator.</p>
@@ -187,7 +204,7 @@
 
 <div id="eventBox" class="event"><h3 id="eventTitle">⚠ Plant Event</h3><p id="eventText"></p><button id="eventButton" class="btn orange" onclick="resolveEvent()">RESOLVE</button></div>
 <div class="card b10-shift-card"><div class="section-title"><h3>🎛 Operations Shift</h3><span id="b10ShiftBadge">ACTIVE SHIFT</span></div><div id="b10OpsShift"></div></div>
-<div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button id="sellBtn" class="btn green" onclick="sellPower()">💵 Sell All Power</button><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
+<div class="card"><div class="section-title"><h3>⚡ Grid Controls</h3><span id="tapInfo">1 kWh/tap</span></div><div class="btnrow"><button class="btn blue" onclick="upgradeTap()">⚙ Upgrade Generator</button></div><p class="small" id="tapCost"></p></div>
 <div class="card"><div class="section-title"><h3>📊 Operations Dashboard</h3><span>LIVE</span></div><div class="dashboard">
 <div class="dash"><small>OPERATOR LEVEL</small><b id="operatorLevel">1</b></div>
 <div class="dash"><small>OPERATOR XP</small><b id="operatorXP">0 / 100</b></div>
@@ -445,5 +462,6 @@
 </div>
 
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
-<script src="js/game.js?v=13"></script></body>
+<script src="js/game.js?v=13"></script>
+<script src="js/build4-ui.js"></script><script src="js/generate-audio-v1.js"></script></body>
 </html>

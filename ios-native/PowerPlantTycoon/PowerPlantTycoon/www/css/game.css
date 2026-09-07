@@ -2795,3 +2795,588 @@ button[data-tutorial="build-diesel"].tut-spot{
   transform:none!important;
 }
 /* ===== END BUILD 10 TUTORIAL 6 DISPATCH SPOTLIGHT ===== */
+
+/* ================= PPT BUILD 4 — CINEMATIC INDUSTRIAL REALISM ================= */
+:root{
+  --b4-gold:#f8c33c;
+  --b4-gold2:#ffdf72;
+  --b4-panel:rgba(5,14,23,.94);
+  --b4-panel2:rgba(9,23,34,.92);
+  --b4-edge:rgba(155,187,207,.28);
+  --b4-text:#f5f8fb;
+  --b4-muted:#9fb0bd;
+  --b4-green:#47e27b;
+  --b4-amber:#f6bf35;
+}
+html,body{
+  background:
+    radial-gradient(circle at 50% -10%,#17344a 0,#081521 38%,#02070c 78%)!important;
+  color:var(--b4-text)!important;
+  font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Arial,sans-serif!important;
+}
+body:before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:-1;
+  background:linear-gradient(180deg,rgba(255,255,255,.018),transparent 30%);
+}
+.app{max-width:820px!important}
+.content{padding:8px 10px 20px!important}
+.topbar{
+  position:sticky!important;top:0!important;z-index:80!important;
+  padding:12px 12px 10px!important;
+  background:linear-gradient(180deg,rgba(3,10,17,.985),rgba(5,16,25,.97))!important;
+  border:0!important;border-bottom:1px solid rgba(116,151,174,.34)!important;
+  border-radius:0!important;
+  box-shadow:0 18px 40px rgba(0,0,0,.52)!important;
+  backdrop-filter:blur(18px)!important;
+}
+.brand{align-items:flex-end!important;margin-bottom:9px!important}
+.brand .logo{
+  font-size:26px!important;line-height:.98!important;letter-spacing:-.65px!important;
+  color:#dfe4e7!important;text-shadow:0 3px 13px #000!important;
+}
+.brand .logo span{color:var(--b4-gold2)!important}
+.brand .logo small{
+  display:block!important;margin-top:5px!important;font-size:8px!important;
+  color:#aab7bf!important;letter-spacing:1.5px!important;font-weight:800!important;
+}
+.rank{
+  border-radius:4px!important;padding:7px 9px!important;
+  background:linear-gradient(180deg,#111f2b,#09131c)!important;
+  border:1px solid #506573!important;color:#e0e7eb!important;
+  letter-spacing:.8px!important;font-size:9px!important;
+}
+.stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:7px!important;margin-top:0!important}
+.stat{
+  min-height:72px!important;padding:10px 10px 9px 42px!important;position:relative!important;
+  border-radius:7px!important;
+  background:linear-gradient(145deg,rgba(12,27,39,.97),rgba(4,12,20,.98))!important;
+  border:1px solid #536672!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 8px 18px rgba(0,0,0,.42)!important;
+}
+.stat:before{position:absolute;left:11px;top:20px;font-size:23px;filter:grayscale(.15)}
+.stat:nth-child(1):before{content:"💵"}.stat:nth-child(2):before{content:"⚡"}.stat:nth-child(3):before{content:"▥";color:var(--b4-gold)}
+.stat small{font-size:9px!important;letter-spacing:.6px!important;color:#aab8c2!important}
+.stat b{font-size:17px!important;color:#fff!important;white-space:nowrap!important;text-shadow:0 2px 7px #000!important}
+.stat:nth-child(1) b{color:#fff!important}.stat:nth-child(2) b{color:#fff!important}
+.b4-ops-strip{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:7px;
+  border:1px solid #334754;border-radius:7px;overflow:hidden;
+  background:linear-gradient(180deg,rgba(17,31,43,.98),rgba(8,17,26,.98));
+}
+.b4-ops-strip>div{padding:7px 8px;border-left:1px solid #334754;min-width:0}.b4-ops-strip>div:first-child{border-left:0}
+.b4-ops-strip small{display:block;font-size:7px;color:#92a2ad;font-weight:900;letter-spacing:.55px;white-space:nowrap}
+.b4-ops-strip b{display:block;margin-top:2px;font-size:10px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#b4Grid{color:var(--b4-amber)}#b4Condition{color:var(--b4-green)}
+#marketTicker{margin-top:6px!important;padding:5px 0!important;opacity:.68!important;font-size:9px!important}
+
+#home .hero{
+  position:relative!important;display:block!important;height:auto!important;min-height:0!important;
+  border-radius:10px!important;border:1px solid #536674!important;overflow:hidden!important;
+  background:#07111a!important;box-shadow:0 20px 46px rgba(0,0,0,.56)!important;
+}
+#home .yard{
+  position:relative!important;width:100%!important;height:510px!important;min-height:510px!important;
+  margin:0!important;overflow:hidden!important;
+  background-image:
+    linear-gradient(180deg,rgba(2,9,15,.05) 0%,rgba(2,9,15,.04) 60%,rgba(2,9,15,.46) 100%),
+    url("../assets/build4_riverdale_hero.jpg")!important;
+  background-size:cover!important;background-position:center center!important;background-repeat:no-repeat!important;
+  filter:saturate(1.02) contrast(1.04)!important;
+}
+#home .yard:after{
+  content:"";position:absolute;inset:0;z-index:30;pointer-events:none;
+  background:linear-gradient(180deg,rgba(4,11,18,.03) 50%,rgba(3,10,16,.45) 100%);
+}
+#home .plant-art,#home .cinematic-fx,#home .stage-art-label,#home .view-stage-badge,#home .v10-stage-label,#home .premium-art-badge{display:none!important}
+#home .cp-stage-rail{display:none!important}
+#home .scene-label{
+  position:absolute!important;left:20px!important;top:34px!important;right:auto!important;z-index:55!important;
+  text-shadow:0 3px 14px #000,0 1px 2px #000!important;max-width:68%!important;
+}
+#home .scene-label small{display:block;font-size:8px!important;letter-spacing:4px!important;color:#d7dde2!important;font-weight:800!important}
+#home .scene-label h2{margin:4px 0 0!important;font-size:31px!important;line-height:.96!important;letter-spacing:.5px!important;color:#f3f3f1!important}
+#home .scene-label h3{margin:2px 0 10px!important;font-size:14px!important;letter-spacing:4px!important;font-weight:500!important;color:#e7e7e4!important}
+#home .scene-label p{margin:0!important;max-width:220px!important;font-size:9px!important;line-height:1.5!important;letter-spacing:1.4px!important;text-transform:uppercase!important;color:#d7dde2!important}
+#home .scene-label p:before{content:"";display:block;width:52px;height:2px;margin:0 0 8px;background:var(--b4-gold)}
+#home .statusstrip{
+  position:absolute!important;right:12px!important;top:14px!important;z-index:56!important;
+  display:flex!important;flex-direction:column!important;gap:5px!important;align-items:flex-end!important;
+}
+#home .pill{
+  padding:5px 8px!important;border-radius:4px!important;font-size:7px!important;letter-spacing:.6px!important;
+  background:rgba(4,12,20,.76)!important;border:1px solid rgba(118,145,162,.52)!important;
+  backdrop-filter:blur(7px)!important;color:#e5edf2!important;
+}
+#home .grid{color:#55e381!important;border-color:#347b50!important}
+#home .cp-plant-status{
+  position:absolute!important;left:12px!important;right:12px!important;bottom:12px!important;top:auto!important;z-index:58!important;
+  width:auto!important;padding:9px 10px 10px!important;border-radius:7px!important;
+  border:1px solid #536674!important;background:linear-gradient(180deg,rgba(7,19,29,.95),rgba(3,11,18,.96))!important;
+  backdrop-filter:blur(10px)!important;box-shadow:0 12px 28px rgba(0,0,0,.52)!important;
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:0!important;
+}
+#home .cp-plant-status h4{grid-column:1/-1!important;margin:0 0 7px!important;font-size:11px!important;letter-spacing:.8px!important;color:#f0f5f8!important}
+#home .cp-plant-status h4:before{content:"🏭  ";filter:grayscale(1)}
+#home .cp-plant-status .r{
+  min-width:0!important;display:block!important;padding:6px 9px!important;border-top:1px solid #283b48!important;border-left:1px solid #283b48!important;font-size:9px!important;
+}
+#home .cp-plant-status .r:first-of-type{border-left:0!important}
+#home .cp-plant-status .r span{display:block!important;color:#99aab5!important;margin-bottom:2px!important}
+#home .cp-plant-status .r b{font-size:14px!important;color:#fff!important}
+#home .cp-plant-status .r:after{content:"";display:block;height:5px;margin-top:5px;border-radius:2px;background:linear-gradient(90deg,var(--b4-green) 0 78%,#293641 78% 100%)}
+#home .cp-plant-status .r:nth-of-type(3):after{background:linear-gradient(90deg,var(--b4-amber) 0 72%,#293641 72% 100%)}
+
+#home .generate-wrap{
+  position:relative!important;display:grid!important;grid-template-columns:1fr!important;gap:7px!important;
+  left:auto!important;right:auto!important;bottom:auto!important;margin:0!important;padding:10px!important;
+  background:linear-gradient(180deg,#07111a,#030a10)!important;border-top:1px solid #30424e!important;
+}
+#home .generate{
+  width:100%!important;min-height:72px!important;padding:14px!important;border-radius:7px!important;
+  border:2px solid #5f4814!important;color:#12100a!important;
+  background:
+    linear-gradient(110deg,rgba(255,255,255,.28),transparent 22%,transparent 72%,rgba(255,255,255,.12)),
+    linear-gradient(180deg,#ffe173,#e7ad23)!important;
+  box-shadow:inset 0 0 0 2px rgba(74,52,8,.22),inset 0 2px rgba(255,255,255,.48),0 0 22px rgba(255,191,38,.22),0 9px 22px rgba(0,0,0,.52)!important;
+  font-size:23px!important;font-weight:1000!important;letter-spacing:.2px!important;text-shadow:0 1px rgba(255,255,255,.26)!important;
+}
+#home .generate:after{content:"  ››";font-size:25px;letter-spacing:-5px}
+#home .auto-generate-btn{
+  min-height:42px!important;border-radius:6px!important;border:1px solid #41515d!important;
+  background:linear-gradient(180deg,#172632,#0a141c)!important;color:#cbd5dc!important;box-shadow:none!important;font-size:11px!important;
+}
+#home .auto-generate-btn.on{background:linear-gradient(180deg,#214d37,#10291e)!important;border-color:#3b8b5c!important;color:#68ec98!important}
+#home .cp-equipment{
+  display:grid!important;grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:6px!important;
+  margin:8px 0 0!important;padding:0 2px!important;
+}
+#home .cp-equip{padding:8px!important;border-radius:6px!important;background:linear-gradient(180deg,#0d1c27,#07121a)!important;border:1px solid #344753!important;box-shadow:none!important}
+#home .cp-equip strong{font-size:9px!important}#home .cp-equip small{font-size:8px!important;margin:3px 0 5px!important}
+
+.b4-myplants{margin:8px 0 12px;padding:10px;border:1px solid #3d505d;border-radius:8px;background:linear-gradient(180deg,#0b1923,#050d13);box-shadow:0 12px 26px rgba(0,0,0,.38)}
+.b4-myplants-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}.b4-myplants-head strong{font-size:12px;letter-spacing:.8px}.b4-myplants-head span{font-size:9px;color:#9dacb6}
+.b4-plant-cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}
+.b4-plant-card{position:relative;min-height:86px;padding:48px 7px 7px;text-align:left;border:1px solid #485965;border-radius:6px;color:#edf3f6;background:#0a151e;overflow:hidden;font-weight:800}
+.b4-plant-card:before{content:"";position:absolute;inset:0 0 auto;height:44px;background-image:linear-gradient(180deg,transparent,rgba(2,8,13,.55)),url("../assets/build4_riverdale_hero.jpg");background-size:cover;background-position:center 55%}
+.b4-plant-card:nth-child(2):before{filter:saturate(.72) brightness(.72);background-position:25% 50%}.b4-plant-card:nth-child(3):before{filter:saturate(.45) brightness(.58);background-position:60% 50%}.b4-plant-card:nth-child(4):before{filter:saturate(.3) brightness(.5);background-position:85% 50%}
+.b4-plant-card b,.b4-plant-card small{position:relative;z-index:2;display:block}.b4-plant-card b{font-size:9px;letter-spacing:.4px}.b4-plant-card small{margin-top:2px;font-size:8px;color:#8e9ca6}
+.b4-plant-card.active{border-color:var(--b4-gold)!important;box-shadow:0 0 0 1px rgba(255,204,67,.45),0 0 14px rgba(255,190,43,.2)}
+.b4-plant-card.active small{color:#5bea88}.b4-plant-card.locked:after{content:"🔒";position:absolute;right:5px;bottom:5px;font-size:10px;z-index:3}
+
+.card,.uf-panel,.setting,.asset,.region,.storeitem{
+  border-radius:8px!important;border-color:#394d5a!important;
+  background:linear-gradient(145deg,rgba(12,28,39,.96),rgba(4,12,19,.98))!important;
+  box-shadow:0 10px 24px rgba(0,0,0,.34),inset 0 1px rgba(255,255,255,.035)!important;
+}
+.section-title h3{font-size:15px!important}.section-title span{font-size:9px!important}
+.btn{border-radius:7px!important;min-height:44px!important}
+.nav{
+  width:min(820px,100%)!important;padding:5px 3px calc(6px + env(safe-area-inset-bottom))!important;
+  background:linear-gradient(180deg,rgba(5,14,22,.99),rgba(2,8,13,.995))!important;
+  border-top:1px solid #3a4e5a!important;box-shadow:0 -10px 26px rgba(0,0,0,.48)!important;
+  backdrop-filter:blur(18px)!important;
+}
+.nav button{padding:7px 1px!important;border-radius:3px!important;font-size:8px!important;color:#94a3ad!important}
+.nav button i{font-size:18px!important}.nav button.active{color:#ffd45a!important;background:linear-gradient(180deg,rgba(107,78,18,.34),rgba(55,40,11,.18))!important;box-shadow:inset 0 0 0 1px rgba(255,202,58,.35),0 0 15px rgba(255,188,38,.12)!important}
+
+@media(max-width:560px){
+  .content{padding:6px 6px 18px!important}.topbar{padding:9px 7px 8px!important}.brand .logo{font-size:22px!important}.rank{font-size:7px!important;padding:6px!important}
+  .stat{min-height:62px!important;padding:8px 5px 7px 31px!important}.stat:before{left:7px!important;top:19px!important;font-size:17px!important}.stat small{font-size:7px!important}.stat b{font-size:13px!important}
+  .b4-ops-strip>div{padding:6px 5px!important}.b4-ops-strip small{font-size:6px!important}.b4-ops-strip b{font-size:8px!important}
+  #home .yard{height:455px!important;min-height:455px!important;background-position:52% center!important}
+  #home .scene-label{left:12px!important;top:28px!important;max-width:70%!important}#home .scene-label h2{font-size:25px!important}#home .scene-label h3{font-size:11px!important;letter-spacing:2.8px!important}#home .scene-label p{font-size:7px!important}
+  #home .statusstrip{right:7px!important;top:8px!important}.pill{font-size:6px!important}
+  #home .cp-plant-status{left:7px!important;right:7px!important;bottom:7px!important;padding:7px!important}#home .cp-plant-status h4{font-size:9px!important}#home .cp-plant-status .r{padding:5px 4px!important;font-size:7px!important}#home .cp-plant-status .r b{font-size:11px!important}
+  #home .generate{min-height:64px!important;font-size:18px!important}.b4-plant-card{min-height:78px!important;padding:44px 5px 5px!important}.b4-plant-card b{font-size:7px!important}.b4-plant-card small{font-size:7px!important}
+  #home .cp-equipment{grid-template-columns:repeat(2,1fr)!important}
+}
+@media(max-width:390px){
+  .b4-ops-strip{grid-template-columns:repeat(2,1fr)!important}.b4-ops-strip>div:nth-child(3){border-left:0!important;border-top:1px solid #334754}.b4-ops-strip>div:nth-child(4){border-top:1px solid #334754}
+  #home .yard{height:430px!important;min-height:430px!important}.b4-plant-cards{grid-template-columns:repeat(2,1fr)!important}
+}
+
+/* ================= PPT BUILD 4 TOP HUD FIX =================
+   Mobile-only correction for the clipped Build 4 header.
+   Core game logic is intentionally untouched.
+================================================================ */
+
+@media (max-width:760px){
+
+  html,body{
+    width:100%!important;
+    max-width:100%!important;
+    overflow-x:hidden!important;
+  }
+
+  .app{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    margin:0!important;
+    overflow-x:hidden!important;
+  }
+
+  .topbar{
+    position:relative!important;
+    top:auto!important;
+    left:auto!important;
+    right:auto!important;
+
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+
+    margin:0!important;
+    padding:8px 7px 7px!important;
+
+    overflow:hidden!important;
+    border-radius:0!important;
+    box-sizing:border-box!important;
+  }
+
+  .brand{
+    position:relative!important;
+
+    width:100%!important;
+    min-width:0!important;
+
+    display:flex!important;
+    align-items:flex-end!important;
+    justify-content:space-between!important;
+
+    gap:7px!important;
+    margin:0 0 7px!important;
+    padding:0!important;
+
+    overflow:hidden!important;
+  }
+
+  .brand .logo{
+    flex:1 1 auto!important;
+    min-width:0!important;
+    max-width:68%!important;
+
+    margin:0!important;
+    padding:0!important;
+
+    font-size:20px!important;
+    line-height:.94!important;
+    letter-spacing:-.45px!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:clip!important;
+  }
+
+  .brand .logo span{
+    color:#ffdc68!important;
+  }
+
+  /* The generated target uses a clean corporate tagline instead of
+     the older rank capsule in the header. The rank still exists in
+     game state; only this mobile header presentation is hidden. */
+  .brand .logo small{
+    display:none!important;
+  }
+
+  .brand:after{
+    content:"CLEANER ENERGY\A A BRIGHTER TOMORROW"!important;
+
+    flex:0 0 30%!important;
+    min-width:0!important;
+
+    white-space:pre!important;
+    text-align:right!important;
+
+    font-size:5.7px!important;
+    line-height:1.28!important;
+    font-weight:800!important;
+    letter-spacing:.7px!important;
+
+    color:#b5c0c7!important;
+
+    padding-right:4px!important;
+    border-right:1px solid #d6ac39!important;
+  }
+
+  .rank{
+    display:none!important;
+  }
+
+  .stats{
+    display:grid!important;
+    grid-template-columns:repeat(3,minmax(0,1fr))!important;
+
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+
+    gap:4px!important;
+    margin:0!important;
+    padding:0!important;
+  }
+
+  .stat{
+    position:relative!important;
+
+    width:auto!important;
+    max-width:100%!important;
+    min-width:0!important;
+    min-height:57px!important;
+
+    margin:0!important;
+    padding:7px 4px 6px 27px!important;
+
+    overflow:hidden!important;
+
+    border-radius:6px!important;
+    box-sizing:border-box!important;
+  }
+
+  .stat:before{
+    left:6px!important;
+    top:17px!important;
+    font-size:14px!important;
+  }
+
+  .stat small{
+    display:block!important;
+
+    max-width:100%!important;
+
+    margin:0!important;
+
+    font-size:6px!important;
+    line-height:1.05!important;
+    letter-spacing:.15px!important;
+    font-weight:900!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  .stat b{
+    display:block!important;
+
+    max-width:100%!important;
+
+    margin-top:3px!important;
+
+    font-size:12px!important;
+    line-height:1!important;
+    letter-spacing:-.1px!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  /* subtle stored-power meter like the approved visual target */
+  .stat.power:after{
+    content:""!important;
+    display:block!important;
+
+    width:78%!important;
+    height:2px!important;
+
+    margin-top:5px!important;
+
+    border-radius:2px!important;
+    background:
+      linear-gradient(90deg,#5fd8ef 0 68%,#34444e 68% 100%)!important;
+  }
+
+  .b4-ops-strip{
+    display:grid!important;
+    grid-template-columns:repeat(4,minmax(0,1fr))!important;
+
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+
+    gap:0!important;
+
+    margin:5px 0 0!important;
+    padding:0!important;
+
+    overflow:hidden!important;
+    border-radius:5px!important;
+  }
+
+  .b4-ops-strip>div{
+    min-width:0!important;
+
+    padding:5px 3px!important;
+
+    overflow:hidden!important;
+  }
+
+  .b4-ops-strip small{
+    display:block!important;
+
+    max-width:100%!important;
+
+    font-size:4.9px!important;
+    line-height:1.05!important;
+    letter-spacing:.05px!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  .b4-ops-strip b{
+    display:block!important;
+
+    max-width:100%!important;
+
+    margin-top:2px!important;
+
+    font-size:7px!important;
+    line-height:1.05!important;
+
+    white-space:nowrap!important;
+    overflow:hidden!important;
+    text-overflow:ellipsis!important;
+  }
+
+  #marketTicker{
+    display:none!important;
+  }
+}
+
+@media (max-width:390px){
+
+  .topbar{
+    padding-left:6px!important;
+    padding-right:6px!important;
+  }
+
+  .brand .logo{
+    font-size:18px!important;
+    max-width:67%!important;
+  }
+
+  .brand:after{
+    flex-basis:31%!important;
+    font-size:5px!important;
+    letter-spacing:.5px!important;
+  }
+
+  .stat{
+    min-height:53px!important;
+    padding-left:24px!important;
+  }
+
+  .stat:before{
+    left:5px!important;
+    top:16px!important;
+    font-size:12px!important;
+  }
+
+  .stat small{
+    font-size:5.4px!important;
+  }
+
+  .stat b{
+    font-size:10.5px!important;
+  }
+
+  .b4-ops-strip small{
+    font-size:4.4px!important;
+  }
+
+  .b4-ops-strip b{
+    font-size:6.3px!important;
+  }
+}
+
+/* PPT BUILD 4 HUD RECOVERY V2 */
+@media (max-width:760px){
+  .app > .topbar{
+    position:relative!important;inset:auto!important;transform:none!important;
+    width:100%!important;max-width:100%!important;min-width:0!important;
+    height:auto!important;margin:0!important;padding:10px 8px 8px!important;
+  }
+  .topbar .brand{display:flex!important;align-items:center!important;gap:8px!important;}
+  .topbar .brand .logo{
+    flex:1 1 auto!important;max-width:none!important;white-space:normal!important;
+    overflow:visible!important;font-size:20px!important;line-height:1.05!important;
+  }
+  .topbar .brand .logo span{display:block!important;}
+  .topbar .brand:after{flex:0 0 31%!important;font-size:6px!important;letter-spacing:.4px!important;}
+  .topbar .stats{gap:5px!important;}
+  .topbar .stat{padding:7px 4px!important;text-align:center!important;min-height:54px!important;}
+  .topbar .stat:before{display:none!important;}
+  .topbar .stat small{font-size:8px!important;line-height:12px!important;letter-spacing:.2px!important;}
+  .topbar .stat b{font-size:14px!important;line-height:18px!important;}
+  .topbar .stat.power:after{margin:4px auto 0!important;}
+  .topbar .b4-ops-strip small{font-size:6px!important;line-height:9px!important;}
+  .topbar .b4-ops-strip b{font-size:8px!important;line-height:11px!important;}
+  .topbar .b4-ops-strip>div{border-top:0!important;}
+}
+/* The supplied HTML places these panels beside the yard, not inside it. */
+#home > .hero{height:auto!important;min-height:0!important;padding:12px!important;}
+#home > .hero > .sky,#home > .hero > .hills,#home > .hero > .cp-stage{display:none!important;}
+#home > .hero > .scene-label{position:relative!important;inset:auto!important;max-width:none!important;padding:0!important;}
+#home > .hero > .statusstrip{position:relative!important;inset:auto!important;flex-direction:row!important;flex-wrap:wrap!important;margin-top:12px!important;}
+#home > .cp-plant-status{position:relative!important;inset:auto!important;width:100%!important;margin:8px 0!important;transform:none!important;}
+
+/* PPT BUILD 4 HOME RECOVERY V3 */
+@media(max-width:760px){
+  /* This legacy card is invisible on phones; do not reserve space for it. */
+  #home > .cp-plant-status{display:none!important;margin:0!important;}
+  #home > .generate-wrap{
+    position:relative!important;inset:auto!important;transform:none!important;
+    width:100%!important;margin:8px 0!important;padding:8px!important;
+    height:auto!important;min-height:0!important;max-height:none!important;
+    visibility:visible!important;opacity:1!important;overflow:visible!important;
+  }
+  #home > .generate-wrap > .generate{min-height:54px!important;padding:12px!important;}
+  #home > .generate-wrap > .auto-generate-btn{min-height:36px!important;padding:8px!important;}
+  #home > .yard{
+    height:clamp(220px,32vh,300px)!important;
+    min-height:0!important;max-height:none!important;
+    margin:0!important;border-radius:8px!important;
+  }
+  /* Remove an inherited circular decoration over the photograph. */
+  #home > .yard:before{display:none!important;content:none!important;}
+}
+
+/* PPT BUILD 4 HOME RECOVERY V4 */
+#home > .generate-wrap > #sellBtn{
+  position:relative!important;inset:auto!important;width:100%!important;
+  min-height:46px!important;margin:0!important;padding:10px!important;
+  font-size:16px!important;font-weight:900!important;border-radius:7px!important;
+}
+
+/* PPT PLANTS PRESENTATION V1 */
+#plants #plantList .plant-v7{
+  position:relative!important;display:block!important;padding:0!important;
+  height:auto!important;min-height:0!important;overflow:hidden!important;
+  margin:12px 0!important;border:1px solid #48545d!important;border-radius:9px!important;
+  background:#09151e!important;transform:none!important;
+}
+#plants #plantList .plant-card-bg{
+  position:relative!important;inset:auto!important;height:100px!important;width:100%!important;
+  /* Use the per-plant inline artwork supplied by renderPlants. */
+  background-size:cover!important;background-position:center 48%!important;transform:none!important;
+  border-bottom:1px solid #48545d!important;
+}
+#plants #plantList .plant-card-shade{display:none!important;}
+#plants #plantList .plant-card-content{position:relative!important;padding:13px!important;background:#09151e!important;}
+#plants #plantList .plant-card-top{display:flex!important;align-items:flex-start!important;flex-wrap:wrap!important;gap:8px!important;}
+#plants #plantList .plant-card-name{flex:1 1 155px!important;min-width:0!important;font-size:19px!important;line-height:1.2!important;color:#f1f2ee!important;}
+#plants #plantList .plant-era{color:#b6a679!important;font-size:8px!important;line-height:1.5!important;letter-spacing:1.3px!important;margin-top:6px!important;}
+#plants #plantList .plant-card-level{flex:0 0 auto!important;font-size:9px!important;line-height:1.4!important;border-radius:4px!important;background:#17242d!important;border:1px solid #59636c!important;color:#e2e8eb!important;padding:5px 7px!important;}
+#plants #plantList .plant-card-meta{margin:11px 0 7px!important;color:#b7c1c7!important;font-size:11px!important;line-height:1.5!important;}
+#plants #plantList .plant-card-output{color:#8cddae!important;font-size:12px!important;line-height:1.5!important;}
+#plants #plantList .mastery-strip{border-radius:4px!important;margin:10px 0!important;font-size:9px!important;flex-wrap:wrap!important;}
+#plants #plantList .plant-card-actions{display:grid!important;grid-template-columns:1fr!important;gap:7px!important;margin-top:12px!important;}
+#plants #plantList .plant-card-actions button{width:100%!important;min-height:44px!important;padding:11px!important;border-radius:5px!important;border:1px solid #a78029!important;background:linear-gradient(#ffe179,#deb035)!important;color:#211a09!important;font-size:12px!important;line-height:1.35!important;box-shadow:inset 0 1px #fff6!important;}
+#plants #plantList .plant-card-actions .view-btn,#plants #plantList .plant-card-actions .master-btn{background:linear-gradient(#1b2b36,#0d1b25)!important;border-color:#465966!important;color:#ccd5db!important;box-shadow:none!important;}
+#plants #plantList .plant-card-actions .master-btn.ready{color:#ffda78!important;border-color:#a78029!important;}
+#plants #plantList .plant-card-actions button:disabled{opacity:.5!important;}
+#plants #plantList .strategic-asset:after{top:10px!important;right:10px!important;background:#101c25ed!important;border:1px solid #a78029!important;color:#ffda78!important;border-radius:3px!important;padding:5px 7px!important;}
+#plants .page-hero{background:linear-gradient(140deg,#172630,#08131c)!important;border-color:#48545d!important;border-radius:8px!important;}
