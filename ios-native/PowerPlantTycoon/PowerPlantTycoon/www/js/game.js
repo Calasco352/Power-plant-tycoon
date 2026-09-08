@@ -169,7 +169,7 @@ const CONTRACTS=[
 {id:"c11",name:"Orbital Energy Delivery",required:100000000,duration:600,rate:3.70,reward:60000000000,reliability:96,contracts:65,region:"orbitalgrid"},
 {id:"c12",name:"Helios Strategic Reserve",required:1000000000,duration:720,rate:4.25,reward:750000000000,reliability:97,contracts:100,projects:9}
 ];
-const CORPORATE=[{id:"eff",name:"High-Efficiency Operations",desc:"+5% production efficiency per level",base:2500},{id:"maint",name:"Predictive Maintenance",desc:"Slower equipment condition loss",base:4000},{id:"fuel",name:"Fuel Procurement",desc:"Reduces fuel expense by 5% per level",base:6000},{id:"grid",name:"Grid Optimization",desc:"+4% sale value per level",base:8000}];
+const CORPORATE=[{id:"eff",name:"High-Efficiency Operations",desc:"+3% production efficiency per level",base:2500},{id:"maint",name:"Predictive Maintenance",desc:"Slower equipment condition loss",base:4000},{id:"fuel",name:"Fuel Procurement",desc:"Reduces fuel expense by 3% per level (30% max)",base:6000},{id:"grid",name:"Grid Optimization",desc:"+2.5% sale value per level",base:8000}];
 const MISSIONS=[
 {id:"m1",label:"Generate 100 kWh",type:"generated",target:100,reward:150},
 {id:"m2",label:"Earn $1,000 lifetime cash",type:"lifetimeCash",target:1000,reward:500},
@@ -353,16 +353,16 @@ function empireLevelLifetimeRequirement(){return Math.min(1e300,1000000000000*Ma
 function empireLevelProjectRequirement(){return Math.min(MEGA_PROJECTS.length,6+Math.floor((g.empireLevel||0)/2))}
 const PRESTIGE_MILESTONES=[10,25,50,100,250,500,1000];
 const LEGACY_UPGRADES=[
-{id:"generation",icon:"⚡",name:"Grid Engineering",desc:"+6% permanent production per level",base:1,max:50},
-{id:"markets",icon:"📈",name:"Market Authority",desc:"+4% permanent sale value per level",base:1,max:40},
+{id:"generation",icon:"⚡",name:"Grid Engineering",desc:"+4% permanent production per level",base:1,max:50},
+{id:"markets",icon:"📈",name:"Market Authority",desc:"+2.5% permanent sale value per level",base:1,max:40},
 {id:"resilience",icon:"🛡️",name:"Reliability Doctrine",desc:"-2% fleet wear per level",base:2,max:30},
-{id:"offline",icon:"🌙",name:"Autonomous Night Shift",desc:"+1% offline efficiency per level",base:2,max:20}
+{id:"offline",icon:"🌙",name:"Autonomous Night Shift",desc:"+0.5% offline efficiency per level (capped)",base:2,max:20}
 ];
 function legacyUpgradeCost(u){return Math.max(1,Math.ceil(u.base*Math.pow(1.7,g.legacy[u.id]||0)))}
 function legacyProductionMult(){return 1+(g.legacy.generation||0)*.06}
 function legacySaleMult(){return 1+(g.legacy.markets||0)*.04}
 function legacyWearMult(){return Math.max(.35,1-(g.legacy.resilience||0)*.02)}
-function offlineEfficiency(){return Math.min(.95,.75+(g.legacy.offline||0)*.01)}
+function offlineEfficiency(){const legacy=Math.min(.10,Math.max(0,g.legacy?.offline||0)*.005);const base=g.offlineOperationsUnlocked?.40:.25;return Math.min(g.offlineOperationsUnlocked?.50:.35,base+legacy)}
 function nextPrestigeMilestone(){return PRESTIGE_MILESTONES.find(x=>x>(g.prestige||0))||null}
 function prestigeCreditReward(){const next=(g.prestige||0)+1,base=1+Math.floor(next/10),bonus=PRESTIGE_MILESTONES.includes(next)?Math.max(3,Math.floor(next/10)):0;return Math.min(5000,base+bonus)}
 function buyLegacyUpgrade(id){const u=LEGACY_UPGRADES.find(x=>x.id===id);if(!u)return;const lv=g.legacy[id]||0;if(lv>=u.max){toast("Legacy upgrade maxed.");return}const c=legacyUpgradeCost(u);if(g.gridCredits<c){toast("Need "+c+" Grid Credits.");return}g.gridCredits-=c;g.legacy[id]=lv+1;addLog(u.name+" upgraded to Level "+g.legacy[id]+".");saveGame();render();feedback("big")}
@@ -412,16 +412,16 @@ const STAFF_TYPES=[
 {id:"operator",name:"Senior Operator",icon:"🎛️",desc:"Boosts production and operator XP gain.",base:10000}
 ];
 const RESEARCH=[
-{id:"automation",name:"Advanced Automation",desc:"+4% production per level",base:12000,max:8,unlockAt:0},
+{id:"automation",name:"Advanced Automation",desc:"+2.5% production per level",base:12000,max:8,unlockAt:0},
 {id:"storage",name:"Grid Storage Systems",desc:"+50% battery capacity per level",base:15000,max:8,unlockAt:0},
-{id:"forecast",name:"Market Forecasting",desc:"+3% sale value per level",base:18000,max:8,unlockAt:0},
+{id:"forecast",name:"Market Forecasting",desc:"+2% sale value per level",base:18000,max:8,unlockAt:0},
 {id:"materials",name:"Advanced Materials",desc:"Slower plant condition loss",base:22000,max:8,unlockAt:0},
 {id:"controls",name:"Digital Plant Controls",desc:"+2% reliability per level",base:30000,max:8,unlockAt:0},
 {id:"gridAI",name:"Grid AI Dispatch",desc:"Improves auto-sell and dispatch bonuses",base:45000,max:8,unlockAt:0},
 {id:"superconductors",name:"Superconducting Systems",desc:"Reduces fleet operating cost and expands storage",base:250000000,max:6,unlockAt:65000000},
-{id:"advancedNuclear",name:"Advanced Reactor Engineering",desc:"+12% total production per level",base:2000000000,max:6,unlockAt:1000000000},
-{id:"fusionControl",name:"Fusion Plasma Control",desc:"+25% total production per level",base:50000000000,max:6,unlockAt:25000000000},
-{id:"quantumGrid",name:"Quantum Grid Optimization",desc:"+8% sale value and +20% production per level",base:1000000000000,max:8,unlockAt:1000000000000}
+{id:"advancedNuclear",name:"Advanced Reactor Engineering",desc:"+6% total production per level",base:2000000000,max:6,unlockAt:1000000000},
+{id:"fusionControl",name:"Fusion Plasma Control",desc:"+12% total production per level",base:50000000000,max:6,unlockAt:25000000000},
+{id:"quantumGrid",name:"Quantum Grid Optimization",desc:"+4% sale value and +8% production per level",base:1000000000000,max:8,unlockAt:1000000000000}
 ];
 const POLICIES=[
 {id:"balanced",name:"Balanced Operation",desc:"Stable production and maintenance."},
@@ -913,14 +913,9 @@ function renderAutoGenerateUI(){
 
 function runAutoGenerate(){
     if(!g.autoGenerateUnlocked || !g.autoGenerate) return;
-
-    const amount = tapPower()*(1+(g.autoGenerateLevel||0)*.5);
-    g.stored += amount;
-    g.generated += amount;
-
-    if(typeof addXP === "function"){
-        addXP(.2);
-    }
+    const amount = tapPower()*(1+(g.autoGenerateLevel||0)*.20);
+    g.stored += amount;g.generated += amount;
+    if(typeof addXP === "function")addXP(.2);
 }
 
 setInterval(runAutoGenerate, 1000);
@@ -936,7 +931,16 @@ function hireEngineer(){const c=engineerCost();if(g.cash<c){toast("Engineer cost
 function buyCorporate(id){const up=CORPORATE.find(x=>x.id===id);if((g.corporate[id]||0)>=25){toast("Corporate upgrade maxed at Level 25.");return}const c=corporateCost(up);if(g.cash<c){toast("Need "+money(c));return}g.cash-=c;g.corporate[id]++;addXP(20);addLog(up.name+" upgraded to Level "+g.corporate[id]+".");saveGame();render()}
 function startContract(id){if(g.activeContract){toast("Finish the current contract first.");return}const c=CONTRACTS.find(x=>x.id===id);if(output()<c.required){toast("Requires "+powerRate(c.required)+" output.");return}if(c.reliability&&g.reliability<c.reliability){toast("Requires "+c.reliability+"% reliability.");return}if(c.contracts&&g.contractsCompleted<c.contracts){toast("Complete "+c.contracts+" contracts first.");return}if(c.projects&&completedMegaProjects()<c.projects){toast("Complete "+c.projects+" mega projects first.");return}if(c.region&&!g.regions[c.region]){toast("Connect "+REGIONS.find(r=>r.id===c.region).name+" first.");return}g.activeContract={id:c.id,name:c.name,rate:c.rate,reward:c.reward,end:Date.now()+c.duration*1000};addLog("Contract started: "+c.name+".");saveGame();render()}
 function updateContract(){if(g.activeContract&&Date.now()>=g.activeContract.end){const c=g.activeContract;recordEarnedCash(c.reward);g.contractsCompleted++;addXP(40);addLog("Contract completed: "+c.name+" +"+money(c.reward)+".");g.activeContract=null;markInterstitialOpportunity();toast("Contract complete! "+money(c.reward));saveGame()}}
-function missionValue(m){if(m.type==="generated")return g.generated;if(m.type==="lifetimeCash")return g.lifetimeCash;if(m.type==="levels")return totalLevels();if(m.type==="output")return output();if(m.type==="contracts")return g.contractsCompleted;if(m.type==="masteries")return totalMasteries();if(m.type==="projects")return completedMegaProjects();if(m.type==="regions")return Object.values(g.regions).filter(Boolean).length;return 0}function claimMission(id){const m=MISSIONS.find(x=>x.id===id);if(g.missions[id]||missionValue(m)<m.target)return;g.missions[id]=true;recordEarnedCash(m.reward);addXP(15);addLog("Mission completed: "+m.label);saveGame();render()}
+function missionValue(m){if(m.type==="generated")return g.generated;if(m.type==="lifetimeCash")return g.lifetimeCash;if(m.type==="levels")return totalLevels();if(m.type==="output")return output();if(m.type==="contracts")return g.contractsCompleted;if(m.type==="masteries")return totalMasteries();if(m.type==="projects")return completedMegaProjects();if(m.type==="regions")return Object.values(g.regions).filter(Boolean).length;return 0}function claimMission(id){
+  const m=MISSIONS.find(x=>x.id===id);
+  if(!m||g.missions[id]||missionValue(m)<m.target)return;
+  g.missions[id]=true;
+  const reward=Math.max(0,Math.min(1e300,Number(m.reward)||0));
+  g.cash=Math.min(1e300,(Number(g.cash)||0)+reward);
+  g.lifetimeCash=Math.min(1e300,(Number(g.lifetimeCash)||0)+reward);
+  /* Mission rewards are bonuses, not operating income, so they do not advance prestigeRunCash. */
+  addXP(15);addLog("Mission completed: "+m.label);saveGame();render();
+}
 function achievementValue(a){if(a.type==="generated")return g.generated;if(a.type==="regions")return Object.values(g.regions).filter(Boolean).length;if(a.type==="lifetimeCash")return g.lifetimeCash;if(a.type==="operator")return g.operatorLevel;if(a.type==="megaProjects")return completedMegaProjects();if(a.type==="plant")return g.plants[a.plant]?.unlocked?1:0;if(a.type==="region")return g.regions[a.region]?1:0;if(a.type==="masteries")return totalMasteries();if(a.type==="contracts")return g.contractsCompleted;if(a.type==="empireLevel")return g.empireLevel||0;return 0}function updateAchievements(){ACH.forEach(a=>{if(!g.achievements[a.id]&&achievementValue(a)>=a.target){g.achievements[a.id]=true;addLog("Achievement unlocked: "+a.label);toast("🏆 "+a.label)}})}
 function dailyReward(){
   const now=Date.now(),today=dayStamp(now),last=g.dailyStreak?.lastClaimDay;
@@ -948,8 +952,49 @@ function dailyReward(){
   recordEarnedCash(r);g.lastDaily=now;g.dailyStreak={count,lastClaimDay:today};addXP(5+count*2);addLog("Day "+count+" supply drop received: "+money(r));saveGame();render();toast("🎁 Day "+count+" reward: "+money(r));
 }
 function activateBoost(){if(Date.now()<g.boostUntil){toast("2× boost is already active.");return}g.boostUntil=Date.now()+10*60*1000;addLog("Grid output boost activated.");saveGame();render()}function maintenancePack(){toast("TEST PURCHASE • Maintenance Pack");g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id].unlocked)g.plants[p.id].condition=100});saveGame();render()}function starterPack(){toast("TEST PURCHASE • Starter Pack");if(g.starter){toast("Starter Pack already claimed.");return}g.starter=true;recordEarnedCash(5000);g.boostUntil=Math.max(g.boostUntil,Date.now()+10*60*1000);saveGame();render()}
+/* PPT_BUILD6_PRESTIGE_MISSIONS_FIX — claimed missions persist; mission rewards do not count toward prestige */
 function prestigeRequirement(){const p=Math.max(0,g.prestige||0);return Math.min(1e300,50000*Math.pow(2.2,Math.min(p,12))*Math.pow(1.22,Math.max(0,p-12)))}
-function prestige(){const req=prestigeRequirement(),run=g.prestigeRunCash||0;if(run<req){toast("This run needs "+money(req)+" earned. Current run: "+money(run));return}const credits=prestigeCreditReward(),next=(g.prestige||0)+1;askConfirm("Prestige Company","Reset this operating run and earn "+credits+" Grid Credit"+(credits===1?"":"s")+"? Lifetime empire progress, Mega Projects, purchases and Legacy upgrades remain.",()=>{const keep={achievements:g.achievements,settings:g.settings,autoGenerateUnlocked:g.autoGenerateUnlocked,autoGenerateLevel:g.autoGenerateLevel,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions,megaProjects:g.megaProjects,empireLevel:g.empireLevel,empireNotified:g.empireNotified,dailyStreak:g.dailyStreak,lifetimeCash:g.lifetimeCash,gridCredits:(g.gridCredits||0)+credits,lifetimeGridCredits:(g.lifetimeGridCredits||0)+credits,legacy:g.legacy,stabilityVersion:21};g=defaultGame();Object.assign(g,keep);g.prestige=next;g.prestigeRunCash=0;g.tutorialStep=5;g.finalTutorial={step:0,done:true,disabled:true};g.log=["Company prestiged to tier "+next+" • +"+credits+" Grid Credits."];saveGame();render();feedback("big")})}
+function prestige(){
+  const req=prestigeRequirement(),run=g.prestigeRunCash||0;
+  if(run<req){toast("This run needs "+money(req)+" earned. Current run: "+money(run));return}
+  const credits=prestigeCreditReward(),next=(g.prestige||0)+1;
+  askConfirm("Prestige Company","Reset this operating run and earn "+credits+" Grid Credit"+(credits===1?"":"s")+"? Lifetime empire progress, claimed missions, Mega Projects, purchases and Legacy upgrades remain.",()=>{
+    const keep={
+      achievements:g.achievements,
+      missions:g.missions,
+      settings:g.settings,
+      autoGenerateUnlocked:g.autoGenerateUnlocked,
+      autoGenerateLevel:g.autoGenerateLevel,
+      adsRemoved:g.adsRemoved,
+      executiveLicenseUnlocked:g.executiveLicenseUnlocked,
+      hqExecutiveThemeUnlocked:g.hqExecutiveThemeUnlocked,
+      offlineOperationsUnlocked:g.offlineOperationsUnlocked,
+      foundersBundleUnlocked:g.foundersBundleUnlocked,
+      autoSellLicenseUnlocked:g.autoSellLicenseUnlocked,
+      autoSell:g.autoSell,
+      autoSellMode:g.autoSellMode,
+      processedStoreTransactions:g.processedStoreTransactions,
+      store6ResearchVouchers:g.store6ResearchVouchers,
+      store6RecruitmentVouchers:g.store6RecruitmentVouchers,
+      marketIntelUntil:g.marketIntelUntil,
+      engineeringShieldUntil:g.engineeringShieldUntil,
+      boostUntil:g.boostUntil,
+      megaProjects:g.megaProjects,
+      empireLevel:g.empireLevel,
+      empireNotified:g.empireNotified,
+      dailyStreak:g.dailyStreak,
+      lifetimeCash:g.lifetimeCash,
+      gridCredits:(g.gridCredits||0)+credits,
+      lifetimeGridCredits:(g.lifetimeGridCredits||0)+credits,
+      legacy:g.legacy,
+      stabilityVersion:21
+    };
+    g=defaultGame();Object.assign(g,keep);g.prestige=next;g.prestigeRunCash=0;
+    g.tutorialStep=5;g.finalTutorial={step:0,done:true,disabled:true};
+    g.log=["Company prestiged to tier "+next+" • +"+credits+" Grid Credits."];
+    saveGame();render();feedback("big")
+  })
+}
 function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
 function buyMegaProject(id){
   const p=MEGA_PROJECTS.find(x=>x.id===id);if(!p)return;if(g.megaProjects[p.id]){toast("Mega project already completed.");return}
@@ -993,7 +1038,7 @@ function renderEmpireSystems(){
   const nextEl=document.getElementById("empireNextMilestone");if(nextEl)nextEl.textContent=next?"Next tier: "+money(next.at):"Top tier reached • Empire Levels continue";
   const bar=document.getElementById("empireProgressBar");if(bar){let prev=0,target=next?next.at:Math.max(1,g.lifetimeCash);COMPANY_TIERS.forEach(x=>{if(x.at<=g.lifetimeCash)prev=x.at});bar.style.width=(next?Math.max(2,Math.min(100,(g.lifetimeCash-prev)/(target-prev)*100)):100)+"%"}
   const megaEl=document.getElementById("megaProjectList");if(megaEl)megaEl.innerHTML=MEGA_PROJECTS.map(p=>{const done=!!g.megaProjects[p.id],lifeOk=g.lifetimeCash>=(p.unlockAt||0),reqOk=reqMet(p.req||{}),locked=!(lifeOk&&reqOk)&&!done;return`<div class="mega-project ${done?"done":""}"><div class="mega-icon">${p.icon}</div><div class="mega-copy"><strong>${p.name}</strong><small>${p.desc}</small>${!done&&locked?`<small class="gate-text">${!lifeOk?"UNLOCKS AT "+money(p.unlockAt):"REQUIRES: "+reqText(p.req||{})}</small>`:""}<div class="mega-cost">${done?"COMPLETED":money(p.cost)}</div></div><button class="btn ${done?"green":locked?"dark":"purple"}" ${done||locked?"disabled":""} onclick="buyMegaProject('${p.id}')">${done?"ONLINE":locked?"LOCKED":"BUILD"}</button></div>`}).join("");
-  const auto=document.getElementById("automationCore");if(auto){const lv=g.autoGenerateLevel||0,boost=1+lv*.5,c=autoGenerateUpgradeCost();auto.innerHTML=`<div class="automation-core"><div><small>STATUS</small><strong>${g.autoGenerateUnlocked?(g.autoGenerate?"ONLINE":"READY"):"LOCKED"}</strong></div><div><small>CORE LEVEL</small><strong>LV ${lv}</strong></div><div><small>AUTO TAP POWER</small><strong>${boost.toFixed(1)}×</strong></div></div><p class="small">Each Core Level adds +50% to every automatic generation cycle. This upgrade uses normal in-game cash.</p><button class="btn ${g.autoGenerateUnlocked?"blue":"dark"}" style="width:100%" ${g.autoGenerateUnlocked?"":"disabled"} onclick="upgradeAutoGenerate()">${g.autoGenerateUnlocked?"UPGRADE CORE • "+money(c):"UNLOCK AUTO GENERATE IN STORE"}</button>`}
+  const auto=document.getElementById("automationCore");if(auto){const lv=g.autoGenerateLevel||0,boost=1+lv*.2,c=autoGenerateUpgradeCost();auto.innerHTML=`<div class="automation-core"><div><small>STATUS</small><strong>${g.autoGenerateUnlocked?(g.autoGenerate?"ONLINE":"READY"):"LOCKED"}</strong></div><div><small>CORE LEVEL</small><strong>LV ${lv}</strong></div><div><small>AUTO TAP POWER</small><strong>${boost.toFixed(1)}×</strong></div></div><p class="small">Each Core Level adds +20% to every automatic generation cycle. This upgrade uses normal in-game cash.</p><button class="btn ${g.autoGenerateUnlocked?"blue":"dark"}" style="width:100%" ${g.autoGenerateUnlocked?"":"disabled"} onclick="upgradeAutoGenerate()">${g.autoGenerateUnlocked?"UPGRADE CORE • "+money(c):"UNLOCK AUTO GENERATE IN STORE"}</button>`}
   const asc=document.getElementById("empireAscension");if(asc){const c=empireLevelCost(),life=empireLevelLifetimeRequirement(),projects=empireLevelProjectRequirement(),ready=g.lifetimeCash>=life&&completedMegaProjects()>=projects;asc.innerHTML=`<div class="ascension-grid"><div><small>CURRENT LEVEL</small><strong>${g.empireLevel||0}</strong></div><div><small>PERMANENT BONUS</small><strong>+${Math.round((empireLevelMult()-1)*100)}%</strong></div><div><small>NEXT LEVEL</small><strong>${money(c)}</strong></div></div><p class="small">Empire Levels are late-game ascensions. Each level adds a permanent diminishing-return production bonus and survives prestige.</p><div class="empire-gate">Requires ${money(life)} lifetime cash • ${projects} mega projects</div><button class="btn ${ready?"gold":"dark"}" style="width:100%" ${ready?"":"disabled"} onclick="buyEmpireLevel()">${ready?"ADVANCE EMPIRE LEVEL":"ASCENSION LOCKED"}</button>`}
   const board=document.getElementById("boardroomStatus");if(board)board.innerHTML=`<div class="board-grid"><div><small>COMPANY TIER</small><strong>${tier}</strong></div><div><small>MEGA PROJECTS</small><strong>${mega}/${MEGA_PROJECTS.length}</strong></div><div><small>EMPIRE LEVEL</small><strong>${g.empireLevel||0}</strong></div><div><small>GRID CREDITS</small><strong>${num(g.gridCredits||0)}</strong></div><div><small>PRESTIGE</small><strong>${g.prestige||0}</strong></div><div><small>FLEET MASTERIES</small><strong>${totalMasteries()}</strong></div></div>`;
   const legacy=document.getElementById("legacyGrid");if(legacy){const nextM=nextPrestigeMilestone();legacy.innerHTML=`<div class="legacy-summary"><div><small>GRID CREDITS</small><strong>${num(g.gridCredits||0)}</strong></div><div><small>LIFETIME CREDITS</small><strong>${num(g.lifetimeGridCredits||0)}</strong></div><div><small>NEXT PRESTIGE</small><strong>${prestigeCreditReward()} GC</strong></div><div><small>MILESTONE</small><strong>${nextM?"P"+nextM:"P1000+"}</strong></div></div><p class="small">Grid Credits survive prestige and fund permanent Legacy Grid upgrades. They cannot be bought with cash.</p>${LEGACY_UPGRADES.map(u=>{const lv=g.legacy[u.id]||0,c=legacyUpgradeCost(u),maxed=lv>=u.max;return`<div class="legacy-upgrade"><div class="legacy-icon">${u.icon}</div><div><strong>${u.name} • LV ${lv}</strong><small>${u.desc}</small></div><button class="btn ${maxed?"dark":g.gridCredits>=c?"gold":"dark"}" ${maxed||g.gridCredits<c?"disabled":""} onclick="buyLegacyUpgrade('${u.id}')">${maxed?"MAX":c+" GC"}</button></div>`}).join("")}`;}
@@ -1153,7 +1198,26 @@ document.getElementById("kpiLifetime").textContent=money(g.lifetimeCash);
 document.getElementById("kpiContracts").textContent=g.contractsCompleted;
 document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderEmpireSystems();renderB10CommandDeck();renderB10Shift();renderB10License();renderGuidedTutorial();renderPremiumAssetState()}
-function handleOffline(){const now=Date.now(),s=Math.min(12*3600,Math.max(0,(now-g.lastSeen)/1000));if(s<30||output()<=0){g.lastSeen=now;return}const oe=offlineEfficiency(),p=output()*s*oe,c=fuelCostPerSecond()*s*oe;g.stored+=p;g.generated+=p;g.cash=Math.max(0,g.cash-c);document.getElementById("offlineAmount").textContent=energy(p);document.getElementById("offlineText").textContent="Your facility operated for "+Math.floor(s/60)+" minutes at "+Math.round(offlineEfficiency()*100)+"% offline efficiency. Fuel cost: "+money(c)+".";document.getElementById("offlineModal").classList.add("show");addLog("Offline production added "+energy(p)+".")}
+function handleOffline(){
+  const now=Date.now(),maxHours=g.offlineOperationsUnlocked?12:8;
+  const rawSeconds=Math.max(0,(now-(Number(g.lastSeen)||now))/1000),seconds=Math.min(maxHours*3600,rawSeconds);
+  g.lastSeen=now;
+  if(seconds<30||output()<=0)return;
+  const first=Math.min(seconds,7200),middle=Math.min(Math.max(0,seconds-7200),7200)*.50,late=Math.max(0,seconds-14400)*.25;
+  const effectiveSeconds=first+middle+late,oe=offlineEfficiency();
+  const theoretical=Math.max(0,output()*effectiveSeconds*oe);
+  let saleEstimate=1;try{saleEstimate=Math.max(1,Math.min(3,safeSaleMultiplier()))}catch(e){}
+  let capValue=Math.max(5000,(typeof netValuePerSecond==="function"?netValuePerSecond():0)*3600);
+  try{const next=PLANTS.find(p=>!g.plants?.[p.id]?.unlocked);if(next)capValue=Math.max(5000,next.unlock*.15)}catch(e){}
+  const capEnergy=Math.max(1,capValue/saleEstimate),p=Math.min(theoretical,capEnergy),ratio=theoretical>0?p/theoretical:0;
+  const c=Math.max(0,fuelCostPerSecond()*effectiveSeconds*oe*ratio);
+  g.stored=Math.min(1e300,(g.stored||0)+p);g.generated=Math.min(1e300,(g.generated||0)+p);g.cash=Math.max(0,(g.cash||0)-c);
+  const amount=document.getElementById("offlineAmount"),text=document.getElementById("offlineText"),modal=document.getElementById("offlineModal");
+  if(amount)amount.textContent=energy(p);
+  if(text)text.textContent="Offline operations ran for "+Math.floor(seconds/60)+" minutes at "+Math.round(oe*100)+"% efficiency. After 2 hours, production uses diminishing returns. Maximum window: "+maxHours+" hours."+(p<theoretical?" A progression safety cap limited this payout.":"")+" Fuel cost: "+money(c)+".";
+  if(modal)modal.classList.add("show");
+  addLog("Balanced offline production added "+energy(p)+(p<theoretical?" (progression cap applied).":"."));
+}
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
 
 /* 100MB Premium Asset Edition runtime */

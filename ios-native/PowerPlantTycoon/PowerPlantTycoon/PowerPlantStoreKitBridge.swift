@@ -12,9 +12,23 @@ final class PowerPlantStoreKitBridge: NSObject, WKScriptMessageHandler {
     static let turboGridProductID = "com.calascointeractive.powerplanttycoon.turbogrid"
     static let maintenanceCrateProductID = "com.calascointeractive.powerplanttycoon.maintenancecrate"
     static let capitalInjectionProductID = "com.calascointeractive.powerplanttycoon.capitalinjection"
+    static let hqExecutiveThemeProductID = "com.calascointeractive.powerplanttycoon.hqexecutivetheme"
+    static let offlineOperationsProductID = "com.calascointeractive.powerplanttycoon.offlineoperations"
+    static let marketIntelligenceProductID = "com.calascointeractive.powerplanttycoon.marketintelligence"
+    static let emergencyEngineeringProductID = "com.calascointeractive.powerplanttycoon.emergencyengineering"
+    static let rdAcceleratorProductID = "com.calascointeractive.powerplanttycoon.rdaccelerator"
+    static let recruitmentDriveProductID = "com.calascointeractive.powerplanttycoon.recruitmentdrive"
+    static let gridReserveProductID = "com.calascointeractive.powerplanttycoon.gridreserve"
+    static let regionalExpansionProductID = "com.calascointeractive.powerplanttycoon.regionalexpansion"
+    static let foundersBundleProductID = "com.calascointeractive.powerplanttycoon.foundersbundle"
+    static let autoSellLicenseProductID = "com.calascointeractive.powerplanttycoon.autosell"
     static let allProductIDs: Set<String> = [
         autoGenerateProductID, removeAdsProductID, executiveLicenseProductID,
-        turboGridProductID, maintenanceCrateProductID, capitalInjectionProductID
+        turboGridProductID, maintenanceCrateProductID, capitalInjectionProductID,
+        hqExecutiveThemeProductID, offlineOperationsProductID, marketIntelligenceProductID,
+        emergencyEngineeringProductID, rdAcceleratorProductID, recruitmentDriveProductID,
+        gridReserveProductID, regionalExpansionProductID, foundersBundleProductID,
+        autoSellLicenseProductID
     ]
 
     private weak var webView: WKWebView?

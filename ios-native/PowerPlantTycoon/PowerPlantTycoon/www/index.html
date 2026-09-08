@@ -7,6 +7,7 @@
 <title>Power Plant Tycoon — Build 4 Cinematic Industrial</title>
 <link rel="stylesheet" href="css/game.css?v=plants-art-v2"></head>
 <body>
+<!-- PPT BUILD 6 FINAL SYSTEMS -->
 <!-- PPT BUILD 4 CINEMATIC -->
 <!-- PPT BUILD 4 TOP HUD FIX HTML -->
 <div id="bootSplashPremium">
@@ -305,27 +306,59 @@
 <div class="card dynasty-card"><div class="section-title"><h3>👑 Empire Level</h3><span>REPEATABLE</span></div><div id="empireAscension"></div></div>
 </section>
 
-<section id="company" class="page">
-  <div class="uf-banner">
-    <h3>🏢 Riverbend Energy Headquarters</h3>
-    <p>Hire specialists, set operating policy, and improve the company behind the power plants.</p>
+<!-- PPT BUILD 6 HQ COMMAND CENTER -->
+<section id="company" class="page hq6-page">
+<div class="hq6-shell">
+  <div class="hq6-titlebar">
+    <div><small>POWER PLANT TYCOON</small><h2>HQ <span>COMMAND CENTER</span></h2><p>Global energy. Local impact. Build a stronger grid.</p></div>
+    <div class="hq6-level"><span>COMPANY LEVEL</span><b id="hq6Level">LV 1</b><div class="hq6-xp"><i id="hq6Xp"></i></div></div>
   </div>
-  <div class="card boardroom-card">
-    <div class="section-title"><h3>💼 Executive Board</h3><span>EMPIRE STATUS</span></div>
-    <div id="boardroomStatus"></div>
+
+  <div class="hq6-kpis">
+    <div class="hq6-kpi cash"><small>CASH</small><b id="hq6Cash">$0</b></div>
+    <div class="hq6-kpi"><small>STORED POWER</small><b id="hq6Stored">0 kWh</b></div>
+    <div class="hq6-kpi output"><small>CURRENT OUTPUT</small><b id="hq6Output">0/s</b></div>
+    <div class="hq6-kpi"><small>WORKFORCE</small><b id="hq6Staff">0 STAFF</b></div>
+    <div class="hq6-kpi rep"><small>REPUTATION</small><b id="hq6Rep">0</b></div>
   </div>
-  <div class="card">
-    <div class="section-title"><h3>👷 Workforce</h3><span>STAFF</span></div>
-    <div id="staffList" class="uf-list"></div>
+
+  <div class="hq6-hero">
+    <div class="hq6-hero-brand"><small>RIVERBEND ENERGY GROUP</small><strong>HQ <span>ONLINE</span></strong></div>
+    <div class="hq6-gridlive">
+      <div class="row"><span>GRID STABILITY</span><b id="hq6GridStability" class="good">100%</b></div>
+      <div class="row"><span>REGIONAL DEMAND</span><b id="hq6Demand">100%</b></div>
+      <div class="row"><span>PLANTS ONLINE</span><b id="hq6Plants">0 / 5</b></div>
+      <div class="row"><span>LOCAL TIME</span><b id="hq6Time">--:--</b></div>
+    </div>
+    <div class="hq6-hero-bottom">
+      <div class="hq6-hero-stat"><small>COMPANY VALUE</small><b id="hq6CompanyValue">$0</b></div>
+      <div class="hq6-hero-stat"><small>PROJECTED DAILY</small><b id="hq6Daily" class="green">$0</b></div>
+      <div class="hq6-hero-stat"><small>NET VALUE</small><b id="hq6Net">$0/s</b></div>
+      <div class="hq6-hero-stat"><small>R&D PROGRESS</small><b id="hq6ResearchCount">0 TECH LEVELS</b></div>
+    </div>
   </div>
-  <div class="card">
-    <div class="section-title"><h3>🎛 Dispatch Policy</h3><span>OPERATIONS</span></div>
-    <div id="policyList" class="uf-grid"></div>
+
+  <div class="hq6-section-head"><h3>EXECUTIVE DEPARTMENTS</h3><span>Tap a department to manage it</span></div>
+  <div class="hq6-depts">
+    <div class="hq6-dept" data-dept="operations" onclick="openHQ6Department('operations')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_operations.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>🎛 OPERATIONS</strong><span id="hq6Lv-operations">LV 1</span></div><p>Dispatch, automation and plant performance.</p><div class="hq6-effect" id="hq6Effect-operations">+0% Plant Production</div><button class="hq6-upgrade" id="hq6Cost-operations" onclick="event.stopPropagation();upgradeHQ6Department('operations')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="engineering" onclick="openHQ6Department('engineering')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_engineering.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>🔧 ENGINEERING</strong><span id="hq6Lv-engineering">LV 1</span></div><p>Reliability, maintenance and technical support.</p><div class="hq6-effect" id="hq6Effect-engineering">-0% Maintenance Cost</div><button class="hq6-upgrade" id="hq6Cost-engineering" onclick="event.stopPropagation();upgradeHQ6Department('engineering')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="trading" onclick="openHQ6Department('trading')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_trading.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>📈 TRADING</strong><span id="hq6Lv-trading">LV 1</span></div><p>Market timing, dispatch and energy revenue.</p><div class="hq6-effect" id="hq6Effect-trading">+0% Power Sale Value</div><button class="hq6-upgrade" id="hq6Cost-trading" onclick="event.stopPropagation();upgradeHQ6Department('trading')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="hr" onclick="openHQ6Department('hr')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_hr.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>👥 HR & TRAINING</strong><span id="hq6Lv-hr">LV 1</span></div><p>Hire specialists and develop the workforce.</p><div class="hq6-effect" id="hq6Effect-hr">-0% Hiring Cost</div><button class="hq6-upgrade" id="hq6Cost-hr" onclick="event.stopPropagation();upgradeHQ6Department('hr')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="research" onclick="openHQ6Department('research')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_research.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>🧪 R&D</strong><span id="hq6Lv-research">LV 1</span></div><p>Unlock automation, storage and advanced controls.</p><div class="hq6-effect" id="hq6Effect-research">-0% Research Cost</div><button class="hq6-upgrade" id="hq6Cost-research" onclick="event.stopPropagation();upgradeHQ6Department('research')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="finance" onclick="openHQ6Department('finance')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_finance.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>🪙 FINANCE</strong><span id="hq6Lv-finance">LV 1</span></div><p>Cash flow, investment discipline and returns.</p><div class="hq6-effect" id="hq6Effect-finance">+0% Finance Sale Bonus</div><button class="hq6-upgrade" id="hq6Cost-finance" onclick="event.stopPropagation();upgradeHQ6Department('finance')">UPGRADE</button></div></div>
+    <div class="hq6-dept" data-dept="grid" onclick="openHQ6Department('grid')"><div class="hq6-dept-img" style="background-image:url('assets/hq6_grid.jpg')"></div><div class="hq6-dept-body"><div class="hq6-dept-title"><strong>⚡ GRID CONTROL</strong><span id="hq6Lv-grid">LV 1</span></div><p>Regional stability, transmission and dispatch.</p><div class="hq6-effect" id="hq6Effect-grid">+0% Grid Output + Sale</div><button class="hq6-upgrade" id="hq6Cost-grid" onclick="event.stopPropagation();upgradeHQ6Department('grid')">UPGRADE</button></div></div>
   </div>
-  <div class="card">
-    <div class="section-title"><h3>🧪 Research & Development</h3><span>TECH TREE</span></div>
-    <div id="researchTree" class="uf-research"></div>
-  </div>
+
+  <div class="hq6-detail" data-detail="operations"><div class="hq6-detail-head"><h3>🎛 Operations Center</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><p class="small">Choose how the company dispatches and operates the fleet.</p><div id="policyList" class="uf-grid"></div></div>
+  <div class="hq6-detail" data-detail="engineering"><div class="hq6-detail-head"><h3>🔧 Engineering</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div class="hq6-action-grid"><div class="hq6-action"><small>PLANT CONDITION</small><b id="maintenanceStatus">Healthy</b><button class="uf-btn" onclick="performMaintenance()">SERVICE PLANT</button></div><div class="hq6-action"><small>FIELD ENGINEERS</small><b id="engineerInfo">Engineering Support</b><button class="uf-btn" onclick="hireEngineer()">HIRE ENGINEER</button></div></div></div>
+  <div class="hq6-detail" data-detail="trading"><div class="hq6-detail-head"><h3>📈 Trading Floor</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div class="hq6-action-grid"><div class="hq6-action"><small>GRID DISPATCH</small><b>Sell at market conditions</b><button class="uf-btn green" onclick="dispatchPower()">DISPATCH POWER</button></div><div class="hq6-action"><small>AUTOMATION</small><b>Market-responsive selling</b><button class="uf-btn" onclick="toggleAutoSell()">TOGGLE AUTO SELL</button></div></div></div>
+  <div class="hq6-detail" data-detail="hr"><div class="hq6-detail-head"><h3>👥 HR & Training</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div id="staffList" class="uf-list"></div></div>
+  <div class="hq6-detail" data-detail="research"><div class="hq6-detail-head"><h3>🧪 Research & Development</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div id="researchTree" class="uf-research"></div></div>
+  <div class="hq6-detail" data-detail="finance"><div class="hq6-detail-head"><h3>🪙 Finance Office</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div class="hq6-action-grid"><div class="hq6-action"><small>AVAILABLE CASH</small><b id="hq6FinanceCash">Linked to company cash</b><p class="small">Finance upgrades improve realized sale value across the company.</p></div><div class="hq6-action"><small>CONTRACT PERFORMANCE</small><b>Revenue Strategy</b><p class="small">Complete contracts and increase reputation to strengthen company value.</p></div></div></div>
+  <div class="hq6-detail" data-detail="grid"><div class="hq6-detail-head"><h3>⚡ Grid Control Network</h3><button class="hq6-close" onclick="closeHQ6Details()">CLOSE</button></div><div class="hq6-action-grid"><div class="hq6-action"><small>REAL-TIME DISPATCH</small><b>Balance stored generation</b><button class="uf-btn green" onclick="dispatchPower()">DISPATCH TO GRID</button></div><div class="hq6-action"><small>REGIONAL NETWORK</small><b>Expand transmission reach</b><button class="uf-btn" onclick="showPage('map',document.querySelector('[data-nav=map]'))">OPEN GRID MAP</button></div></div></div>
+
+  <div class="hq6-goal"><div><small>NEXT COMPANY GOAL</small><strong id="hq6Goal">Expand to 2 Plants</strong></div><b id="hq6GoalArrow">»</b></div>
+</div>
 </section>
 
 <section id="stats" class="page">
@@ -361,54 +394,45 @@
   </div>
 </section>
 
-<section id="store" class="page">
-<div class="page-hero store-hero"><div><small>POWER SHOP</small><h2>Operator Supply Center</h2><p>Premium upgrades, optional rewarded ads, and App Store-ready purchases.</p></div><div class="page-hero-icon">🛒</div></div>
-<div class="card daily-streak-card"><div class="section-title"><h3>🎁 7-Day Supply Streak</h3><span>FREE DAILY</span></div><div id="dailyStreakUI"></div><button id="dailyClaimBtn" class="btn green" style="width:100%;margin-top:12px" onclick="dailyReward()">CLAIM DAILY DROP</button></div>
+<!-- PPT BUILD 6 STORE 16 -->
+<section id="store" class="page b6-store-page">
+<div class="b6-store-shell">
+  <div class="b6-store-hero"><div><small>POWER PLANT TYCOON • BUILD 6</small><h2>EXECUTIVE <span>POWER SHOP</span></h2><p>Permanent licenses, HQ cosmetics, optional boosts and company resource packs.</p></div><div class="b6-store-hero-icon">⚡</div></div>
+  <div class="b6-store-status"><div><small>APP STORE</small><b id="storeKitStatus">Connecting to Apple StoreKit…</b></div><button id="restorePurchasesBtn" class="btn dark" onclick="restorePurchases()">RESTORE</button></div>
 
-<div class="card rewarded-ad-card"><div class="section-title"><h3>🎬 Rewarded Operations</h3><span>OPTIONAL AD</span></div>
-<div class="storeitem ad-reward-item"><div><strong>⚡ Watch Ad • Grid Overdrive</strong><small>Optional rewarded ad • activates 2× output for 10 minutes</small></div><button id="rewardedAdBtn" class="btn blue" onclick="watchRewardedAd()">TEST AD</button></div>
-<div id="adStatus" class="storekit-status ad-status">Browser ad simulation active.</div>
-</div>
-
-<div class="card premium-store-card"><div class="section-title"><h3>💎 Permanent Upgrades</h3><span>NON-CONSUMABLE</span></div>
-<div class="storeitem remove-ads-storeitem"><div><strong>🚫 Remove Ads</strong><small>Permanently removes forced interstitial ads. Optional rewarded ads remain available.</small></div><button id="removeAdsPurchaseBtn" class="btn gold" onclick="purchaseRemoveAds()">TEST BUY</button></div>
-<div class="storeitem featured-storeitem"><div><strong>🤖 Auto Generate</strong><small>Permanent unlock • automatically generates power every second</small></div><button id="autoGeneratePurchaseBtn" class="btn purple" onclick="purchaseAutoGenerate()">TEST BUY</button></div>
-<div class="storeitem executive-storeitem"><div><strong>👔 Executive License</strong><small>Permanent +25% generation and +10% grid sale value</small></div><button id="executivePurchaseBtn" class="btn purple" onclick="purchaseExecutiveLicense()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>↻ Restore Purchases</strong><small>Restore all permanent Apple purchases on this device</small></div><button id="restorePurchasesBtn" class="btn dark" onclick="restorePurchases()">TEST RESTORE</button></div>
-<div id="storeKitStatus" class="storekit-status">Browser test store active.</div>
-</div>
-
-<div class="card consumable-store-card"><div class="section-title"><h3>📦 Operations Packs</h3><span>CONSUMABLE</span></div>
-<div class="storeitem"><div><strong>⚡ Turbo Grid Pack</strong><small>Adds 60 minutes of 2× generation</small></div><button id="turboGridPurchaseBtn" class="btn blue" onclick="purchaseTurboGridPack()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>🧰 Maintenance Crate</strong><small>Fully repairs the fleet + adds a 15 minute 2× boost</small></div><button id="maintenanceCratePurchaseBtn" class="btn orange" onclick="purchaseMaintenanceCrate()">TEST BUY</button></div>
-<div class="storeitem"><div><strong>💵 Capital Injection</strong><small>Instant cash equal to at least 30 minutes of current operating value</small></div><button id="capitalInjectionPurchaseBtn" class="btn green" onclick="purchaseCapitalInjection()">TEST BUY</button></div>
-<p class="small store-note">Consumable purchases can be bought again. Permanent purchases can be restored.</p>
-</div>
-
-<div id="devTestStore" class="card"><div class="section-title"><h3>🧪 Browser Development Tools</h3><span>TEST ONLY</span></div>
-<div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>Free 10 minute development boost</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div>
-<div class="storeitem"><div><strong>🧰 Maintenance Test</strong><small>Restore all equipment condition</small></div><button class="btn orange" onclick="maintenancePack()">TEST</button></div>
-<div class="storeitem"><div><strong>🚀 Starter Test</strong><small>$5,000 + 10 minute boost</small></div><button class="btn purple" onclick="starterPack()">TEST</button></div>
-</div>
-
-<div class="card danger-zone"><div class="section-title"><h3>⚠ Save Controls</h3><span>LOCAL DATA</span></div><div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress. Permanent test entitlements remain; native ownership is restored by Apple.</small></div><button class="btn red" onclick="resetGame()">RESET</button></div></div>
-
-<div class="card">
-  <div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div>
-  <div class="settings-grid">
-    <div class="setting"><b>Sound Effects</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div>
-    <div class="setting"><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div>
-    <div class="setting premium-setting"><b>Music Volume</b><input id="musicVolume" type="range" min="0" max="100" value="16" oninput="setPremiumVolume('music',this.value)"></div>
-    <div class="setting premium-setting"><b>SFX Volume</b><input id="sfxVolume" type="range" min="0" max="100" value="22" oninput="setPremiumVolume('sfx',this.value)"></div>
-    <div class="setting"><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div>
-    <div class="setting"><b>Compact Numbers</b><button id="compactToggle" class="toggle on" onclick="toggleSetting('compact')">ON</button></div>
+  <div class="b6-store-head"><h3>⭐ FEATURED EXECUTIVE UPGRADES</h3><span>PERMANENT</span></div>
+  <div class="b6-product-grid">
+    <div class="b6-product founder"><div class="b6-badge">FOUNDER</div><div class="b6-icon">🏆</div><h4>Founder's Energy Bundle</h4><p>Permanent Founder status • +5% output • +5% sale value • 5% staff & research discount.</p><button id="b6Buy-foundersBundle" class="b6-buy gold" onclick="purchaseB6Product('foundersBundle')">BUY</button></div>
+    <div class="b6-product"><div class="b6-badge">PREMIUM</div><div class="b6-icon">👔</div><h4>Executive License</h4><p>Permanent +25% generation and +10% grid sale value.</p><button id="executivePurchaseBtn" class="b6-buy purple" onclick="purchaseExecutiveLicense()">BUY</button></div>
+    <div class="b6-product"><div class="b6-badge">AUTOMATION</div><div class="b6-icon">🤖</div><h4>Auto Generate</h4><p>Permanent automatic generation every second.</p><button id="autoGeneratePurchaseBtn" class="b6-buy purple" onclick="purchaseAutoGenerate()">BUY</button></div>
   </div>
-  <div class="final-toolbar">
-    <button class="btn blue" onclick="restartGuidedTutorial()">🎓 RESTART TUTORIAL</button>
-    <button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button>
-    <button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button>
+
+  <div class="b6-store-head"><h3>🏢 PERMANENT COMPANY UPGRADES</h3><span>RESTORABLE</span></div>
+  <div class="b6-product-grid">
+    <div class="b6-product"><div class="b6-icon">🚫</div><h4>Remove Ads</h4><p>Permanently removes forced interstitial ads. Rewarded ads stay optional.</p><button id="removeAdsPurchaseBtn" class="b6-buy gold" onclick="purchaseRemoveAds()">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">✨</div><h4>HQ Executive Theme</h4><p>Permanent black-and-gold executive HQ presentation.</p><button id="b6Buy-hqExecutiveTheme" class="b6-buy gold" onclick="purchaseB6Product('hqExecutiveTheme')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🌙</div><h4>Offline Operations License</h4><p>Raises base offline efficiency from 25% to 40% and extends the offline window from 8 to 12 hours. Diminishing returns still apply.</p><button id="b6Buy-offlineOperations" class="b6-buy blue" onclick="purchaseB6Product('offlineOperations')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">💹</div><h4>Auto Sell License</h4><p>Unlocks Auto Sell immediately plus Immediate, High Price, and Reserve modes. Standard High Price Auto Sell can still be earned through Advanced Automation research.</p><button id="b6Buy-autoSellLicense" class="b6-buy green" onclick="purchaseB6Product('autoSellLicense')">BUY</button></div>
   </div>
-  <p class="small">GitHub Pages uses safe purchase/ad simulations. The native iPhone wrapper uses Apple StoreKit and Google Mobile Ads test units until production IDs are configured.</p>
+
+  <div class="b6-store-head"><h3>📦 OPERATIONS & EXPANSION PACKS</h3><span>CONSUMABLE</span></div>
+  <div class="b6-product-grid">
+    <div class="b6-product"><div class="b6-icon">⚡</div><h4>Turbo Grid Pack</h4><p>60 minutes of 2× generation.</p><button id="turboGridPurchaseBtn" class="b6-buy blue" onclick="purchaseTurboGridPack()">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🧰</div><h4>Maintenance Crate</h4><p>Fully repairs the fleet + 15 minutes of 2× output.</p><button id="maintenanceCratePurchaseBtn" class="b6-buy orange" onclick="purchaseMaintenanceCrate()">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">💵</div><h4>Capital Injection</h4><p>Scaled cash injection based on current company value.</p><button id="capitalInjectionPurchaseBtn" class="b6-buy green" onclick="purchaseCapitalInjection()">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">📡</div><h4>Market Intelligence Pack</h4><p>+25% electricity sale value for 30 minutes.</p><button id="b6Buy-marketIntelligence" class="b6-buy cyan" onclick="purchaseB6Product('marketIntelligence')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🛠️</div><h4>Emergency Engineering Team</h4><p>Full fleet repair + 60 minutes of heavy wear protection.</p><button id="b6Buy-emergencyEngineering" class="b6-buy orange" onclick="purchaseB6Product('emergencyEngineering')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🧪</div><h4>R&amp;D Accelerator</h4><p>50% off your next research upgrade.</p><button id="b6Buy-rdAccelerator" class="b6-buy purple" onclick="purchaseB6Product('rdAccelerator')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">👥</div><h4>Recruitment Drive</h4><p>50% off your next specialist staff hire.</p><button id="b6Buy-recruitmentDrive" class="b6-buy blue" onclick="purchaseB6Product('recruitmentDrive')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🔋</div><h4>Grid Reserve Pack</h4><p>Adds at least 30 minutes of current generation to stored power.</p><button id="b6Buy-gridReserve" class="b6-buy cyan" onclick="purchaseB6Product('gridReserve')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🗺️</div><h4>Regional Expansion Fund</h4><p>Large scaled cash injection + 25 company reputation.</p><button id="b6Buy-regionalExpansion" class="b6-buy green" onclick="purchaseB6Product('regionalExpansion')">BUY</button></div>
+  </div>
+
+  <div class="card daily-streak-card"><div class="section-title"><h3>🎁 7-Day Supply Streak</h3><span>FREE DAILY</span></div><div id="dailyStreakUI"></div><button id="dailyClaimBtn" class="btn green" style="width:100%;margin-top:12px" onclick="dailyReward()">CLAIM DAILY DROP</button></div>
+  <div class="card rewarded-ad-card"><div class="section-title"><h3>🎬 Rewarded Operations</h3><span>OPTIONAL AD</span></div><div class="storeitem ad-reward-item"><div><strong>⚡ Watch Ad • Grid Overdrive</strong><small>Optional rewarded ad • 2× output for 10 minutes</small></div><button id="rewardedAdBtn" class="btn blue" onclick="watchRewardedAd()">WATCH AD</button></div><div id="adStatus" class="storekit-status ad-status">Ad system checking status…</div></div>
+  <div id="devTestStore" class="card"><div class="section-title"><h3>🧪 Browser Development Tools</h3><span>TEST ONLY</span></div><div class="storeitem"><div><strong>⚡ 2× Grid Output</strong><small>Free 10 minute development boost</small></div><button class="btn blue" onclick="activateBoost()">ACTIVATE</button></div><div class="storeitem"><div><strong>🧰 Maintenance Test</strong><small>Restore all equipment condition</small></div><button class="btn orange" onclick="maintenancePack()">TEST</button></div><div class="storeitem"><div><strong>🚀 Starter Test</strong><small>$5,000 + 10 minute boost</small></div><button class="btn purple" onclick="starterPack()">TEST</button></div></div>
+  <div class="card danger-zone"><div class="section-title"><h3>⚠ Save Controls</h3><span>LOCAL DATA</span></div><div class="storeitem"><div><strong>♻ Reset Save</strong><small>Erase local progress. Native permanent purchases can be restored.</small></div><button class="btn red" onclick="resetGame()">RESET</button></div></div>
+  <div class="card"><div class="section-title"><h3>⚙ Settings</h3><span>GAME</span></div><div class="settings-grid"><div class="setting"><b>Sound Effects</b><button id="soundToggle" class="toggle" onclick="toggleSetting('sound')">ON</button></div><div class="setting"><b>Haptics</b><button id="hapticsToggle" class="toggle" onclick="toggleSetting('haptics')">ON</button></div><div class="setting premium-setting"><b>Music Volume</b><input id="musicVolume" type="range" min="0" max="100" value="16" oninput="setPremiumVolume('music',this.value)"></div><div class="setting premium-setting"><b>SFX Volume</b><input id="sfxVolume" type="range" min="0" max="100" value="22" oninput="setPremiumVolume('sfx',this.value)"></div><div class="setting"><b>Reduced Motion</b><button id="motionToggle" class="toggle" onclick="toggleSetting('reducedMotion')">OFF</button></div><div class="setting"><b>Compact Numbers</b><button id="compactToggle" class="toggle on" onclick="toggleSetting('compact')">ON</button></div></div><div class="final-toolbar"><button class="btn blue" onclick="restartFirstShift6()">🎓 REPLAY FIRST SHIFT</button><button class="btn dark" onclick="exportSave()">📤 EXPORT SAVE</button><button class="btn dark" onclick="importSave()">📥 IMPORT SAVE</button></div></div>
 </div>
 </section>
 
@@ -463,5 +487,8 @@
 
 <div id="offlineModal" class="modal"><div class="modalbox"><h2>⚡ Welcome Back</h2><p>Your power plants kept operating while you were away.</p><div id="offlineAmount" class="bigmoney">0 kWh</div><p id="offlineText"></p><button class="btn green" style="width:100%" onclick="closeOffline()">COLLECT</button></div></div>
 <script src="js/game.js?v=13"></script>
-<script src="js/build4-ui.js"></script><script src="js/generate-audio-v1.js"></script></body>
+<script src="js/build4-ui.js"></script><script src="js/generate-audio-v1.js"></script><script src="js/build6-hq.js"></script>
+<script src="js/build6-store.js"></script>
+<script src="js/build6-final.js"></script>
+</body>
 </html>

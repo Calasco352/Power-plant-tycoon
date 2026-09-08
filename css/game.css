@@ -3380,3 +3380,196 @@ body:before{
 #plants #plantList .plant-card-actions button:disabled{opacity:.5!important;}
 #plants #plantList .strategic-asset:after{top:10px!important;right:10px!important;background:#101c25ed!important;border:1px solid #a78029!important;color:#ffda78!important;border-radius:3px!important;padding:5px 7px!important;}
 #plants .page-hero{background:linear-gradient(140deg,#172630,#08131c)!important;border-color:#48545d!important;border-radius:8px!important;}
+
+/* ================= POWER PLANT TYCOON BUILD 6 — HQ COMMAND CENTER ================= */
+#company.hq6-page{padding:0!important;background:transparent!important}
+#company .uf-banner,#company>.card{display:none!important}
+.hq6-shell{--hq6-gold:#ffc83d;--hq6-cyan:#57d9ff;--hq6-green:#38e58a;--hq6-red:#ff5e63;--hq6-panel:rgba(5,18,29,.96);--hq6-line:#315a72;display:flex;flex-direction:column;gap:10px;padding:4px 0 12px}
+.hq6-titlebar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:14px 14px 12px;border:1px solid #3b6279;border-radius:16px;background:linear-gradient(145deg,#102a3d,#06131e);box-shadow:0 14px 35px #0007,inset 0 1px #ffffff12}
+.hq6-titlebar small{display:block;color:#9db5c6;font-size:9px;font-weight:900;letter-spacing:2px}.hq6-titlebar h2{margin:3px 0 0;font-size:26px;letter-spacing:1px}.hq6-titlebar h2 span{color:var(--hq6-gold)}
+.hq6-titlebar p{margin:4px 0 0;color:#aebfca;font-size:11px}.hq6-level{min-width:128px;text-align:right}.hq6-level span{font-size:8px;color:#9fb5c4;font-weight:900;letter-spacing:.8px}.hq6-level b{display:block;color:#fff;font-size:22px}.hq6-xp{height:7px;margin-top:5px;border-radius:99px;overflow:hidden;background:#07121a;border:1px solid #263e4c}.hq6-xp i{display:block;height:100%;width:0;background:linear-gradient(90deg,#ffd75d,#f0a800);box-shadow:0 0 12px #ffc73888}
+.hq6-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px}.hq6-kpi{min-width:0;padding:10px 9px;border:1px solid #31566c;border-radius:12px;background:linear-gradient(145deg,#0f2738,#06141f);box-shadow:0 8px 22px #0005,inset 0 1px #ffffff10}.hq6-kpi small{display:block;color:#94aaba;font-size:8px;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hq6-kpi b{display:block;margin-top:4px;font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.hq6-kpi.cash b,.hq6-kpi.rep b{color:var(--hq6-green)}.hq6-kpi.output b{color:#ffd760}
+.hq6-hero{position:relative;min-height:410px;overflow:hidden;border:1px solid #4a6d82;border-radius:20px;background:#06111a url('../assets/hq6_command_center.jpg') center/cover no-repeat;box-shadow:0 24px 60px #0009,inset 0 0 80px #0005}
+.hq6-hero:after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(2,8,13,.05),rgba(2,8,13,.08) 48%,rgba(2,8,13,.78) 100%),linear-gradient(90deg,rgba(1,6,10,.55),transparent 31%,transparent 72%,rgba(1,6,10,.28))}
+.hq6-hero-brand{position:absolute;left:18px;top:18px;z-index:3;padding:10px 12px;border-left:3px solid var(--hq6-gold);background:rgba(3,12,19,.56);backdrop-filter:blur(7px)}.hq6-hero-brand small{font-size:8px;font-weight:900;letter-spacing:2px;color:#c8d4db}.hq6-hero-brand strong{display:block;margin-top:4px;font-size:22px;letter-spacing:1px}.hq6-hero-brand strong span{color:var(--hq6-gold)}
+.hq6-gridlive{position:absolute;right:14px;top:14px;z-index:3;width:180px;padding:11px;border:1px solid #397a9d;border-radius:12px;background:rgba(3,15,24,.80);backdrop-filter:blur(8px);box-shadow:0 9px 24px #0007}.hq6-gridlive .row{display:flex;justify-content:space-between;gap:8px;padding:5px 0;border-top:1px solid #214358;font-size:10px}.hq6-gridlive .row:first-child{border-top:0}.hq6-gridlive b{color:#fff}.hq6-gridlive .good{color:var(--hq6-green)}
+.hq6-hero-bottom{position:absolute;left:14px;right:14px;bottom:12px;z-index:3;display:grid;grid-template-columns:repeat(4,1fr);gap:6px}.hq6-hero-stat{padding:8px;border:1px solid #36586a;border-radius:10px;background:rgba(4,15,23,.83);backdrop-filter:blur(8px)}.hq6-hero-stat small{display:block;color:#96adbb;font-size:7px;font-weight:900}.hq6-hero-stat b{display:block;margin-top:2px;font-size:13px}.hq6-hero-stat b.green{color:var(--hq6-green)}
+.hq6-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:4px 2px 0}.hq6-section-head h3{margin:0;font-size:17px}.hq6-section-head span{font-size:9px;color:#98acb9}
+.hq6-depts{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px}.hq6-dept{position:relative;min-width:0;overflow:hidden;border:1px solid #376179;border-radius:14px;background:linear-gradient(180deg,#0e2738,#06131e);box-shadow:0 10px 25px #0006;cursor:pointer}.hq6-dept.active{border-color:#e0ad31;box-shadow:0 0 0 1px #ffd76644,0 0 22px #ffc33d24,0 10px 25px #0006}.hq6-dept-img{height:90px;background-position:center;background-size:cover;position:relative}.hq6-dept-img:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 36%,rgba(5,17,26,.92))}.hq6-dept-body{padding:8px}.hq6-dept-title{display:flex;align-items:center;justify-content:space-between;gap:5px}.hq6-dept-title strong{font-size:10px;line-height:1.05}.hq6-dept-title span{flex:0 0 auto;padding:3px 5px;border-radius:5px;border:1px solid #41677b;background:#071720;color:#cfe5ef;font-size:7px;font-weight:900}.hq6-dept p{min-height:32px;margin:6px 0;color:#9eb2bf;font-size:8px;line-height:1.3}.hq6-effect{min-height:28px;padding-top:6px;border-top:1px solid #234457;color:#55e2d0;font-size:8px;font-weight:900}.hq6-upgrade{width:100%;margin-top:7px;border:1px solid #56d978;border-radius:7px;padding:8px 5px;color:#fff;font-size:9px;font-weight:1000;background:linear-gradient(#1b9f4c,#09682f);box-shadow:inset 0 1px #ffffff33,0 0 12px #32d96b22}.hq6-upgrade:active{transform:translateY(1px)}
+.hq6-detail{display:none;border:1px solid #416c84;border-radius:18px;padding:14px;background:linear-gradient(145deg,#102b3f,#06141f);box-shadow:0 16px 38px #0007}.hq6-detail.show{display:block}.hq6-detail-head{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.hq6-detail-head h3{margin:0}.hq6-close{border:1px solid #34566a;border-radius:8px;padding:7px 9px;background:#0a2130;color:#dceaf1;font-weight:900}.hq6-detail .uf-row,.hq6-detail .uf-panel,.hq6-detail .uf-node{background:rgba(5,16,25,.76)!important}.hq6-action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.hq6-action{padding:12px;border:1px solid #31596f;border-radius:12px;background:#091c29}.hq6-action small{display:block;color:#8ea7b6}.hq6-action b{display:block;margin:4px 0;font-size:17px}.hq6-action button{width:100%;margin-top:7px}
+.hq6-goal{display:grid;grid-template-columns:1fr auto;align-items:center;gap:12px;padding:13px 15px;border:1px solid #9a741d;border-radius:15px;background:linear-gradient(135deg,#3c2a08,#171207);box-shadow:0 0 24px #ffca3322,inset 0 1px #fff2}.hq6-goal small{color:#e2bd56;font-weight:900;letter-spacing:1.4px}.hq6-goal strong{display:block;margin-top:2px;font-size:16px}.hq6-goal b{font-size:26px;color:#ffd759}
+#company .hq6-legacy-storage{display:none!important}
+.nav button[data-nav="company"]{color:#ffd760!important}.nav button[data-nav="company"].active{background:linear-gradient(#5a4210,#20180a)!important;color:#ffe178!important;box-shadow:inset 0 0 0 1px #f2bf3f,0 0 20px #ffc83d33!important}
+@media(max-width:900px){.hq6-depts{grid-template-columns:repeat(4,1fr)}.hq6-dept:last-child{grid-column:span 2}.hq6-kpis{grid-template-columns:repeat(3,1fr)}.hq6-kpi:nth-child(4),.hq6-kpi:nth-child(5){grid-column:auto}}
+@media(max-width:760px){.hq6-shell{gap:8px}.hq6-titlebar{padding:11px;border-radius:12px}.hq6-titlebar h2{font-size:20px}.hq6-titlebar p{font-size:9px}.hq6-level{min-width:92px}.hq6-level b{font-size:18px}.hq6-kpis{grid-template-columns:repeat(3,minmax(0,1fr));gap:5px}.hq6-kpi{padding:7px 6px}.hq6-kpi small{font-size:6px}.hq6-kpi b{font-size:11px}.hq6-kpi:nth-child(4),.hq6-kpi:nth-child(5){grid-column:auto}.hq6-hero{min-height:330px;border-radius:14px;background-position:center}.hq6-hero-brand{left:9px;top:9px;padding:7px 9px}.hq6-hero-brand small{font-size:6px}.hq6-hero-brand strong{font-size:16px}.hq6-gridlive{right:8px;top:8px;width:135px;padding:7px}.hq6-gridlive .row{font-size:7px;padding:4px 0}.hq6-hero-bottom{left:8px;right:8px;bottom:8px;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}.hq6-hero-stat{padding:6px 4px}.hq6-hero-stat small{font-size:5px}.hq6-hero-stat b{font-size:9px}.hq6-depts{grid-template-columns:1fr 1fr;gap:6px}.hq6-dept:last-child{grid-column:1/-1}.hq6-dept-img{height:88px}.hq6-dept-title strong{font-size:10px}.hq6-dept p{min-height:28px;font-size:7.5px}.hq6-effect{font-size:7.5px}.hq6-detail{padding:10px}.hq6-action-grid{grid-template-columns:1fr}.hq6-goal{padding:10px 12px}.hq6-goal strong{font-size:13px}.hq6-goal b{font-size:21px}}
+@media(max-width:390px){.hq6-hero{min-height:300px}.hq6-gridlive{width:118px}.hq6-hero-brand strong{font-size:14px}.hq6-kpis{grid-template-columns:repeat(2,1fr)}.hq6-kpi.output{grid-column:1/-1}.hq6-dept-img{height:78px}}
+
+/* ================= BUILD 6 — 16 PRODUCT EXECUTIVE STORE ================= */
+.b6-store-shell{display:flex;flex-direction:column;gap:11px;padding:2px 0 18px}.b6-store-hero{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:18px;border:1px solid #42667a;border-radius:18px;background:radial-gradient(circle at 85% 20%,rgba(255,199,55,.17),transparent 32%),linear-gradient(145deg,#102b3d,#06131e 62%,#1f1708);box-shadow:0 18px 45px #0008,inset 0 1px #ffffff12}.b6-store-hero small{display:block;color:#91aab9;font-size:8px;font-weight:900;letter-spacing:1.5px}.b6-store-hero h2{margin:3px 0;font-size:27px}.b6-store-hero h2 span{color:#ffd45b}.b6-store-hero p{margin:0;color:#a9bbc6;font-size:10px}.b6-store-hero-icon{font-size:46px;filter:drop-shadow(0 0 18px #ffcf5080)}.b6-store-status{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid #2e5368;border-radius:12px;background:linear-gradient(145deg,#0d2534,#06141e)}.b6-store-status small{display:block;color:#7f9aac;font-size:7px;font-weight:900}.b6-store-status b{display:block;margin-top:2px;font-size:10px}.b6-store-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin:5px 2px 0}.b6-store-head h3{margin:0;font-size:14px}.b6-store-head span{font-size:7px;font-weight:900;color:#8ca5b5}.b6-product-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.b6-product{position:relative;min-width:0;padding:13px 11px 11px;overflow:hidden;border:1px solid #365b70;border-radius:14px;background:linear-gradient(155deg,#102b3d,#071621 64%,#07131b);box-shadow:0 11px 27px #0006,inset 0 1px #ffffff0f}.b6-product.founder{border-color:#a77c21;background:radial-gradient(circle at 90% 5%,rgba(255,209,79,.20),transparent 31%),linear-gradient(155deg,#2b240f,#0b1922 62%,#151006)}.b6-badge{position:absolute;right:8px;top:8px;padding:3px 5px;border:1px solid #456a7f;border-radius:5px;background:#071823;color:#a9c7d7;font-size:6px;font-weight:900}.b6-product.founder .b6-badge{border-color:#a77c21;color:#ffe08a;background:#2a210a}.b6-icon{font-size:25px;margin-bottom:7px}.b6-product h4{margin:0;padding-right:28px;font-size:12px}.b6-product p{min-height:42px;margin:6px 0 9px;color:#9eb1be;font-size:8px;line-height:1.35}.b6-buy{width:100%;min-height:34px;border:1px solid #3d6478;border-radius:8px;padding:7px 5px;color:#fff;font-size:9px;font-weight:1000;background:linear-gradient(#173a50,#0b2535)}.b6-buy.green{border-color:#45c673;background:linear-gradient(#169a4b,#08703a)}.b6-buy.blue{border-color:#4694c8;background:linear-gradient(#17689a,#0b4269)}.b6-buy.cyan{border-color:#55cde7;background:linear-gradient(#167f9b,#0b5067)}.b6-buy.purple{border-color:#9c73df;background:linear-gradient(#6943a6,#412771)}.b6-buy.orange{border-color:#d99539;background:linear-gradient(#a96117,#70400d)}.b6-buy.gold{border-color:#e6b638;color:#1d1504;background:linear-gradient(#ffe07b,#e6aa28)}.b6-buy:disabled{opacity:.58;filter:saturate(.45)}body.hq-executive-theme #company .hq6-titlebar,body.hq-executive-theme #company .hq6-detail{border-color:#ae8126!important;background:linear-gradient(145deg,#29210e,#071722 58%,#130f07)!important}body.hq-executive-theme #company .hq6-dept{border-color:#765d27!important}body.hq-founder #company .hq6-titlebar:after{content:"FOUNDER";margin-left:auto;padding:5px 8px;border:1px solid #d9ac39;border-radius:6px;color:#ffe180;font-size:7px;font-weight:1000;letter-spacing:1px;background:#2d2109}@media(max-width:900px){.b6-product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.b6-store-shell{gap:8px}.b6-store-hero{padding:13px;border-radius:13px}.b6-store-hero h2{font-size:20px}.b6-store-hero p{font-size:8px}.b6-store-hero-icon{font-size:34px}.b6-product-grid{grid-template-columns:1fr}.b6-product{padding:11px}.b6-product p{min-height:0}.b6-store-head h3{font-size:12px}.b6-store-status b{font-size:8px}}
+
+/* BUILD 6 V2 — AUTO SELL LICENSE CONTROLS */
+.b6-autosell-modes{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:8px;padding:8px;border:1px solid #2e5368;border-radius:10px;background:#071722}
+.b6-autosell-modes small{width:100%;color:#8ea6b5;font-size:7px;font-weight:900;letter-spacing:.8px}
+.b6-autosell-mode{flex:1;min-width:72px;border:1px solid #355c73;border-radius:7px;padding:7px 6px;background:#0b2433;color:#afc2cf;font-size:8px;font-weight:900}
+.b6-autosell-mode.active{border-color:#4ad488;background:#0d5638;color:#dffff0;box-shadow:0 0 12px #35d98525}
+.b6-autosell-note{width:100%;margin:2px 0 0;color:#718c9d;font-size:7px;line-height:1.35}
+
+/* ============================================================
+   POWER PLANT TYCOON — BUILD 6 FINAL SYSTEMS OVERHAUL
+   Sticky HUD • compact facility control • First Shift tutorial
+   ============================================================ */
+body.b6-final{--b6-safe-top:max(8px,env(safe-area-inset-top));}
+
+/* Keep the important resources visible on every long screen. */
+body.b6-final .topbar{
+  position:sticky!important;
+  top:0!important;
+  z-index:940!important;
+  padding-top:var(--b6-safe-top)!important;
+  backdrop-filter:blur(18px) saturate(1.15);
+  -webkit-backdrop-filter:blur(18px) saturate(1.15);
+  box-shadow:0 10px 28px rgba(0,0,0,.45);
+}
+body.b6-final.b6-scrolled .topbar{
+  min-height:64px!important;
+  padding-bottom:7px!important;
+  background:linear-gradient(180deg,rgba(4,16,25,.98),rgba(5,20,30,.94))!important;
+}
+body.b6-final.b6-scrolled .topbar .brand .logo{font-size:12px!important;line-height:1.05!important;white-space:nowrap}
+body.b6-final.b6-scrolled .topbar .brand .logo small,
+body.b6-final.b6-scrolled .topbar .rank,
+body.b6-final.b6-scrolled .topbar .b4-ops-strip,
+body.b6-final.b6-scrolled .topbar #marketTicker{display:none!important}
+body.b6-final.b6-scrolled .topbar .stats{gap:5px!important;align-items:stretch!important}
+body.b6-final.b6-scrolled .topbar .stat{min-width:0!important;padding:6px 7px!important;border-radius:8px!important}
+body.b6-final.b6-scrolled .topbar .stat small{font-size:6px!important;letter-spacing:.7px!important}
+body.b6-final.b6-scrolled .topbar .stat b{font-size:11px!important;white-space:nowrap!important}
+body.b6-final.b6-scrolled .topbar .stat.cash{box-shadow:0 0 0 1px rgba(54,215,111,.35),0 0 18px rgba(54,215,111,.08)!important}
+
+/* The old home-page facility carousel duplicated the Plants tab. */
+body.b6-final .b4-myplants{display:none!important}
+
+/* Compact active-facility control that replaces the large carousel. */
+.b6-active-facility{
+  margin:10px 0 12px;
+  display:grid;
+  grid-template-columns:minmax(0,1fr) auto;
+  gap:10px;
+  align-items:center;
+  padding:10px 12px;
+  border:1px solid #355a6f;
+  border-radius:12px;
+  background:linear-gradient(145deg,#0c2432,#07151f 68%,#111806);
+  box-shadow:inset 0 1px rgba(255,255,255,.06),0 10px 24px rgba(0,0,0,.32);
+}
+.b6-active-facility small{display:block;color:#7f9fae;font-size:7px;font-weight:900;letter-spacing:1.1px;margin-bottom:2px}
+.b6-active-facility b{display:block;color:#eef7fb;font-size:11px;letter-spacing:.2px}
+.b6-active-facility em{font-style:normal;color:#7dff9f;font-size:8px;font-weight:900}
+.b6-active-facility button{
+  border:1px solid #9e7826;
+  border-radius:8px;
+  padding:8px 10px;
+  color:#ffe17a;
+  background:linear-gradient(#2b230f,#171307);
+  font-size:8px;
+  font-weight:1000;
+  letter-spacing:.4px;
+}
+
+/* Build 6 bonus labels shown directly on income-producing upgrades. */
+.b6-current-bonus{margin-top:5px;color:#7fe6ff;font-size:8px;font-weight:900;letter-spacing:.45px}
+.b6-balance-note{display:inline-flex;margin-left:6px;padding:2px 5px;border:1px solid #356277;border-radius:5px;color:#9cdcf0;background:#0b2130;font-size:6px;font-weight:1000;letter-spacing:.4px;vertical-align:middle}
+
+/* Hide all superseded onboarding systems. Build 6 First Shift owns onboarding. */
+body.b6-final #tutorialBox,
+body.b6-final #tutorialFinal,
+body.b6-final #tutorialPanel2,
+body.b6-final #tutorialMask2{display:none!important}
+
+/* First Shift guided tutorial. */
+#b6FirstShiftMask{
+  position:fixed;
+  inset:0;
+  z-index:970;
+  pointer-events:none;
+  background:rgba(0,8,13,.28);
+  opacity:0;
+  transition:opacity .18s ease;
+}
+#b6FirstShiftMask.show{opacity:1}
+#b6FirstShiftPanel{
+  position:fixed;
+  left:max(10px,env(safe-area-inset-left));
+  right:max(10px,env(safe-area-inset-right));
+  bottom:calc(86px + env(safe-area-inset-bottom));
+  z-index:990;
+  display:none;
+  padding:13px;
+  border:1px solid #4b7890;
+  border-radius:15px;
+  background:linear-gradient(145deg,rgba(10,35,49,.98),rgba(4,16,25,.99));
+  box-shadow:0 22px 55px rgba(0,0,0,.65),inset 0 1px rgba(255,255,255,.07);
+}
+#b6FirstShiftPanel.show{display:block}
+.b6-tut-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.b6-tut-head small{color:#72d7ff;font-size:7px;font-weight:1000;letter-spacing:1.15px}
+.b6-tut-head button{border:0;background:transparent;color:#8ca5b4;font-size:8px;font-weight:900;padding:5px}
+#b6FirstShiftPanel h3{margin:5px 0 4px;font-size:16px;color:#f5fbff}
+#b6FirstShiftPanel p{margin:0;color:#b5c8d3;font-size:10px;line-height:1.45}
+.b6-tut-progress{height:5px;margin:10px 0;border-radius:99px;background:#02090e;overflow:hidden}
+.b6-tut-progress i{display:block;height:100%;width:10%;border-radius:inherit;background:linear-gradient(90deg,#26bdf3,#54e3a3,#f3c959);transition:width .2s ease}
+.b6-tut-actions{display:flex;gap:8px;justify-content:flex-end;margin-top:10px}
+.b6-tut-actions button{min-height:34px;padding:7px 11px;border-radius:8px;border:1px solid #375c70;background:#102c3c;color:#dceaf1;font-size:8px;font-weight:1000}
+.b6-tut-actions button.primary{border-color:#47c97c;background:linear-gradient(#189754,#0a693b);color:#fff}
+.b6-tut-actions button:disabled{opacity:.42}
+.b6-tut-spot{
+  position:relative!important;
+  z-index:985!important;
+  outline:3px solid #ffd24d!important;
+  outline-offset:4px!important;
+  border-radius:10px!important;
+  box-shadow:0 0 0 7px rgba(255,210,77,.13),0 0 28px rgba(255,210,77,.48)!important;
+  animation:b6TutPulse 1.15s ease-in-out infinite alternate!important;
+}
+@keyframes b6TutPulse{from{filter:brightness(1)}to{filter:brightness(1.17)}}
+
+/* Economy status line used on the Plants page. */
+#b6EconomyStatus{
+  margin:0 0 10px;
+  padding:8px 10px;
+  border:1px solid #2d5569;
+  border-radius:10px;
+  background:#081b26;
+  color:#99b7c6;
+  font-size:8px;
+  line-height:1.4;
+}
+#b6EconomyStatus b{color:#7ce5ff}
+
+@media(max-width:760px){
+  body.b6-final .topbar{padding-left:8px!important;padding-right:8px!important}
+  body.b6-final.b6-scrolled .topbar .brand{max-width:92px!important}
+  body.b6-final.b6-scrolled .topbar .stats{grid-template-columns:repeat(3,minmax(0,1fr))!important;width:100%!important}
+  .b6-active-facility{margin:8px 0 10px;padding:9px 10px}
+  .b6-active-facility b{font-size:10px}
+  #b6FirstShiftPanel{bottom:calc(80px + env(safe-area-inset-bottom));padding:11px}
+}
+/* POWER PLANT TYCOON BUILD 6 — UI HOTFIX V1 */
+body.b6-tutorial-live #b6FirstShiftMask.show{opacity:1!important;background:rgba(0,5,9,.56)!important;backdrop-filter:brightness(.72) saturate(.78)}
+#b6FirstShiftPanel{border:2px solid #f0b82f!important;background:linear-gradient(145deg,rgba(18,31,39,.995),rgba(5,12,18,.995))!important;box-shadow:0 0 0 3px rgba(255,201,62,.12),0 0 28px rgba(255,190,45,.26),0 22px 55px rgba(0,0,0,.78)!important}
+.b6-tut-head>div{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
+.b6-next-action{display:inline-flex;align-items:center;min-height:22px;padding:4px 8px;border-radius:999px;background:#f3bd35;color:#1b1403;font-size:8px;font-weight:1000;letter-spacing:.7px}
+.b6-tut-head small{color:#ffe28b!important;font-size:9px!important;letter-spacing:.9px!important}
+#b6FirstShiftPanel h3{margin:8px 0 4px!important;color:#fff4c4!important;font-size:19px!important;line-height:1.12!important}
+#b6FirstShiftPanel p{color:#e4edf2!important;font-size:11px!important;line-height:1.48!important}
+.b6-tut-progress{height:7px!important;border:1px solid #443817}
+.b6-tut-progress i{background:linear-gradient(90deg,#f1ad2c,#ffd85d,#57df95)!important}
+.b6-tut-actions button.primary{border-color:#f3c447!important;background:linear-gradient(#f2c84f,#d99b20)!important;color:#1c1504!important}
+.b6-tut-spot{z-index:985!important;outline:4px solid #ffd34b!important;outline-offset:5px!important;box-shadow:0 0 0 9px rgba(255,211,75,.16),0 0 34px rgba(255,211,75,.72),0 0 65px rgba(255,177,32,.28)!important;animation:b6TutPulseStrong .72s ease-in-out infinite alternate!important}
+@keyframes b6TutPulseStrong{from{filter:brightness(1.04);transform:scale(1)}to{filter:brightness(1.22);transform:scale(1.025)}}
+#b6TutPointer{position:fixed;z-index:989;display:none;width:44px;height:38px;margin-left:-22px;align-items:center;justify-content:center;border:2px solid #ffd34b;border-radius:12px;background:#171303;color:#ffd34b;font-size:23px;font-weight:1000;pointer-events:none;box-shadow:0 0 25px rgba(255,211,75,.58);animation:b6TutArrow .55s ease-in-out infinite alternate}
+#b6TutPointer.show{display:flex}
+@keyframes b6TutArrow{from{transform:translateY(-3px)}to{transform:translateY(4px)}}
+.nav [data-nav].active{color:#ffd34b!important}
+.nav [data-nav]:not(.active):not(.b6-tut-spot){box-shadow:none!important}
+@media(max-width:760px){#b6FirstShiftPanel{padding:13px 12px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important}#b6FirstShiftPanel h3{font-size:18px!important}#b6FirstShiftPanel p{font-size:10.5px!important}}
