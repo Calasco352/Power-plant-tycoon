@@ -1,0 +1,190 @@
+/* POWER PLANT TYCOON — BUILD 7 SIMPLIFIED EXPERIENCE V2 */
+body.ppt7-simplified{
+  --ppt7-hud-h:72px;
+}
+body.ppt7-simplified .topbar{
+  position:fixed!important;
+  top:env(safe-area-inset-top)!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  width:min(760px,100%)!important;
+  max-width:760px!important;
+  z-index:1000!important;
+  padding:7px 9px!important;
+  border-radius:0 0 16px 16px!important;
+  background:rgba(4,15,24,.98)!important;
+  backdrop-filter:blur(18px)!important;
+  box-shadow:0 10px 34px rgba(0,0,0,.42)!important;
+}
+body.ppt7-simplified .topbar .brand,
+body.ppt7-simplified #marketTicker{
+  display:none!important;
+}
+body.ppt7-simplified .topbar .stats{
+  display:grid!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:6px!important;
+  margin:0!important;
+}
+body.ppt7-simplified .topbar .stat{
+  min-width:0!important;
+  padding:6px 7px!important;
+  border-radius:11px!important;
+  text-align:center!important;
+}
+body.ppt7-simplified .topbar .stat small{
+  font-size:8px!important;
+  letter-spacing:.7px!important;
+  white-space:nowrap!important;
+}
+body.ppt7-simplified .topbar .stat b{
+  margin-top:2px!important;
+  font-size:15px!important;
+  line-height:1.05!important;
+  overflow:hidden!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+body.ppt7-simplified .content{
+  padding-top:calc(var(--ppt7-hud-h) + 8px)!important;
+}
+body.ppt7-simplified #pptV5LastSale{
+  top:calc(env(safe-area-inset-top) + 68px)!important;
+  right:8px!important;
+}
+body.ppt7-simplified #pptV5SaleReceipt{
+  top:16%!important;
+}
+
+/* HOME: keep the core loop front and center. */
+#ppt7NextGoal{
+  margin:10px 0 12px;
+  padding:14px;
+  border-radius:17px;
+  border:1px solid rgba(77,211,255,.42);
+  background:linear-gradient(145deg,rgba(10,39,55,.97),rgba(6,22,33,.98));
+  box-shadow:0 12px 32px rgba(0,0,0,.24),inset 0 1px rgba(255,255,255,.08);
+}
+#ppt7NextGoal .ppt7-goal-top{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+#ppt7NextGoal small{display:block;font-size:9px;font-weight:1000;letter-spacing:1.5px;color:#78dfff}
+#ppt7NextGoal strong{display:block;margin-top:4px;font-size:17px;color:#fff}
+#ppt7NextGoal .ppt7-goal-cost{font-size:14px;font-weight:1000;color:#ffd75a;white-space:nowrap}
+#ppt7NextGoal .ppt7-goal-copy{margin-top:6px;color:#a9c2d0;font-size:11px;line-height:1.4}
+#ppt7NextGoal .ppt7-goal-progress{height:7px;margin-top:10px;border-radius:999px;background:#04111a;overflow:hidden;border:1px solid #21465a}
+#ppt7NextGoal .ppt7-goal-progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#37d985,#5fdfff)}
+#ppt7NextGoal button{width:100%;margin-top:10px;border:0;border-radius:12px;padding:11px 12px;font-weight:1000;color:#fff;background:linear-gradient(#2fa7e8,#126aaa)}
+#ppt7SaleEstimate{
+  margin:8px 0 0;
+  padding:9px 11px;
+  border-radius:11px;
+  border:1px solid rgba(72,222,150,.28);
+  background:rgba(5,31,25,.52);
+  color:#c8eadb;
+  font-size:11px;
+  text-align:center;
+}
+#ppt7SaleEstimate b{color:#55e49d;font-size:14px}
+.ppt7-advanced-card{display:none!important}
+body.ppt7-show-advanced .ppt7-advanced-card{display:block!important}
+#ppt7AdvancedToggle{
+  width:100%;margin:10px 0 12px;padding:12px 13px;border-radius:14px;
+  border:1px solid #315c76;background:linear-gradient(#14344a,#0b2333);color:#dceef7;
+  font-weight:900;text-align:left;display:flex;justify-content:space-between;align-items:center;
+}
+#ppt7AdvancedToggle span{color:#7fa7bb;font-size:11px}
+
+/* Five clear bottom destinations. */
+body.ppt7-simplified .nav{
+  grid-template-columns:repeat(5,1fr)!important;
+  width:min(760px,100%)!important;
+}
+body.ppt7-simplified .nav .ppt7-hide-nav{display:none!important}
+body.ppt7-simplified .nav button{font-size:9px!important;padding:8px 2px!important}
+body.ppt7-simplified .nav button i{font-size:20px!important;margin-bottom:2px!important}
+#ppt7MoreNav.active{color:#fff!important;background:linear-gradient(#17384d,#0b2232)!important}
+
+/* MORE sheet */
+#ppt7MoreShade{position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:1800;display:none}
+#ppt7MoreShade.show{display:block}
+#ppt7MoreSheet{
+  position:fixed;left:50%;bottom:calc(72px + env(safe-area-inset-bottom));transform:translate(-50%,18px);
+  width:min(720px,calc(100% - 20px));z-index:1810;padding:14px;border-radius:20px;
+  background:linear-gradient(160deg,#102b3c,#071620);border:1px solid #35647e;box-shadow:0 24px 70px #0009;
+  opacity:0;pointer-events:none;transition:.18s ease;
+}
+#ppt7MoreSheet.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+#ppt7MoreSheet .ppt7-more-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+#ppt7MoreSheet .ppt7-more-head strong{font-size:17px}
+#ppt7MoreSheet .ppt7-close{border:0;background:#173649;color:#dcebf3;border-radius:10px;padding:7px 10px;font-weight:900}
+#ppt7MoreSheet .ppt7-more-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+#ppt7MoreSheet .ppt7-more-item{border:1px solid #2a566d;background:#0c2433;color:#fff;border-radius:14px;padding:12px;text-align:left;font-weight:900}
+#ppt7MoreSheet .ppt7-more-item small{display:block;margin-top:3px;color:#88aabc;font-size:9px;font-weight:700}
+#ppt7MoreSheet .ppt7-more-item.locked{opacity:.45;filter:grayscale(.6)}
+
+/* HQ: one decision at a time. */
+body.ppt7-simplified .hq6-kpis{display:none!important}
+body.ppt7-simplified .hq6-titlebar p{display:none!important}
+body.ppt7-simplified .hq6-gridlive .row:nth-child(2),
+body.ppt7-simplified .hq6-gridlive .row:nth-child(4){display:none!important}
+body.ppt7-simplified .hq6-hero-bottom .hq6-hero-stat:nth-child(n+2){display:none!important}
+body.ppt7-simplified .hq6-section-head span{display:none!important}
+#ppt7HQCategories{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin:10px 0 12px}
+#ppt7HQCategories button{border:1px solid #315c76;border-radius:13px;padding:11px 7px;background:#0d2636;color:#8eabba;font-size:10px;font-weight:1000}
+#ppt7HQCategories button i{display:block;font-size:21px;font-style:normal;margin-bottom:3px}
+#ppt7HQCategories button.active{color:#fff;border-color:#65d8ff;background:linear-gradient(#17435d,#0b2c40);box-shadow:inset 0 0 0 1px rgba(101,216,255,.2)}
+body.ppt7-simplified .hq6-depts{grid-template-columns:1fr!important}
+body.ppt7-simplified .hq6-dept.ppt7-filtered{display:none!important}
+body.ppt7-simplified .hq6-dept-body p{font-size:11px!important}
+body.ppt7-simplified .hq6-effect{font-size:11px!important}
+
+/* Spend confirmation */
+#ppt7SpendReceipt{
+  position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 72px);transform:translate(-50%,-10px);
+  z-index:1900;min-width:250px;max-width:calc(100vw - 24px);padding:10px 13px;border-radius:13px;
+  background:rgba(7,25,35,.97);border:1px solid rgba(255,203,75,.48);box-shadow:0 12px 34px #0007;
+  text-align:center;color:#d8eaf2;opacity:0;pointer-events:none;transition:.18s ease;font-size:11px
+}
+#ppt7SpendReceipt.show{opacity:1;transform:translate(-50%,0)}
+#ppt7SpendReceipt b{color:#ffd55b;font-size:14px}
+
+/* Quick Start tutorial — short, not a full-screen interruption. */
+#ppt7QuickStart{
+  position:fixed;left:50%;bottom:calc(78px + env(safe-area-inset-bottom));transform:translateX(-50%);
+  z-index:1750;width:min(520px,calc(100% - 18px));padding:12px 13px;border-radius:17px;
+  background:rgba(7,24,34,.98);border:1px solid #3a7695;box-shadow:0 16px 45px #0008;color:#fff
+}
+#ppt7QuickStart .head{display:flex;justify-content:space-between;gap:8px;align-items:center}
+#ppt7QuickStart small{color:#73d9ff;font-weight:1000;letter-spacing:1px}
+#ppt7QuickStart h3{margin:6px 0 4px;font-size:16px}
+#ppt7QuickStart p{margin:0;color:#aac1cf;font-size:11px;line-height:1.4}
+#ppt7QuickStart button{border:0;border-radius:10px;background:#17394d;color:#cfe4ee;padding:6px 9px;font-size:10px;font-weight:900}
+.ppt7-tutorial-target{outline:3px solid rgba(255,215,72,.88)!important;outline-offset:3px!important;box-shadow:0 0 0 7px rgba(255,215,72,.12)!important}
+
+@media(max-width:430px){
+  body.ppt7-simplified{--ppt7-hud-h:68px}
+  body.ppt7-simplified .topbar .stat b{font-size:13px!important}
+  #ppt7MoreSheet .ppt7-more-grid{grid-template-columns:1fr 1fr}
+  #ppt7HQCategories button{font-size:9px;padding:9px 4px}
+  #ppt7HQCategories button i{font-size:18px}
+}
+
+
+/* BUILD 7 V2 — stronger guidance without adding screen clutter. */
+.ppt7-feature-hidden{display:none!important}
+#ppt7NextGoal .ppt7-goal-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:10px}
+#ppt7NextGoal .ppt7-goal-actions button{margin:0!important}
+#ppt7NextGoal .ppt7-goal-actions button.secondary{background:#102b3c!important;border:1px solid #315c76!important;color:#b9d3df!important}
+.ppt7-recommended{position:relative!important;border-color:#ffd65b!important;box-shadow:0 0 0 1px rgba(255,214,91,.24),0 12px 34px rgba(0,0,0,.28)!important}
+.ppt7-rec-badge{display:inline-flex!important;align-items:center;justify-content:center;width:max-content;max-width:100%;margin:0 0 7px;padding:4px 8px;border-radius:999px;background:#ffd65b;color:#1e1700;font-size:8px;font-weight:1000;letter-spacing:.8px;box-shadow:0 4px 14px rgba(0,0,0,.25)}
+.ppt7-afford{margin:7px 0 5px;font-size:9px;font-weight:900;line-height:1.3}
+.ppt7-afford.ready{color:#63e7a1}.ppt7-afford.short{color:#f0b7a8}
+#ppt7UnlockToast{position:fixed;left:50%;top:calc(env(safe-area-inset-top) + 78px);transform:translate(-50%,-12px);z-index:2050;width:min(460px,calc(100% - 20px));padding:12px 14px;border-radius:15px;background:linear-gradient(145deg,rgba(9,42,56,.99),rgba(7,24,34,.99));border:1px solid rgba(87,220,255,.55);box-shadow:0 18px 50px #0009;opacity:0;pointer-events:none;transition:.2s ease;text-align:left}
+#ppt7UnlockToast.show{opacity:1;transform:translate(-50%,0)}
+#ppt7UnlockToast small{display:block;color:#6edfff;font-size:8px;font-weight:1000;letter-spacing:1.2px}
+#ppt7UnlockToast strong{display:block;margin-top:3px;color:#fff;font-size:15px}
+#ppt7UnlockToast span{display:block;margin-top:3px;color:#a9c5d3;font-size:10px;line-height:1.35}
+#ppt7CoachShade{position:fixed;inset:0;z-index:1960;background:rgba(0,0,0,.58);display:none}#ppt7CoachShade.show{display:block}
+#ppt7Coach{position:fixed;left:50%;bottom:calc(80px + env(safe-area-inset-bottom));transform:translate(-50%,14px);z-index:1970;width:min(500px,calc(100% - 20px));padding:15px;border-radius:18px;background:linear-gradient(155deg,#12344a,#071923);border:1px solid #3a7695;box-shadow:0 22px 60px #000a;opacity:0;pointer-events:none;transition:.18s ease;color:#fff}
+#ppt7Coach.show{opacity:1;pointer-events:auto;transform:translate(-50%,0)}
+#ppt7Coach small{color:#6edfff;font-size:8px;font-weight:1000;letter-spacing:1.2px}#ppt7Coach h3{margin:6px 0 4px;font-size:17px}#ppt7Coach p{margin:0;color:#afc8d4;font-size:11px;line-height:1.45}#ppt7Coach>div{display:grid;grid-template-columns:1fr 110px;gap:7px;margin-top:12px}#ppt7Coach button{border:0;border-radius:11px;padding:10px;background:linear-gradient(#2fa7e8,#126aaa);color:#fff;font-weight:1000;font-size:10px}#ppt7Coach button.secondary{background:#173649;color:#c8dce6}
+@media(max-width:430px){#ppt7NextGoal .ppt7-goal-actions{grid-template-columns:1fr}#ppt7Coach>div{grid-template-columns:1fr 90px}.ppt7-afford{font-size:8px}}
