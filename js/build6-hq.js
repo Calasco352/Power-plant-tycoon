@@ -101,23 +101,24 @@
     const levelProgress=(Object.keys(HQ6).reduce((a,id)=>a+lv(id),0)%7)/7*100;
 
     syncText("hq6Cash",fmtMoney(g.cash||0));
-    syncText("hq6Stored",fmtNum(g.stored||0)+" kWh");
-    syncText("hq6Output",fmtNum(out)+"/s");
+    syncText("hq6Stored",typeof energy==="function"?energy(g.stored||0):fmtNum(g.stored||0)+" kWh");
+    syncText("hq6Output",typeof powerRate==="function"?powerRate(out):fmtNum(out)+"/s");
     syncText("hq6Staff",totalStaff()+" STAFF");
     syncText("hq6Rep",Math.floor(g.reputation||0));
     syncText("hq6Level","LV "+hq);
     syncWidth("hq6Xp",levelProgress);
     syncText("hq6GridStability",Math.round(reliability)+"%");
     syncText("hq6Demand",demand+"%");
-    syncText("hq6Plants",plantsOnline()+" / 5");
+    const plantTotal=typeof PLANTS!=="undefined"?PLANTS.length:5;
+    syncText("hq6Plants",plantsOnline()+" / "+plantTotal);
     syncText("hq6Daily",fmtMoney(Math.max(0,net*86400)));
     syncText("hq6CompanyValue",fmtMoney(Math.max(0,(g.lifetimeCash||0)+(g.cash||0)+(g.generated||0)*.25)));
     syncText("hq6Net",fmtMoney(Math.max(0,net))+"/s");
     syncText("hq6ResearchCount",totalResearch()+" TECH LEVELS");
 
-    const goal=Math.min(5,plantsOnline()+1);
-    syncText("hq6Goal",plantsOnline()>=5?"Develop every HQ department to Level 5":"Expand to "+goal+" Plants");
-    syncText("hq6GoalArrow",plantsOnline()>=5?"★":"»");
+    const goal=Math.min(plantTotal,plantsOnline()+1);
+    syncText("hq6Goal",plantsOnline()>=plantTotal?"All generation technologies online":"Expand to "+goal+" Plants");
+    syncText("hq6GoalArrow",plantsOnline()>=plantTotal?"★":"»");
 
     Object.keys(HQ6).forEach(id=>{
       syncText("hq6Lv-"+id,"LV "+lv(id));

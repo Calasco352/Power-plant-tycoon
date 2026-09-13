@@ -1,0 +1,294 @@
+/* POWER PLANT TYCOON — BUILD 13 EXECUTIVE HQ THEME
+   Premium black/gold command-suite transformation for the HQ Executive Theme IAP. */
+
+body.hq-executive-theme,
+body.ppt13-executive-active {
+  --exec-gold:#ffd45a;
+  --exec-gold-2:#e5a91e;
+  --exec-gold-soft:#9d7421;
+  --exec-ink:#050505;
+  --exec-panel:#0b0b0c;
+  --exec-panel-2:#15120a;
+}
+
+body.hq-executive-theme #company.hq6-page,
+body.ppt13-executive-active #company.hq6-page {
+  position:relative;
+  isolation:isolate;
+  background:
+    radial-gradient(circle at 50% 4%,rgba(255,205,74,.10),transparent 30%),
+    linear-gradient(180deg,rgba(8,7,4,.96),rgba(3,5,7,.98) 48%,rgba(2,3,5,1))!important;
+}
+body.hq-executive-theme #company.hq6-page:before,
+body.ppt13-executive-active #company.hq6-page:before {
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  opacity:.38;
+  background-image:
+    linear-gradient(rgba(255,210,83,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,210,83,.045) 1px,transparent 1px);
+  background-size:26px 26px;
+  mask-image:linear-gradient(180deg,#000,transparent 72%);
+}
+
+body.hq-executive-theme .hq6-shell,
+body.ppt13-executive-active .hq6-shell {
+  --hq6-gold:var(--exec-gold);
+  --hq6-cyan:#f1c955;
+  --hq6-green:#e7bd45;
+  --hq6-panel:rgba(8,8,8,.97);
+  --hq6-line:#8f6a22;
+}
+
+/* Executive title plate */
+body.hq-executive-theme .hq6-titlebar,
+body.ppt13-executive-active .hq6-titlebar {
+  position:relative;
+  overflow:hidden;
+  border:1px solid #c59527!important;
+  background:
+    radial-gradient(circle at 82% 8%,rgba(255,214,92,.22),transparent 26%),
+    linear-gradient(135deg,#1e1809 0%,#07090c 48%,#120e05 100%)!important;
+  box-shadow:0 0 0 1px rgba(255,215,99,.10),0 18px 45px rgba(0,0,0,.78),inset 0 1px rgba(255,239,185,.18)!important;
+}
+body.hq-executive-theme .hq6-titlebar:before,
+body.ppt13-executive-active .hq6-titlebar:before {
+  content:"EXECUTIVE COMMAND SUITE";
+  position:absolute;
+  right:14px;
+  top:8px;
+  color:#ffe58f;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:1.8px;
+  opacity:.88;
+}
+body.hq-executive-theme .hq6-titlebar h2,
+body.ppt13-executive-active .hq6-titlebar h2 {text-shadow:0 0 18px rgba(255,202,55,.20)}
+body.hq-executive-theme .hq6-titlebar h2 span,
+body.ppt13-executive-active .hq6-titlebar h2 span {color:#ffd766!important}
+body.hq-executive-theme .hq6-xp,
+body.ppt13-executive-active .hq6-xp {border-color:#6f5621;background:#080704}
+body.hq-executive-theme .hq6-xp i,
+body.ppt13-executive-active .hq6-xp i {background:linear-gradient(90deg,#8d5d0d,#ffdd71,#c98713);box-shadow:0 0 16px rgba(255,202,55,.72)}
+
+#ppt13ExecutiveBadge {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:7px;
+  padding:5px 9px;
+  border:1px solid #c6972e;
+  border-radius:999px;
+  background:linear-gradient(180deg,rgba(70,50,8,.86),rgba(23,17,5,.92));
+  color:#ffe9a3;
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:1.15px;
+  box-shadow:inset 0 1px rgba(255,255,255,.12),0 0 14px rgba(255,198,51,.14);
+}
+#ppt13ExecutiveBadge:before {content:"♛";font-size:10px;color:#ffd75d}
+
+/* Hero becomes a premium command room */
+body.hq-executive-theme .hq6-hero,
+body.ppt13-executive-active .hq6-hero {
+  border:1px solid #d0a23b!important;
+  background-image:
+    linear-gradient(105deg,rgba(27,18,2,.44),rgba(0,0,0,.04) 48%,rgba(30,20,2,.34)),
+    url('../assets/hq6_command_center.jpg')!important;
+  background-position:center!important;
+  background-size:cover!important;
+  background-blend-mode:color,normal;
+  box-shadow:0 0 0 1px rgba(255,219,116,.10),0 26px 70px rgba(0,0,0,.88),0 0 34px rgba(224,165,38,.10),inset 0 0 90px rgba(0,0,0,.50)!important;
+}
+body.hq-executive-theme .hq6-hero:after,
+body.ppt13-executive-active .hq6-hero:after {
+  background:
+    linear-gradient(180deg,rgba(5,4,1,.06),rgba(3,3,3,.10) 45%,rgba(3,3,2,.83) 100%),
+    linear-gradient(90deg,rgba(16,10,1,.55),transparent 32%,transparent 70%,rgba(23,15,2,.42))!important;
+}
+body.hq-executive-theme .hq6-hero-brand,
+body.ppt13-executive-active .hq6-hero-brand {
+  border-left:3px solid #ffd45a!important;
+  border-top:1px solid rgba(255,219,106,.40);
+  border-bottom:1px solid rgba(255,219,106,.22);
+  background:linear-gradient(90deg,rgba(15,11,2,.90),rgba(5,7,9,.75))!important;
+  box-shadow:0 12px 32px rgba(0,0,0,.46),0 0 18px rgba(255,199,47,.08);
+}
+body.hq-executive-theme .hq6-hero-brand small,
+body.ppt13-executive-active .hq6-hero-brand small {color:#f4d98f!important}
+body.hq-executive-theme .hq6-hero-brand strong span,
+body.ppt13-executive-active .hq6-hero-brand strong span {color:#ffd45a!important}
+
+#ppt13ExecutiveSeal {
+  position:absolute;
+  left:50%;
+  top:18px;
+  transform:translateX(-50%);
+  z-index:4;
+  display:flex;
+  align-items:center;
+  gap:7px;
+  padding:7px 12px;
+  border:1px solid rgba(230,181,56,.72);
+  border-radius:7px;
+  background:linear-gradient(180deg,rgba(28,21,6,.90),rgba(7,8,10,.86));
+  color:#ffe7a1;
+  box-shadow:0 8px 26px rgba(0,0,0,.50),inset 0 1px rgba(255,255,255,.10);
+  backdrop-filter:blur(9px);
+  font-size:7px;
+  font-weight:1000;
+  letter-spacing:1.3px;
+  white-space:nowrap;
+}
+#ppt13ExecutiveSeal:before {content:"✦";color:#ffd45a;font-size:12px}
+
+body.hq-executive-theme .hq6-gridlive,
+body.ppt13-executive-active .hq6-gridlive {
+  border-color:#a67a23!important;
+  background:linear-gradient(145deg,rgba(19,15,6,.91),rgba(4,7,10,.91))!important;
+  box-shadow:0 12px 30px rgba(0,0,0,.72),inset 0 1px rgba(255,222,129,.10)!important;
+}
+body.hq-executive-theme .hq6-gridlive .row,
+body.ppt13-executive-active .hq6-gridlive .row {border-color:#5a461e!important}
+body.hq-executive-theme .hq6-gridlive .good,
+body.ppt13-executive-active .hq6-gridlive .good {color:#ffda69!important;text-shadow:0 0 10px rgba(255,202,49,.28)}
+body.hq-executive-theme .hq6-hero-stat,
+body.ppt13-executive-active .hq6-hero-stat {
+  border-color:#7f6126!important;
+  background:linear-gradient(145deg,rgba(20,15,5,.90),rgba(5,8,10,.88))!important;
+}
+body.hq-executive-theme .hq6-hero-stat b.green,
+body.ppt13-executive-active .hq6-hero-stat b.green {color:#ffd45a!important}
+
+/* Three main HQ categories become unmistakably premium */
+body.hq-executive-theme #ppt7HQCategories,
+body.ppt13-executive-active #ppt7HQCategories {
+  padding:7px;
+  border:1px solid #6d531f;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(18,14,5,.90),rgba(5,7,9,.94));
+  box-shadow:0 12px 28px rgba(0,0,0,.48),inset 0 1px rgba(255,235,174,.06);
+}
+body.hq-executive-theme #ppt7HQCategories button,
+body.ppt13-executive-active #ppt7HQCategories button {
+  border-color:#735820!important;
+  background:linear-gradient(180deg,#17130a,#080a0d)!important;
+  color:#cbbd95!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.035)!important;
+}
+body.hq-executive-theme #ppt7HQCategories button i,
+body.ppt13-executive-active #ppt7HQCategories button i {filter:sepia(1) saturate(1.45) drop-shadow(0 0 7px rgba(255,197,44,.20))}
+body.hq-executive-theme #ppt7HQCategories button.active,
+body.ppt13-executive-active #ppt7HQCategories button.active {
+  color:#1b1403!important;
+  border-color:#ffe082!important;
+  background:linear-gradient(180deg,#ffe589,#d59a19)!important;
+  box-shadow:0 0 0 1px rgba(255,225,126,.22),0 0 24px rgba(255,188,31,.22),inset 0 1px rgba(255,255,255,.65)!important;
+}
+
+/* Department cards become black/gold executive panels */
+body.hq-executive-theme .hq6-dept,
+body.ppt13-executive-active .hq6-dept {
+  border-color:#765b24!important;
+  background:
+    radial-gradient(circle at 90% 0,rgba(255,205,66,.07),transparent 26%),
+    linear-gradient(155deg,#17130b,#07090c 58%,#0d0a04)!important;
+  box-shadow:0 16px 36px rgba(0,0,0,.68),inset 0 1px rgba(255,238,186,.06)!important;
+}
+body.hq-executive-theme .hq6-dept.active,
+body.hq-executive-theme .hq6-dept.ppt7-recommended,
+body.ppt13-executive-active .hq6-dept.active,
+body.ppt13-executive-active .hq6-dept.ppt7-recommended {
+  border-color:#edbe4c!important;
+  box-shadow:0 0 0 1px rgba(255,220,111,.16),0 0 28px rgba(255,190,35,.17),0 16px 36px rgba(0,0,0,.74)!important;
+}
+body.hq-executive-theme .hq6-dept-img,
+body.ppt13-executive-active .hq6-dept-img {filter:saturate(.68) sepia(.18) contrast(1.08) brightness(.88)}
+body.hq-executive-theme .hq6-dept-img:after,
+body.ppt13-executive-active .hq6-dept-img:after {background:linear-gradient(180deg,rgba(61,40,3,.05) 20%,rgba(9,8,5,.97))!important}
+body.hq-executive-theme .hq6-dept-title strong,
+body.ppt13-executive-active .hq6-dept-title strong {color:#fff3cb}
+body.hq-executive-theme .hq6-dept-title span,
+body.ppt13-executive-active .hq6-dept-title span {
+  border-color:#9d7727!important;
+  background:#181206!important;
+  color:#ffe29a!important;
+}
+body.hq-executive-theme .hq6-dept p,
+body.ppt13-executive-active .hq6-dept p {color:#b7ac91!important}
+body.hq-executive-theme .hq6-effect,
+body.ppt13-executive-active .hq6-effect {border-color:#53421d!important;color:#f0c557!important}
+body.hq-executive-theme .hq6-upgrade,
+body.ppt13-executive-active .hq6-upgrade {
+  border-color:#f0c153!important;
+  color:#211603!important;
+  background:linear-gradient(180deg,#ffe789,#d89a16)!important;
+  box-shadow:inset 0 1px rgba(255,255,255,.68),0 0 18px rgba(255,188,33,.13)!important;
+}
+body.hq-executive-theme .ppt7-rec-badge,
+body.ppt13-executive-active .ppt7-rec-badge {
+  border-color:#b88d2e!important;
+  background:#2a1f06!important;
+  color:#ffe49b!important;
+}
+body.hq-executive-theme .ppt7-afford.ready,
+body.ppt13-executive-active .ppt7-afford.ready {color:#ffd45a!important}
+
+/* Detail panels and action controls */
+body.hq-executive-theme .hq6-detail,
+body.ppt13-executive-active .hq6-detail {
+  border-color:#a57c28!important;
+  background:
+    radial-gradient(circle at 92% 0,rgba(255,202,53,.08),transparent 25%),
+    linear-gradient(145deg,#171208,#07090c 62%,#0d0a04)!important;
+  box-shadow:0 20px 48px rgba(0,0,0,.78),inset 0 1px rgba(255,238,184,.07)!important;
+}
+body.hq-executive-theme .hq6-action,
+body.ppt13-executive-active .hq6-action {
+  border-color:#6d5320!important;
+  background:linear-gradient(145deg,#141008,#080a0c)!important;
+}
+body.hq-executive-theme .hq6-close,
+body.ppt13-executive-active .hq6-close {
+  border-color:#806321!important;
+  background:#171206!important;
+  color:#f8da83!important;
+}
+body.hq-executive-theme .hq6-detail .uf-btn,
+body.ppt13-executive-active .hq6-detail .uf-btn {
+  border-color:#a67b23!important;
+}
+body.hq-executive-theme .hq6-detail .uf-btn.green,
+body.ppt13-executive-active .hq6-detail .uf-btn.green {
+  color:#211603!important;
+  border-color:#f0c153!important;
+  background:linear-gradient(180deg,#ffe789,#d89a16)!important;
+}
+
+/* Goal card and HQ nav glow */
+body.hq-executive-theme .hq6-goal,
+body.ppt13-executive-active .hq6-goal {
+  border-color:#d5a435!important;
+  background:linear-gradient(135deg,#2f2308,#0d0c09 56%,#1a1204)!important;
+  box-shadow:0 0 28px rgba(255,193,34,.16),inset 0 1px rgba(255,244,206,.12)!important;
+}
+body.hq-executive-theme [data-nav="company"],
+body.ppt13-executive-active [data-nav="company"] {
+  border-color:#d6a72d!important;
+  box-shadow:0 0 20px rgba(255,193,31,.15)!important;
+}
+
+/* Store card signals that the purchase is a full HQ transformation. */
+body.hq-executive-theme #b6Buy-hqExecutiveTheme,
+body.ppt13-executive-active #b6Buy-hqExecutiveTheme {border-color:#d9a72d!important;background:linear-gradient(#342808,#171207)!important;color:#ffe38e!important}
+
+@media(max-width:760px){
+  body.hq-executive-theme .hq6-titlebar:before,
+  body.ppt13-executive-active .hq6-titlebar:before {font-size:5.5px;right:9px;top:6px;letter-spacing:1px}
+  #ppt13ExecutiveSeal{top:9px;padding:5px 8px;font-size:5.5px;letter-spacing:.8px}
+  #ppt13ExecutiveBadge{font-size:6px;padding:4px 7px}
+}

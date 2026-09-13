@@ -126,7 +126,7 @@
   updateStickyHUD();
 
   /* ---------- HOME FACILITY CLEANUP ---------- */
-  const FACILITY_NAMES={diesel:"RIVERBEND • DIESEL GENERATOR",steam:"RIVERDALE • STEAM FACILITY",gas:"PINE RIDGE • GAS FACILITY",solar:"SUNCREST • SOLAR FACILITY",nuclear:"BLACKRIDGE • NUCLEAR FACILITY",starter:"RIVERBEND • STARTER SITE"};
+  const FACILITY_NAMES={diesel:"RIVERBEND • DIESEL GENERATOR",steam:"RIVERBEND • STEAM FACILITY",gas:"PINE RIDGE • GAS FACILITY",solar:"SUNCREST • SOLAR FACILITY",nuclear:"BLACKRIDGE • NUCLEAR FACILITY",starter:"RIVERBEND • STARTER SITE"};
   function currentFacility(){
     let id=g.viewStage;
     if(!id||!g.plants?.[id]?.unlocked){
@@ -152,7 +152,7 @@
     let e=document.getElementById("b6EconomyStatus");
     if(!e){e=document.createElement("div");e.id="b6EconomyStatus";page.insertBefore(e,page.firstChild)}
     const off=Math.round(offlineEfficiency()*100),hours=g.offlineOperationsUnlocked?12:8;
-    e.innerHTML='<b>BUILD 6 BALANCE ACTIVE</b> • Income bonuses use controlled additive pools • Offline '+off+'% • '+hours+'h max window • long absences diminish';
+    e.innerHTML='<b>BALANCED ECONOMY</b> • Active play is prioritized • Offline progress '+off+'% • long absences use diminishing returns';
   }
   function addCurrentBonus(el,text){
     if(!el)return;let n=el.querySelector(".b6-current-bonus");if(!n){n=document.createElement("div");n.className="b6-current-bonus";el.appendChild(n)}n.textContent=text;
@@ -165,16 +165,16 @@
       "-"+Math.min(30,(g.corporate?.fuel||0)*3).toFixed(0)+"% current fuel expense",
       "+"+((g.corporate?.grid||0)*2.5).toFixed(1)+"% current sale-value bonus"
     ];
-    corp.forEach((el,i)=>addCurrentBonus(el.querySelector("div:nth-child(2)")||el,vals[i]||"Build 6 balanced bonus"));
+    corp.forEach((el,i)=>addCurrentBonus(el.querySelector("div:nth-child(2)")||el,vals[i]||"Balanced bonus"));
     document.querySelectorAll("#researchTree .uf-node").forEach((el,i)=>{
       const r=typeof RESEARCH!=="undefined"?RESEARCH[i]:null;if(!r)return;
       const lv=g.research?.[r.id]||0;
       let t="";
-      if(r.id==="automation")t="Build 6 effective: +"+(lv*2.5).toFixed(1)+"% production";
-      else if(r.id==="forecast")t="Build 6 effective: +"+(lv*2).toFixed(0)+"% market bonus";
-      else if(r.id==="advancedNuclear")t="Build 6 effective: +"+(lv*6).toFixed(0)+"% production";
-      else if(r.id==="fusionControl")t="Build 6 effective: +"+(lv*12).toFixed(0)+"% production";
-      else if(r.id==="quantumGrid")t="Build 6 effective: +"+(lv*8).toFixed(0)+"% production / +"+(lv*4).toFixed(0)+"% sale";
+      if(r.id==="automation")t="Effective: +"+(lv*2.5).toFixed(1)+"% production";
+      else if(r.id==="forecast")t="Effective: +"+(lv*2).toFixed(0)+"% market bonus";
+      else if(r.id==="advancedNuclear")t="Effective: +"+(lv*6).toFixed(0)+"% production";
+      else if(r.id==="fusionControl")t="Effective: +"+(lv*12).toFixed(0)+"% production";
+      else if(r.id==="quantumGrid")t="Effective: +"+(lv*8).toFixed(0)+"% production / +"+(lv*4).toFixed(0)+"% sale";
       if(t)addCurrentBonus(el,t);
     });
   }
@@ -183,7 +183,7 @@
   const STEPS=[
     {title:"Welcome to Riverbend",text:"Generate power five times. This is the basic manual control you use before automation.",target:".generate",page:"home",mode:"generate"},
     {title:"Sell Power to the Grid",text:"Stored power is energy, not cash. Sell it to the grid to fund your first upgrades.",target:'[onclick="sellPower()"]',page:"home",mode:"sell"},
-    {title:"Upgrade the Generator",text:"Use in-game cash to improve your manual generator. Build 6 keeps upgrade bonuses useful without letting them explode the economy.",target:'[onclick="upgradeTap()"]',page:"home",mode:"upgrade"},
+    {title:"Upgrade the Generator",text:"Use in-game cash to improve your manual generator. Upgrade bonuses stay useful while keeping progression balanced.",target:'[onclick="upgradeTap()"]',page:"home",mode:"upgrade"},
     {title:"Open Your Plant Fleet",text:"Plant construction and upgrades live on the Plants screen. Tap PLANTS below.",target:'[data-nav="plants"]',mode:"openPlants"},
     {title:"Commission or Upgrade a Plant",text:"Build your first generating asset, or upgrade one you already own. Plant technology is the main source of long-term output.",target:"#plantList",page:"plants",mode:"plant"},
     {title:"Dispatch to the Grid",text:"Return to operations and make a dispatch. Dispatching is part of your active shift and rewards operating the system instead of only watching numbers rise.",target:'[onclick="dispatchPower()"]',page:"home",mode:"dispatch"},
