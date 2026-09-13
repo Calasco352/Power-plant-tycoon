@@ -397,7 +397,12 @@ const POWER_DISPLAY_UNITS=[
 function energy(n){return formatElectricalUnit(n,ENERGY_DISPLAY_UNITS)}
 function powerRate(kwhPerSecond){return formatElectricalUnit(kwhPerSecond*3600,POWER_DISPLAY_UNITS)}
 function missionDisplay(m,v){if(m.type==="generated")return energy(v);if(m.type==="output")return powerRate(v);if(m.type==="lifetimeCash")return money(v);return num(v)}
-function prestigeMult(){return 1+.08*Math.pow(Math.max(0,g.prestige||0),.72)}function operatorMult(){return 1+Math.max(0,g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function premiumLicenseMult(){return g.executiveLicenseUnlocked?1.25:1}function totalMult(){const core=1+(prestigeMult()-1)+(operatorMult()-1)+(efficiencyMult()-1)+(regionMult()-1)+(staffProductionMult()-1)+(researchProductionMult()-1)+(empireBonusMult()-1)+(premiumLicenseMult()-1)+(legacyProductionMult()-1)+(b10LicenseMult()-1);const result=core*boostMult()*eventMult()*maintenanceMult()*policyProductionMult();return Number.isFinite(result)?Math.max(.05,result):1}function tapPower(){return(1+g.tapLevel*2.5)*(1+(prestigeMult()-1)+(operatorMult()-1)+(legacyProductionMult()-1))*boostMult()}function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel)}
+function prestigeMult(){return 1+.08*Math.pow(Math.max(0,g.prestige||0),.72)}function operatorMult(){return 1+Math.max(0,g.operatorLevel-1)*.01}function efficiencyMult(){return 1+g.corporate.eff*.05}function regionMult(){let m=1;REGIONS.forEach(r=>{if(r.id!=="riverbend"&&g.regions[r.id])m+=(r.bonus||0)});return m}function boostMult(){return Date.now()<g.boostUntil?2:1}function eventMult(){if(!g.event)return 1;if(g.event.type==="breakdown")return .5;if(g.event.type==="surge")return 1.5;return 1}function maintenanceMult(){return .65+.35*(g.maintenance/100)}function premiumLicenseMult(){return g.executiveLicenseUnlocked?1.25:1}function totalMult(){const core=1+(prestigeMult()-1)+(operatorMult()-1)+(efficiencyMult()-1)+(regionMult()-1)+(staffProductionMult()-1)+(researchProductionMult()-1)+(empireBonusMult()-1)+(premiumLicenseMult()-1)+(legacyProductionMult()-1)+(b10LicenseMult()-1);const result=core*boostMult()*eventMult()*maintenanceMult()*policyProductionMult();return Number.isFinite(result)?Math.max(.05,result):1}function tapPower(){
+  const manual=(1+g.tapLevel*2.5)*(1+(prestigeMult()-1)+(operatorMult()-1)+(legacyProductionMult()-1))*boostMult();
+  let fleetPulse=0;try{fleetPulse=Math.max(0,output())*.15}catch(e){}
+  const amount=Math.max(manual,fleetPulse);
+  return Number.isFinite(amount)?Math.max(1,amount):1;
+}function tapUpgradeCost(){return 25*Math.pow(1.65,g.tapLevel)}
 function rawOutput(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=plantBaseContribution(p,s)*(.6+.4*s.condition/100)});return Number.isFinite(n)?n:1e300}function output(){const n=rawOutput()*totalMult();return Number.isFinite(n)?Math.min(1e300,n):1e300}function fuelCostPerSecond(){let n=0;PLANTS.forEach(p=>{const s=g.plants[p.id];if(s&&s.unlocked)n+=p.fuel*s.level});return n*Math.max(.35,1-g.corporate.fuel*.05-g.research.superconductors*.015)}function gridSaleMult(){return(1+g.corporate.grid*.04+g.research.quantumGrid*.08)*(g.executiveLicenseUnlocked?1.10:1)*legacySaleMult()}function netValuePerSecond(){return Math.max(0,output()*gridSaleMult()-fuelCostPerSecond())}function plantCost(p){const s=g.plants[p.id];if(!s.unlocked)return p.unlock;return p.unlock*.7*Math.pow(1.62,Math.max(1,s.level)-1)}function totalLevels(){return PLANTS.reduce((a,p)=>a+(g.plants[p.id].unlocked?g.plants[p.id].level:0),0)}function maintenanceCost(){return Math.max(250,rawOutput()*20+(100-g.maintenance)*18)}function engineerCost(){return 2500*Math.pow(1.75,g.engineers)}function corporateCost(up){return up.base*Math.pow(1.9,g.corporate[up.id]||0)}
 function saveGame(){repairLateGameState();g.lastSeen=Date.now();localStorage.setItem("PPT_V5",JSON.stringify(g))}function toast(t){const e=document.getElementById("toast");if(!e)return;e.textContent=t;e.classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.remove("show"),1800)}function addLog(t){if(!Array.isArray(g.log))g.log=[];const x=new Date().toLocaleTimeString([],{hour:"2-digit",minute:"2-digit"});g.log.unshift(x+" • "+t);g.log=g.log.slice(0,25)}function addXP(a){a=Number(a);if(!Number.isFinite(a)||a<=0)return;let req=operatorXPRequirement(),gain=Math.min(a,Math.max(250,req*.5));g.operatorXP+=gain;let levels=0;while(g.operatorXP>=req&&levels<25){g.operatorXP-=req;g.operatorLevel++;levels++;req=operatorXPRequirement()}if(levels){addLog("Company advanced "+levels+" level"+(levels===1?"":"s")+" to Level "+g.operatorLevel+".");toast("⭐ Company Level "+g.operatorLevel)}if(g.operatorXP>=req)g.operatorXP=Math.min(g.operatorXP,req*.95)}
 function saleXPGain(amount){amount=Math.max(0,Number(amount)||0);return Math.max(1,15+Math.log10(1+amount)*18)}
@@ -912,10 +917,13 @@ function renderAutoGenerateUI(){
 }
 
 function runAutoGenerate(){
-    if(!g.autoGenerateUnlocked || !g.autoGenerate) return;
-    const amount = tapPower()*(1+(g.autoGenerateLevel||0)*.20);
-    g.stored += amount;g.generated += amount;
-    if(typeof addXP === "function")addXP(.2);
+  if(!g.autoGenerateUnlocked || !g.autoGenerate) return;
+  const level=Math.max(0,Number(g.autoGenerateLevel)||0);
+  const core=1+Math.min(.50,level*.05);
+  const amount=tapPower()*core;
+  g.stored=Math.min(1e300,(Number(g.stored)||0)+amount);
+  g.generated=Math.min(1e300,(Number(g.generated)||0)+amount);
+  if(typeof addXP === "function")addXP(.2);
 }
 
 setInterval(runAutoGenerate, 1000);
@@ -1012,8 +1020,10 @@ function buyEmpireLevel(){
 }
 function upgradeAutoGenerate(){
   if(!g.autoGenerateUnlocked){toast("Unlock Auto Generate in the Store first.");return}
+  const level=Math.max(0,Number(g.autoGenerateLevel)||0);
+  if(level>=10){toast("Automation Core is maxed at Level 10.");return}
   const c=autoGenerateUpgradeCost();if(g.cash<c){toast("Automation upgrade requires "+money(c));return}
-  g.cash-=c;g.autoGenerateLevel=(g.autoGenerateLevel||0)+1;addXP(20);addLog("Automation Core upgraded to Level "+g.autoGenerateLevel+".");saveGame();render();
+  g.cash-=c;g.autoGenerateLevel=level+1;addXP(20);addLog("Automation Core upgraded to Level "+g.autoGenerateLevel+".");saveGame();render();
 }
 function restorePurchases(){
   if(nativeStoreKitAvailable()){
@@ -1198,25 +1208,37 @@ document.getElementById("kpiLifetime").textContent=money(g.lifetimeCash);
 document.getElementById("kpiContracts").textContent=g.contractsCompleted;
 document.getElementById("kpiPrestige").textContent=g.prestige;
 applySettings();renderTutorial();renderEndgame();renderMegaSystems();renderEmpireSystems();renderB10CommandDeck();renderB10Shift();renderB10License();renderGuidedTutorial();renderPremiumAssetState()}
+/* PPT BUILD 8 RC2 OFFLINE — RUNS AFTER BALANCE LAYERS */
+/* PPT BUILD 8 RC4 OFFLINE — ONLINE PLAY MUST WIN */
 function handleOffline(){
-  const now=Date.now(),maxHours=g.offlineOperationsUnlocked?12:8;
-  const rawSeconds=Math.max(0,(now-(Number(g.lastSeen)||now))/1000),seconds=Math.min(maxHours*3600,rawSeconds);
+  if(window.__ppt8OfflineHandled)return;
+  window.__ppt8OfflineHandled=true;
+  const now=Date.now();
+  const saved=Number(window.__pptOfflineLaunchLastSeen||g.lastSeen)||now;
+  const maxHours=g.offlineOperationsUnlocked?12:8;
+  const seconds=Math.min(maxHours*3600,Math.max(0,(now-saved)/1000));
   g.lastSeen=now;
   if(seconds<30||output()<=0)return;
-  const first=Math.min(seconds,7200),middle=Math.min(Math.max(0,seconds-7200),7200)*.50,late=Math.max(0,seconds-14400)*.25;
-  const effectiveSeconds=first+middle+late,oe=offlineEfficiency();
-  const theoretical=Math.max(0,output()*effectiveSeconds*oe);
-  let saleEstimate=1;try{saleEstimate=Math.max(1,Math.min(3,safeSaleMultiplier()))}catch(e){}
-  let capValue=Math.max(5000,(typeof netValuePerSecond==="function"?netValuePerSecond():0)*3600);
-  try{const next=PLANTS.find(p=>!g.plants?.[p.id]?.unlocked);if(next)capValue=Math.max(5000,next.unlock*.15)}catch(e){}
-  const capEnergy=Math.max(1,capValue/saleEstimate),p=Math.min(theoretical,capEnergy),ratio=theoretical>0?p/theoretical:0;
-  const c=Math.max(0,fuelCostPerSecond()*effectiveSeconds*oe*ratio);
-  g.stored=Math.min(1e300,(g.stored||0)+p);g.generated=Math.min(1e300,(g.generated||0)+p);g.cash=Math.max(0,(g.cash||0)-c);
+
+  const licensed=!!g.offlineOperationsUnlocked;
+  /* Keep the advertised 20% free / 35% licensed efficiency, but cap the
+     TOTAL offline award to 1 minute (free) or 2 minutes (licensed) of
+     full online fleet production. This guarantees offline progress is a
+     catch-up convenience rather than the best way to make money. */
+  let oe=licensed?.35:.20;
+  try{oe=Math.max(0,Math.min(licensed?.37:.22,offlineEfficiency()))}catch(e){}
+  const equivalentCap=licensed?120:60;
+  const creditedSeconds=Math.min(seconds*oe,equivalentCap);
+  const p=Math.max(0,output()*creditedSeconds);
+  const c=Math.max(0,fuelCostPerSecond()*creditedSeconds);
+  g.stored=Math.min(1e300,(Number(g.stored)||0)+p);
+  g.generated=Math.min(1e300,(Number(g.generated)||0)+p);
+  g.cash=Math.max(0,(Number(g.cash)||0)-c);
   const amount=document.getElementById("offlineAmount"),text=document.getElementById("offlineText"),modal=document.getElementById("offlineModal");
   if(amount)amount.textContent=energy(p);
-  if(text)text.textContent="Offline operations ran for "+Math.floor(seconds/60)+" minutes at "+Math.round(oe*100)+"% efficiency. After 2 hours, production uses diminishing returns. Maximum window: "+maxHours+" hours."+(p<theoretical?" A progression safety cap limited this payout.":"")+" Fuel cost: "+money(c)+".";
+  if(text)text.textContent="Away for "+Math.floor(seconds/60)+" minutes. Offline Operations used "+Math.round(oe*100)+"% efficiency, capped at "+Math.round(equivalentCap/60)+" minute"+(equivalentCap>60?"s":"")+" of full online production so active play always earns more. Fuel cost: "+money(c)+".";
   if(modal)modal.classList.add("show");
-  addLog("Balanced offline production added "+energy(p)+(p<theoretical?" (progression cap applied).":"."));
+  addLog("Offline production added "+energy(p)+" using the Build 8 RC4 online-first cap.");
 }
 function closeOffline(){document.getElementById("offlineModal").classList.remove("show");saveGame();render()}
 
@@ -1285,7 +1307,7 @@ window.addEventListener("load",()=>{
   if(splash)setTimeout(()=>{splash.classList.add("hide");setTimeout(()=>splash.remove(),700)},1150);
 });
 
-console.log("Power Plant Tycoon BUILD 10 MAJOR UPGRADE loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Power Plant Tycoon BUILD 10 MAJOR UPGRADE loaded");window.__pptOfflineLaunchLastSeen=Number(g.lastSeen)||Date.now();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 
 
 // Ask the native iPhone wrapper for App Store products/entitlements after the web game has initialized.

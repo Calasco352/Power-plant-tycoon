@@ -377,7 +377,13 @@
       hr:"Hire staff for less",
       research:"Unlock technology for less"
     };
-    Object.entries(copy).forEach(([id,text])=>{const e=document.getElementById("hq6Effect-"+id);if(e)e.textContent=text});
+    /* PPT BUILD 8 RC4 HQ STATIC DESCRIPTION FIX */
+    Object.entries(copy).forEach(([id,text])=>{
+      const e=document.getElementById("hq6Effect-"+id);if(!e)return;
+      let x=e.parentElement?.querySelector(".ppt8-hq-explain");
+      if(!x){x=document.createElement("div");x.className="ppt8-hq-explain";x.style.cssText="margin-top:4px;color:#9ab7c5;font-size:10px;line-height:1.35;min-height:14px";e.insertAdjacentElement("afterend",x)}
+      x.textContent=text;
+    });
     const head=document.querySelector(".hq6-section-head h3");if(head)head.textContent="CHOOSE AN HQ AREA";
     markHQRecommendation();
   }
