@@ -74,6 +74,7 @@ function applyConsumablePurchase(productID,transactionID){
     addLog("Turbo Grid Pack applied: +60 minutes of 2× generation.");
   }else if(productID===PPT_STOREKIT.products.maintenanceCrate){
     g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id]?.unlocked)g.plants[p.id].condition=100});
+    if(g.event?.type==="breakdown"){g.event=null;g.eventCooldown=Date.now()+90000}
     g.boostUntil=Math.max(g.boostUntil||0,Date.now())+15*60*1000;
     addLog("Maintenance Crate applied: fleet fully repaired + 15 minute boost.");
   }else if(productID===PPT_STOREKIT.products.capitalInjection){
@@ -1163,7 +1164,8 @@ function renderPlants(){
     const s=g.plants[p.id],c=plantCost(p);
     const level=s.level||0,tier=level>=50?5:level>=20?4:level>=10?3:level>=5?2:1,mastery=s.mastery||0;
     const need=masteryRequirement(s),mc=masteryCost(p,s),masterMax=mastery>=5,canMaster=s.unlocked&&!masterMax&&level>=need;
-    const bg=p.thumb?`images/thumbs/${p.thumb}.jpg`:`images/thumbs/${p.id}.jpg`;
+    const artMap={diesel:"diesel",steam:"steam",gas:"gas",solar:"solar",nuclear:"nuclear",offshore:"wind",biomass:"geo",hydro:"hydro",tidal:"hydro",smr:"nuclear",geothermal:"geo",hydrogen:"gas",fusion:"fusion",orbital:"solar",helium3:"fusion",solarswarm:"solar"};
+    const bg=`images/v8/plants/${artMap[p.id]||artMap[p.thumb]||"solar"}.jpg`;
     return `<div class="asset plant-v7 ${p.scene===false?"strategic-asset":""}">
       <div class="plant-card-bg" style="background-image:url('${bg}')"></div>
       <div class="plant-card-shade"></div>

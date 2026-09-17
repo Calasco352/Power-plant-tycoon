@@ -1,4 +1,4 @@
-/* Gridline Empire — BUILD 6 ECONOMY V5 */
+/* GRIDLINE EMPIRE — BUILD 6 ECONOMY V5 */
 (function(){
   if(window.__pptBuild6EconomyV5)return;
   window.__pptBuild6EconomyV5=true;
@@ -277,7 +277,7 @@
     if(productID===PPT_STOREKIT.products.turboGrid){
       g.boostUntil=Math.max(n(g.boostUntil),now())+60*60*1000;addLog("Turbo Grid Pack applied: +60 minutes of +35% generation.");
     }else if(productID===PPT_STOREKIT.products.maintenanceCrate){
-      g.maintenance=100;PLANTS.forEach(p=>{if(g.plants?.[p.id]?.unlocked)g.plants[p.id].condition=100});g.boostUntil=Math.max(n(g.boostUntil),now())+15*60*1000;addLog("Maintenance Crate applied: fleet fully repaired + 15 minutes of +35% output.");
+      g.maintenance=100;PLANTS.forEach(p=>{if(g.plants?.[p.id]?.unlocked)g.plants[p.id].condition=100});if(g.event?.type==="breakdown"){g.event=null;g.eventCooldown=now()+90000}g.boostUntil=Math.max(n(g.boostUntil),now())+15*60*1000;addLog("Maintenance Crate applied: active breakdown cleared, fleet fully repaired + 15 minutes of +35% output.");
     }else if(productID===PPT_STOREKIT.products.capitalInjection){
       let cash=Math.max(500,netValuePerSecond()*900);try{const nextPlant=PLANTS.find(p=>!g.plants?.[p.id]?.unlocked);if(nextPlant)cash=Math.min(cash,Math.max(500,nextPlant.unlock*.12))}catch(e){}
       cash=Math.max(500,Math.round(cash));recordEarnedCash(cash);addLog("Capital Injection received: "+money(cash)+".");

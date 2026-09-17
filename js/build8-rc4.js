@@ -1,4 +1,4 @@
-/* Gridline Empire — BUILD 8 RC4 RELEASE VERIFICATION */
+/* GRIDLINE EMPIRE — BUILD 8 RC4 RELEASE VERIFICATION */
 (function(){
   if(window.__pptBuild8RC4)return;
   window.__pptBuild8RC4=true;

@@ -18,14 +18,14 @@
 <!-- PPT BUILD 4 TOP HUD FIX HTML -->
 <div id="bootSplashPremium">
   <div class="boot-card">
-    <h1>POWER PLANT <span>TYCOON</span></h1>
+    <h1>GRIDLINE <span>EMPIRE</span></h1>
     <p>PREMIUM ASSET EDITION</p>
     <div class="boot-load"><i></i></div>
   </div>
 </div>
 <div class="app">
 <header class="topbar">
-<div class="brand"><div class="logo">POWER PLANT <span>TYCOON</span><small>CLEANER ENERGY • A BRIGHTER TOMORROW</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
+<div class="brand"><div class="logo">GRIDLINE <span>EMPIRE</span><small>CLEANER ENERGY • A BRIGHTER TOMORROW</small></div><div id="rank" class="rank">GRID ROOKIE</div></div>
 <div class="stats">
 <div class="stat cash"><small>CASH</small><b id="cash">$0</b></div>
 <div class="stat power"><small>STORED POWER</small><b id="power">0 kWh</b></div>
@@ -46,7 +46,7 @@
 <div class="hero">
 <div class="sky"><div class="sunmoon"></div></div>
 <div class="hills"></div>
-<div class="scene-label"><small>YOUR PLANT</small><h2>RIVERBEND</h2><h3>POWER STATION</h3><p id="sceneSub">Reliable energy for a brighter tomorrow.</p></div>
+<div class="scene-label"><small>GRIDLINE EMPIRE</small><h2>RIVERBEND</h2><h3>POWER STATION</h3><p id="sceneSub">Reliable energy for a brighter tomorrow.</p></div>
 <div class="statusstrip"><div id="gridStatus" class="pill grid">● GRID ONLINE</div><div id="weather" class="pill">☀ CLEAR</div></div>
 
 
@@ -316,7 +316,7 @@
 <section id="company" class="page hq6-page">
 <div class="hq6-shell">
   <div class="hq6-titlebar">
-    <div><small>Gridline Empire</small><h2>HQ <span>COMMAND CENTER</span></h2><p>Global energy. Local impact. Build a stronger grid.</p></div>
+    <div><small>HEADQUARTERS</small><h2>GRIDLINE <span>EMPIRE</span></h2><p>HQ Command Center • Global energy. Local impact. Build a stronger grid.</p></div>
     <div class="hq6-level"><span>COMPANY LEVEL</span><b id="hq6Level">LV 1</b><div class="hq6-xp"><i id="hq6Xp"></i></div></div>
   </div>
 
@@ -403,7 +403,7 @@
 <!-- PPT BUILD 6 STORE 16 -->
 <section id="store" class="page b6-store-page">
 <div class="b6-store-shell">
-  <div class="b6-store-hero"><div><small>Gridline Empire • EXECUTIVE STORE</small><h2>EXECUTIVE <span>POWER SHOP</span></h2><p>Permanent licenses, HQ cosmetics, optional boosts and company resource packs.</p></div><div class="b6-store-hero-icon">⚡</div></div>
+  <div class="b6-store-hero"><div><small>GRIDLINE EMPIRE • EXECUTIVE STORE</small><h2>EXECUTIVE <span>POWER SHOP</span></h2><p>Permanent licenses, HQ cosmetics, optional boosts and company resource packs.</p></div><div class="b6-store-hero-icon">⚡</div></div>
   <div class="b6-store-status"><div><small>APP STORE</small><b id="storeKitStatus">Connecting to Apple StoreKit…</b></div><button id="restorePurchasesBtn" class="btn dark" onclick="restorePurchases()">RESTORE</button></div>
 
   <div class="b6-store-head"><h3>⭐ FEATURED EXECUTIVE UPGRADES</h3><span>PERMANENT</span></div>
@@ -424,10 +424,10 @@
   <div class="b6-store-head"><h3>📦 OPERATIONS & EXPANSION PACKS</h3><span>CONSUMABLE</span></div>
   <div class="b6-product-grid">
     <div class="b6-product"><div class="b6-icon">⚡</div><h4>Turbo Grid Pack</h4><p>60 minutes of 2× generation.</p><button id="turboGridPurchaseBtn" class="b6-buy blue" onclick="purchaseTurboGridPack()">BUY</button></div>
-    <div class="b6-product"><div class="b6-icon">🧰</div><h4>Maintenance Crate</h4><p>Fully repairs the fleet + 15 minutes of 2× output.</p><button id="maintenanceCratePurchaseBtn" class="b6-buy orange" onclick="purchaseMaintenanceCrate()">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🧰</div><h4>Maintenance Crate</h4><p>Clears an active breakdown, fully repairs the fleet + 15 minutes of +35% output.</p><button id="maintenanceCratePurchaseBtn" class="b6-buy orange" onclick="purchaseMaintenanceCrate()">BUY</button></div>
     <div class="b6-product"><div class="b6-icon">💵</div><h4>Capital Injection</h4><p>Scaled cash injection based on current company value.</p><button id="capitalInjectionPurchaseBtn" class="b6-buy green" onclick="purchaseCapitalInjection()">BUY</button></div>
     <div class="b6-product"><div class="b6-icon">📡</div><h4>Market Intelligence Pack</h4><p>+25% electricity sale value for 30 minutes.</p><button id="b6Buy-marketIntelligence" class="b6-buy cyan" onclick="purchaseB6Product('marketIntelligence')">BUY</button></div>
-    <div class="b6-product"><div class="b6-icon">🛠️</div><h4>Emergency Engineering Team</h4><p>Full fleet repair + 60 minutes of heavy wear protection.</p><button id="b6Buy-emergencyEngineering" class="b6-buy orange" onclick="purchaseB6Product('emergencyEngineering')">BUY</button></div>
+    <div class="b6-product"><div class="b6-icon">🛠️</div><h4>Emergency Engineering Team</h4><p>Clears an active breakdown, fully repairs the fleet + 60 minutes of heavy wear and breakdown protection.</p><button id="b6Buy-emergencyEngineering" class="b6-buy orange" onclick="purchaseB6Product('emergencyEngineering')">BUY</button></div>
     <div class="b6-product"><div class="b6-icon">🧪</div><h4>R&amp;D Accelerator</h4><p>50% off your next research upgrade.</p><button id="b6Buy-rdAccelerator" class="b6-buy purple" onclick="purchaseB6Product('rdAccelerator')">BUY</button></div>
     <div class="b6-product"><div class="b6-icon">👥</div><h4>Recruitment Drive</h4><p>50% off your next specialist staff hire.</p><button id="b6Buy-recruitmentDrive" class="b6-buy blue" onclick="purchaseB6Product('recruitmentDrive')">BUY</button></div>
     <div class="b6-product"><div class="b6-icon">🔋</div><h4>Grid Reserve Pack</h4><p>Adds at least 30 minutes of current generation to stored power.</p><button id="b6Buy-gridReserve" class="b6-buy cyan" onclick="purchaseB6Product('gridReserve')">BUY</button></div>
@@ -500,5 +500,6 @@
 <script src="js/build8-rc4.js?v=1"></script>
 <script src="js/build13-iap-release.js?v=13"></script>
 <script src="js/build13-vip-rankings.js?v=13"></script>
+<script src="js/build17-launch-balance.js?v=17"></script>
 </body>
 </html>

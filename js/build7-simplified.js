@@ -1,4 +1,4 @@
-/* Gridline Empire — BUILD 7 SIMPLIFIED EXPERIENCE V2 + ECONOMY */
+/* GRIDLINE EMPIRE — BUILD 7 SIMPLIFIED EXPERIENCE V2 + ECONOMY */
 (function(){
   if(window.__pptBuild7Simplified)return;
   window.__pptBuild7Simplified=true;

@@ -1,4 +1,4 @@
-/* Gridline Empire BUILD 6 V2 — 16 PRODUCT STORE + AUTO SELL LICENSE */
+/* GRIDLINE EMPIRE BUILD 6 V2 — 16 PRODUCT STORE + AUTO SELL LICENSE */
 (function(){
 if(window.__pptB6Store16)return;window.__pptB6Store16=true;
 
@@ -69,8 +69,9 @@ function grant(k,tx){
   }else if(k==="emergencyEngineering"){
     g.maintenance=100;
     if(typeof PLANTS!=="undefined")PLANTS.forEach(p=>{if(g.plants?.[p.id]?.unlocked)g.plants[p.id].condition=100});
+    if(g.event?.type==="breakdown"){g.event=null;g.eventCooldown=now+90000}
     g.engineeringShieldUntil=Math.max(g.engineeringShieldUntil||0,now)+3600000;
-    if(typeof addLog==="function")addLog("Emergency Engineering Team deployed.");
+    if(typeof addLog==="function")addLog("Emergency Engineering Team deployed: active breakdown cleared + 60 minutes of heavy wear and breakdown protection.");
   }else if(k==="rdAccelerator"){
     g.store6ResearchVouchers++;
     if(typeof addLog==="function")addLog("R&D Accelerator delivered: next research upgrade is 50% off.");
@@ -318,6 +319,24 @@ function renderB6Store(){
   const s=document.getElementById("storeKitStatus");
   if(s)s.textContent=(typeof nativeStoreKitAvailable==="function"&&nativeStoreKitAvailable())?"Apple StoreKit connected • 16-product catalog":"Browser test store • 16-product catalog";
   ensureAutoSellControls();
+}
+
+/* Build 17: Emergency Engineering protection also prevents new breakdown events while active. */
+if(typeof createEvent==="function"&&!createEvent.__ge17EngineeringShield){
+  const baseCreateEvent=createEvent;
+  const wrapped=function(){
+    const shield=typeof g!=="undefined"&&g&&Date.now()<Number(g.engineeringShieldUntil||0);
+    const before=g?.event;
+    const r=baseCreateEvent.apply(this,arguments);
+    if(shield&&g?.event?.type==="breakdown"&&g.event!==before){
+      g.event=null;g.eventCooldown=Date.now()+90000;
+      if(typeof saveGame==="function")saveGame();
+      if(typeof render==="function")render();
+    }
+    return r;
+  };
+  wrapped.__ge17EngineeringShield=true;
+  createEvent=wrapped;
 }
 
 window.renderB6Store=renderB6Store;

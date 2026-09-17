@@ -603,11 +603,11 @@ body{
 .prestige-visual:not(.night):not(.breakdown):not(.storm-visual) .yard.stage-solar{background-image:url("../images/plants/solar_prestige.png")!important}
 .prestige-visual:not(.night):not(.breakdown):not(.storm-visual) .yard.stage-nuclear{background-image:url("../images/plants/nuclear_prestige.png")!important}
 
-#cpDiesel{background-image:linear-gradient(#06121aaa,#06121add),url("../images/thumbs/diesel.jpg")!important;background-size:cover!important}
-#cpSteam{background-image:linear-gradient(#06121aaa,#06121add),url("../images/thumbs/steam.jpg")!important;background-size:cover!important}
-#cpGas{background-image:linear-gradient(#06121aaa,#06121add),url("../images/thumbs/gas.jpg")!important;background-size:cover!important}
-#cpSolar{background-image:linear-gradient(#06121aaa,#06121add),url("../images/thumbs/solar.jpg")!important;background-size:cover!important}
-#cpNuclear{background-image:linear-gradient(#06121aaa,#06121add),url("../images/thumbs/nuclear.jpg")!important;background-size:cover!important}
+#cpDiesel{background-image:linear-gradient(#06121aaa,#06121add),url("../images/v8/plants/diesel.jpg")!important;background-size:cover!important}
+#cpSteam{background-image:linear-gradient(#06121aaa,#06121add),url("../images/v8/plants/steam.jpg")!important;background-size:cover!important}
+#cpGas{background-image:linear-gradient(#06121aaa,#06121add),url("../images/v8/plants/gas.jpg")!important;background-size:cover!important}
+#cpSolar{background-image:linear-gradient(#06121aaa,#06121add),url("../images/v8/plants/solar.jpg")!important;background-size:cover!important}
+#cpNuclear{background-image:linear-gradient(#06121aaa,#06121add),url("../images/v8/plants/nuclear.jpg")!important;background-size:cover!important}
 .cp-stage.active{background-blend-mode:normal!important}
 
 .tutorial-avatar{
@@ -3381,7 +3381,7 @@ body:before{
 #plants #plantList .strategic-asset:after{top:10px!important;right:10px!important;background:#101c25ed!important;border:1px solid #a78029!important;color:#ffda78!important;border-radius:3px!important;padding:5px 7px!important;}
 #plants .page-hero{background:linear-gradient(140deg,#172630,#08131c)!important;border-color:#48545d!important;border-radius:8px!important;}
 
-/* ================= Gridline Empire BUILD 6 — HQ COMMAND CENTER ================= */
+/* ================= GRIDLINE EMPIRE BUILD 6 — HQ COMMAND CENTER ================= */
 #company.hq6-page{padding:0!important;background:transparent!important}
 #company .uf-banner,#company>.card{display:none!important}
 .hq6-shell{--hq6-gold:#ffc83d;--hq6-cyan:#57d9ff;--hq6-green:#38e58a;--hq6-red:#ff5e63;--hq6-panel:rgba(5,18,29,.96);--hq6-line:#315a72;display:flex;flex-direction:column;gap:10px;padding:4px 0 12px}
@@ -3415,7 +3415,7 @@ body:before{
 .b6-autosell-note{width:100%;margin:2px 0 0;color:#718c9d;font-size:7px;line-height:1.35}
 
 /* ============================================================
-   Gridline Empire — BUILD 6 FINAL SYSTEMS OVERHAUL
+   GRIDLINE EMPIRE — BUILD 6 FINAL SYSTEMS OVERHAUL
    Sticky HUD • compact facility control • First Shift tutorial
    ============================================================ */
 body.b6-final{--b6-safe-top:max(8px,env(safe-area-inset-top));}
@@ -3554,7 +3554,7 @@ body.b6-final #tutorialMask2{display:none!important}
   .b6-active-facility b{font-size:10px}
   #b6FirstShiftPanel{bottom:calc(80px + env(safe-area-inset-bottom));padding:11px}
 }
-/* Gridline Empire BUILD 6 — UI HOTFIX V1 */
+/* GRIDLINE EMPIRE BUILD 6 — UI HOTFIX V1 */
 body.b6-tutorial-live #b6FirstShiftMask.show{opacity:1!important;background:rgba(0,5,9,.56)!important;backdrop-filter:brightness(.72) saturate(.78)}
 #b6FirstShiftPanel{border:2px solid #f0b82f!important;background:linear-gradient(145deg,rgba(18,31,39,.995),rgba(5,12,18,.995))!important;box-shadow:0 0 0 3px rgba(255,201,62,.12),0 0 28px rgba(255,190,45,.26),0 22px 55px rgba(0,0,0,.78)!important}
 .b6-tut-head>div{display:flex;align-items:center;gap:8px;min-width:0;flex-wrap:wrap}
@@ -3573,3 +3573,15 @@ body.b6-tutorial-live #b6FirstShiftMask.show{opacity:1!important;background:rgba
 .nav [data-nav].active{color:#ffd34b!important}
 .nav [data-nav]:not(.active):not(.b6-tut-spot){box-shadow:none!important}
 @media(max-width:760px){#b6FirstShiftPanel{padding:13px 12px!important;bottom:calc(78px + env(safe-area-inset-bottom))!important}#b6FirstShiftPanel h3{font-size:18px!important}#b6FirstShiftPanel p{font-size:10.5px!important}}
+
+
+/* GRIDLINE EMPIRE BUILD 17 — MOBILE BRANDING / HQ VISIBILITY HOTFIX */
+#company.hq6-page .hq6-titlebar{position:relative;z-index:2}
+#company.hq6-page .hq6-titlebar>div:first-child{min-width:0;padding-top:2px}
+#company.hq6-page .hq6-titlebar small{display:block;position:relative;z-index:3;color:#9fdfff!important;letter-spacing:1.6px!important}
+#company.hq6-page .hq6-titlebar h2{white-space:normal;line-height:1.02}
+@media(max-width:760px){
+  #company.hq6-page .hq6-titlebar{padding-top:16px!important;align-items:flex-start!important}
+  #company.hq6-page .hq6-titlebar h2{font-size:18px!important;max-width:180px}
+  #company.hq6-page .hq6-titlebar p{max-width:220px;line-height:1.35}
+}

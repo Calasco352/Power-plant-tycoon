@@ -1,11 +1,12 @@
-/* Gridline Empire — BUILD 13 EXECUTIVE GRID VIP + GAME CENTER RANKINGS */
+/* GRIDLINE EMPIRE — BUILD 13 EXECUTIVE GRID VIP + GAME CENTER RANKINGS */
 /* PPT BUILD 14 VIP PURCHASE UI */
+/* PPT BUILD 15 MONTHLY VIP V2 */
 (function(){
   if(window.__pptBuild13VipRankings)return;
   window.__pptBuild13VipRankings=true;
 
   const VIP={
-    monthly:"com.calascointeractive.powerplanttycoon.vip.monthly",
+    monthly:"com.calascointeractive.powerplanttycoon.vip.monthly2",
     yearly:"com.calascointeractive.powerplanttycoon.vip.yearly"
   };
   const LB={
@@ -96,7 +97,7 @@
     card.innerHTML=`
       <div class="ppt13-vip-head"><div><small>EXECUTIVE GRID VIP</small><h3>💎 VIP Membership</h3><p>Ongoing executive benefits for active members.</p></div><span id="ppt13VipState">NOT ACTIVE</span></div>
       <div class="ppt13-vip-benefits">
-        <div><b>+5%</b><small>GRID OUTPUT</small></div><div><b>+3%</b><small>SALE QUALITY</small></div><div><b>VIP</b><small>DAILY SUPPLY</small></div><div><b>0</b><small>FORCED ADS</small></div>
+        <div><b>+10%</b><small>GRID OUTPUT</small></div><div><b>+7%</b><small>SALE QUALITY</small></div><div><b id="ppt13VipDailyValue">SCALED</b><small>DAILY SUPPLY</small></div><div><b>0</b><small>FORCED ADS</small></div>
       </div>
       <div class="ppt13-vip-plans">
         <button id="ppt13VipMonthly" class="btn gold" onclick="pptBuyVIP('monthly')">MONTHLY • $4.99</button>
@@ -107,8 +108,12 @@
     const hero=store.querySelector(".page-hero");
     if(hero)hero.insertAdjacentElement("afterend",card);else store.prepend(card);
   }
+  function vipDailyReward(){
+    return Math.min(1e300,Math.max(25000,n(typeof netValuePerSecond==="function"?netValuePerSecond():0)*300,n(typeof output==="function"?output():0)*180));
+  }
   function renderVip(){
     ensureVipStore();applyVipVisuals();
+    const dailyValue=document.getElementById("ppt13VipDailyValue");if(dailyValue)dailyValue.textContent=(typeof money==="function"?money(vipDailyReward()):String(Math.round(vipDailyReward())));
     const state=document.getElementById("ppt13VipState");if(state){state.textContent=vipActive?("ACTIVE • "+vipPlan):"NOT ACTIVE";state.classList.toggle("active",vipActive)}
     const m=document.getElementById("ppt13VipMonthly"),y=document.getElementById("ppt13VipYearly");
     const pm=PPT_STOREKIT?.prices?.[VIP.monthly]||"",py=PPT_STOREKIT?.prices?.[VIP.yearly]||"";
@@ -134,8 +139,7 @@
     if(!vipActive){if(typeof toast==="function")toast("Executive Grid VIP is not active.");return}
     let s={};try{s=JSON.parse(localStorage.getItem(VIP_KEY)||"{}")||{}}catch(e){}
     if(s.day===dayKey()){if(typeof toast==="function")toast("VIP daily supply already claimed.");return}
-    let reward=Math.max(25000,n(typeof netValuePerSecond==="function"?netValuePerSecond():0)*300,n(typeof output==="function"?output():0)*180);
-    reward=Math.min(1e300,reward);
+    let reward=vipDailyReward();
     if(typeof recordEarnedCash==="function")recordEarnedCash(reward);else if(game())g.cash=n(g.cash)+reward;
     s.day=dayKey();try{localStorage.setItem(VIP_KEY,JSON.stringify(s))}catch(e){}
     if(typeof addLog==="function")addLog("Executive Grid VIP daily supply received: "+(typeof money==="function"?money(reward):reward)+".");
@@ -174,8 +178,8 @@
   };
 
   /* VIP applies after all Build 8/Build 6 balance wrappers. */
-  if(typeof totalMult==="function"&&!totalMult.__ppt13Vip){const base=totalMult;const f=function(){return base.apply(this,arguments)*(vipActive?1.05:1)};f.__ppt13Vip=true;totalMult=f}
-  if(typeof marketSaleMult==="function"&&!marketSaleMult.__ppt13Vip){const base=marketSaleMult;const f=function(){return base.apply(this,arguments)*(vipActive?1.03:1)};f.__ppt13Vip=true;marketSaleMult=f}
+  if(typeof totalMult==="function"&&!totalMult.__ppt13Vip){const base=totalMult;const f=function(){return base.apply(this,arguments)*(vipActive?1.10:1)};f.__ppt13Vip=true;totalMult=f}
+  if(typeof marketSaleMult==="function"&&!marketSaleMult.__ppt13Vip){const base=marketSaleMult;const f=function(){return base.apply(this,arguments)*(vipActive?1.07:1)};f.__ppt13Vip=true;marketSaleMult=f}
   if(typeof markInterstitialOpportunity==="function"&&!markInterstitialOpportunity.__ppt13Vip){const base=markInterstitialOpportunity;const f=function(){if(vipActive)return;return base.apply(this,arguments)};f.__ppt13Vip=true;markInterstitialOpportunity=f}
   if(typeof tryShowPendingInterstitial==="function"&&!tryShowPendingInterstitial.__ppt13Vip){const base=tryShowPendingInterstitial;const f=function(){if(vipActive){if(game()?.adState)g.adState.pending=false;return}return base.apply(this,arguments)};f.__ppt13Vip=true;tryShowPendingInterstitial=f}
 
@@ -227,3 +231,43 @@
     console.table(a);return a;
   };
 })();
+
+/* PPT BUILD 16 FINAL EARLY ECONOMY V2 */
+(function(){
+  if(window.__pptBuild16EarlyEconomyV2)return;
+  window.__pptBuild16EarlyEconomyV2=true;
+  const KEY="PPT_B16_EARLY_ECONOMY_V2";
+  function num(v){v=Number(v);return Number.isFinite(v)?v:0}
+  function game(){try{return typeof g!=="undefined"?g:null}catch(e){return null}}
+  function state(){let s={};try{s=JSON.parse(localStorage.getItem(KEY)||"{}")||{}}catch(e){}return s}
+  function saveState(s){try{localStorage.setItem(KEY,JSON.stringify(s))}catch(e){}}
+  function runCash(){const x=game();if(!x)return 1e99;const r=num(x.prestigeRunCash);if(r>0)return r;return num(x.lifetimeCash)}
+  function earlyMult(){const r=runCash();if(r<1000)return 1.25;if(r<5000)return 1.20;if(r<25000)return 1.10;return 1}
+  function earlySaleMult(){const r=runCash();if(r<1000)return 1.08;if(r<5000)return 1.05;return 1}
+  function ensureRestartHelp(){
+    const x=game();if(!x)return;
+    const prestige=Math.max(0,Math.floor(num(x.prestige)));
+    const s=state();
+    const firstRun=prestige===0 && num(x.lifetimeCash)<1000;
+    const freshPrestige=prestige>0 && num(x.prestigeRunCash)<5000;
+    const token=firstRun?"new":("p"+prestige);
+    if((firstRun||freshPrestige) && s.lastGrant!==token && num(x.cash)<250){
+      x.cash=250;
+      s.lastGrant=token;saveState(s);
+      if(typeof addLog==="function")addLog("Startup capital: $250 • early fleet momentum active.");
+      if(typeof saveGame==="function")saveGame();
+    }
+  }
+  if(typeof totalMult==="function"&&!totalMult.__ppt16EarlyEconomy){
+    const base=totalMult;const f=function(){return base.apply(this,arguments)*earlyMult()};f.__ppt16EarlyEconomy=true;totalMult=f;
+  }
+  if(typeof marketSaleMult==="function"&&!marketSaleMult.__ppt16EarlyEconomy){
+    const base=marketSaleMult;const f=function(){return base.apply(this,arguments)*earlySaleMult()};f.__ppt16EarlyEconomy=true;marketSaleMult=f;
+  }
+  if(typeof render==="function"&&!render.__ppt16EarlyEconomy){
+    const base=render;const f=function(){ensureRestartHelp();return base.apply(this,arguments)};f.__ppt16EarlyEconomy=true;render=f;
+  }
+  ensureRestartHelp();
+  window.pptBuild16EconomyAudit=function(){return {runCash:runCash(),productionMultiplier:earlyMult(),saleMultiplier:earlySaleMult(),cash:num(game()?.cash),prestige:num(game()?.prestige)}};
+})();
+
