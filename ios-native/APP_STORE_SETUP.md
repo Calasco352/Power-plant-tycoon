@@ -1,6 +1,6 @@
-# Power Plant Tycoon — iOS Monetization RC2
+# Gridline Empire — iOS Monetization RC2
 
-This folder is the native iPhone wrapper source for the current Power Plant Tycoon release candidate.
+This folder is the native iPhone wrapper source for the current Gridline Empire release candidate.
 
 ## Bundle ID currently used by the source
 `com.calasco352.powerplanttycoon`

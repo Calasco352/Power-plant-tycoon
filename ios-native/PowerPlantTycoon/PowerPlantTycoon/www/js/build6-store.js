@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON BUILD 6 V2 — 16 PRODUCT STORE + AUTO SELL LICENSE */
+/* Gridline Empire BUILD 6 V2 — 16 PRODUCT STORE + AUTO SELL LICENSE */
 (function(){
 if(window.__pptB6Store16)return;window.__pptB6Store16=true;
 

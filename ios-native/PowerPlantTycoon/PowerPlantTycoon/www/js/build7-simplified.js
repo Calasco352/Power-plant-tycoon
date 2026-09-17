@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 7 SIMPLIFIED EXPERIENCE V2 + ECONOMY */
+/* Gridline Empire — BUILD 7 SIMPLIFIED EXPERIENCE V2 + ECONOMY */
 (function(){
   if(window.__pptBuild7Simplified)return;
   window.__pptBuild7Simplified=true;
@@ -484,5 +484,5 @@
     console.table(report);console.table(tracker.sources);return {summary:report,sources:{...tracker.sources}};
   };
   window.pptEconomy7Diagnostics=window.pptEconomy7Report;
-  console.info("Power Plant Tycoon • Build 7 Simplified V2 active");
+  console.info("Gridline Empire • Build 7 Simplified V2 active");
 })();

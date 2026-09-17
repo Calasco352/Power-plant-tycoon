@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 13 IAP RELEASE HARDENING + EXECUTIVE HQ */
+/* Gridline Empire — BUILD 13 IAP RELEASE HARDENING + EXECUTIVE HQ */
 (function(){
   if(window.__pptBuild13IAPRelease)return;
   window.__pptBuild13IAPRelease=true;

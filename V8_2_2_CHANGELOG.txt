@@ -1,4 +1,4 @@
-Power Plant Tycoon — Grid Dominion V8.2.2
+Gridline Empire — Grid Dominion V8.2.2
 Tutorial Target Anchor Fix
 
 - Removed the old fixed-position blue tutorial spotlight that could drift to unrelated cards while scrolling.

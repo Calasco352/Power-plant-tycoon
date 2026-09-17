@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 13 EXECUTIVE GRID VIP + GAME CENTER RANKINGS */
+/* Gridline Empire — BUILD 13 EXECUTIVE GRID VIP + GAME CENTER RANKINGS */
 /* PPT BUILD 14 VIP PURCHASE UI */
 (function(){
   if(window.__pptBuild13VipRankings)return;

@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 6 FINAL SYSTEMS OVERHAUL */
+/* Gridline Empire — BUILD 6 FINAL SYSTEMS OVERHAUL */
 (function(){
   if(window.__pptBuild6Final)return;
   window.__pptBuild6Final=true;

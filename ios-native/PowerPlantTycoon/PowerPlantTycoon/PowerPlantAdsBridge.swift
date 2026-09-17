@@ -10,7 +10,7 @@ import GoogleMobileAds
 final class PowerPlantAdsBridge: NSObject, WKScriptMessageHandler {
     static let messageHandlerName = "powerPlantAds"
 
-    // Production AdMob ad unit IDs for Power Plant Tycoon.
+    // Production AdMob ad unit IDs for Gridline Empire.
     static let interstitialID = "ca-app-pub-1138328624207381/3100389712"
     static let rewardedID = "ca-app-pub-1138328624207381/8874239389"
 

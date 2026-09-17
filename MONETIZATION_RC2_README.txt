@@ -1,4 +1,4 @@
-POWER PLANT TYCOON — MONETIZATION RC2
+Gridline Empire — MONETIZATION RC2
 
 BASE
 - Release Candidate long-game build

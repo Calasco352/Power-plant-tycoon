@@ -1,4 +1,4 @@
-POWER PLANT TYCOON — 100MB PREMIUM ASSET EDITION
+Gridline Empire — 100MB PREMIUM ASSET EDITION
 
 UPLOAD TO GITHUB:
 1. Keep index.html in the repository root.

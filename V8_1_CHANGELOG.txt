@@ -1,4 +1,4 @@
-POWER PLANT TYCOON — GRID DOMINION V8.1
+Gridline Empire — GRID DOMINION V8.1
 
 ONBOARDING OVERHAUL
 - New 11-step guided tutorial that teaches one system at a time.

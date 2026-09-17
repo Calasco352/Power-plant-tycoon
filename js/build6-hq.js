@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON BUILD 6 — HQ COMMAND CENTER */
+/* Gridline Empire BUILD 6 — HQ COMMAND CENTER */
 (function(){
   if(window.__pptHQ6Installed)return;
   window.__pptHQ6Installed=true;

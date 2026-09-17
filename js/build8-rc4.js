@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 8 RC4 RELEASE VERIFICATION */
+/* Gridline Empire — BUILD 8 RC4 RELEASE VERIFICATION */
 (function(){
   if(window.__pptBuild8RC4)return;
   window.__pptBuild8RC4=true;
@@ -289,5 +289,5 @@
   try{if(typeof render==="function")render()}catch(e){}
 
   setInterval(()=>{renderHomeVerification();fixHQCount();renderFleetAuditCard()},1000);
-  console.info("Power Plant Tycoon • Build 8 RC4 release verification active");
+  console.info("Gridline Empire • Build 8 RC4 release verification active");
 })();

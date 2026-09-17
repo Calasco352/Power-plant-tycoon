@@ -1,4 +1,4 @@
-POWER PLANT TYCOON — APP STORE TRANSITION RC1
+Gridline Empire — APP STORE TRANSITION RC1
 
 This package is based on the working Release Candidate 1 Long Game + Electrical Units + Scroll Fix build.
 

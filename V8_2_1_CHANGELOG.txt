@@ -1,4 +1,4 @@
-POWER PLANT TYCOON — GRID DOMINION V8.2.1
+Gridline Empire — GRID DOMINION V8.2.1
 TUTORIAL STABILITY HOTFIX
 
 - Prevents tutorial action steps from jumping or double-advancing.

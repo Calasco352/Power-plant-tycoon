@@ -1,4 +1,4 @@
-/* POWER PLANT TYCOON — BUILD 6 ECONOMY V5 */
+/* Gridline Empire — BUILD 6 ECONOMY V5 */
 (function(){
   if(window.__pptBuild6EconomyV5)return;
   window.__pptBuild6EconomyV5=true;
@@ -339,5 +339,5 @@
     const v5Render=render;render=function(){const r=v5Render();updateEconomyCopy();restoreLastSaleChip();return r};
   }
   setTimeout(()=>{updateEconomyCopy();restoreLastSaleChip()},250);
-  console.info("Power Plant Tycoon • Build 6 Economy V5 active");
+  console.info("Gridline Empire • Build 6 Economy V5 active");
 })();

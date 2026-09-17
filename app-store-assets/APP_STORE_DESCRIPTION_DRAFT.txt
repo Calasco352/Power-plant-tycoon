@@ -1,7 +1,7 @@
-POWER PLANT TYCOON — APP STORE COPY DRAFT
+Gridline Empire — APP STORE COPY DRAFT
 
 NAME
-Power Plant Tycoon
+Gridline Empire
 
 SUBTITLE
 Build. Generate. Dominate the Grid.
@@ -10,7 +10,7 @@ PROMOTIONAL TEXT
 Start with a small generating station and grow it into a global energy empire. Build advanced power assets, master the grid, complete contracts, expand across regions, and push your company into the trillion-dollar era.
 
 DESCRIPTION
-Take control of the grid in Power Plant Tycoon, an industrial idle management game where every kilowatt can become the foundation of an energy empire.
+Take control of the grid in Gridline Empire, an industrial idle management game where every kilowatt can become the foundation of an energy empire.
 
 Generate and sell electricity, commission new plants, manage maintenance and reliability, respond to market conditions, complete utility contracts, research advanced technology, and expand your transmission network across increasingly ambitious regions.
 

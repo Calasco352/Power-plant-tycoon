@@ -810,7 +810,7 @@ function exportSave(){
   navigator.clipboard?.writeText(data).then(()=>toast("Save copied to clipboard")).catch(()=>prompt("Copy your save code:",data));
 }
 function importSave(){
-  const data=prompt("Paste your Power Plant Tycoon save code:");
+  const data=prompt("Paste your Gridline Empire save code:");
   if(!data)return;
   try{
     const obj=JSON.parse(decodeURIComponent(escape(atob(data))));
@@ -1003,7 +1003,7 @@ function prestige(){
     saveGame();render();feedback("big")
   })
 }
-function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
+function resetGame(){askConfirm("Erase Save?","This permanently resets your local Gridline Empire progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
 function buyMegaProject(id){
   const p=MEGA_PROJECTS.find(x=>x.id===id);if(!p)return;if(g.megaProjects[p.id]){toast("Mega project already completed.");return}
   if(g.lifetimeCash<(p.unlockAt||0)){toast("Project unlocks at "+money(p.unlockAt)+" lifetime cash.");return}
@@ -1307,7 +1307,7 @@ window.addEventListener("load",()=>{
   if(splash)setTimeout(()=>{splash.classList.add("hide");setTimeout(()=>splash.remove(),700)},1150);
 });
 
-console.log("Power Plant Tycoon BUILD 10 MAJOR UPGRADE loaded");window.__pptOfflineLaunchLastSeen=Number(g.lastSeen)||Date.now();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Gridline Empire BUILD 10 MAJOR UPGRADE loaded");window.__pptOfflineLaunchLastSeen=Number(g.lastSeen)||Date.now();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 
 
 // Ask the native iPhone wrapper for App Store products/entitlements after the web game has initialized.

@@ -696,7 +696,7 @@ function exportSave(){
   navigator.clipboard?.writeText(data).then(()=>toast("Save copied to clipboard")).catch(()=>prompt("Copy your save code:",data));
 }
 function importSave(){
-  const data=prompt("Paste your Power Plant Tycoon save code:");
+  const data=prompt("Paste your Gridline Empire save code:");
   if(!data)return;
   try{
     const obj=JSON.parse(decodeURIComponent(escape(atob(data))));
@@ -841,7 +841,7 @@ function dailyReward(){
 function activateBoost(){if(Date.now()<g.boostUntil){toast("2× boost is already active.");return}g.boostUntil=Date.now()+10*60*1000;addLog("Grid output boost activated.");saveGame();render()}function maintenancePack(){toast("TEST PURCHASE • Maintenance Pack");g.maintenance=100;PLANTS.forEach(p=>{if(g.plants[p.id].unlocked)g.plants[p.id].condition=100});saveGame();render()}function starterPack(){toast("TEST PURCHASE • Starter Pack");if(g.starter){toast("Starter Pack already claimed.");return}g.starter=true;recordEarnedCash(5000);g.boostUntil=Math.max(g.boostUntil,Date.now()+10*60*1000);saveGame();render()}
 function prestigeRequirement(){const p=Math.max(0,g.prestige||0);return Math.min(1e300,50000*Math.pow(2.2,Math.min(p,12))*Math.pow(1.22,Math.max(0,p-12)))}
 function prestige(){const req=prestigeRequirement(),run=g.prestigeRunCash||0;if(run<req){toast("This run needs "+money(req)+" earned. Current run: "+money(run));return}const credits=prestigeCreditReward(),next=(g.prestige||0)+1;askConfirm("Prestige Company","Reset this operating run and earn "+credits+" Grid Credit"+(credits===1?"":"s")+"? Lifetime empire progress, Mega Projects, purchases and Legacy upgrades remain.",()=>{const keep={achievements:g.achievements,settings:g.settings,autoGenerateUnlocked:g.autoGenerateUnlocked,autoGenerateLevel:g.autoGenerateLevel,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions,megaProjects:g.megaProjects,empireLevel:g.empireLevel,empireNotified:g.empireNotified,dailyStreak:g.dailyStreak,lifetimeCash:g.lifetimeCash,gridCredits:(g.gridCredits||0)+credits,lifetimeGridCredits:(g.lifetimeGridCredits||0)+credits,legacy:g.legacy,stabilityVersion:21};g=defaultGame();Object.assign(g,keep);g.prestige=next;g.prestigeRunCash=0;g.tutorialStep=5;g.finalTutorial={step:0,done:true,disabled:true};g.log=["Company prestiged to tier "+next+" • +"+credits+" Grid Credits."];saveGame();render();feedback("big")})}
-function resetGame(){askConfirm("Erase Save?","This permanently resets your local Power Plant Tycoon progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
+function resetGame(){askConfirm("Erase Save?","This permanently resets your local Gridline Empire progress.",()=>{const keep={autoGenerateUnlocked:g.autoGenerateUnlocked,adsRemoved:g.adsRemoved,executiveLicenseUnlocked:g.executiveLicenseUnlocked,processedStoreTransactions:g.processedStoreTransactions};localStorage.removeItem("PPT_V5");g=defaultGame();Object.assign(g,keep);saveGame();render();if(nativeStoreKitAvailable())requestStoreKitStatus();toast("Save reset")})}
 function buyMegaProject(id){
   const p=MEGA_PROJECTS.find(x=>x.id===id);if(!p)return;if(g.megaProjects[p.id]){toast("Mega project already completed.");return}
   if(g.lifetimeCash<(p.unlockAt||0)){toast("Project unlocks at "+money(p.unlockAt)+" lifetime cash.");return}
@@ -1097,7 +1097,7 @@ window.addEventListener("load",()=>{
   if(splash)setTimeout(()=>{splash.classList.add("hide");setTimeout(()=>splash.remove(),700)},1150);
 });
 
-console.log("Power Plant Tycoon RC2.1 LATE-GAME STABILITY loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
+console.log("Gridline Empire RC2.1 LATE-GAME STABILITY loaded");handleOffline();render();setInterval(()=>{const p=output();g.stored+=p;g.generated+=p;payOperatingCosts();degradePlant();autoSellTick();createEvent();updateContract();saveGame();render()},1000);setInterval(()=>{shiftMarket();saveGame();render()},15000);document.addEventListener("visibilitychange",()=>{if(document.hidden)saveGame()});
 
 
 // Ask the native iPhone wrapper for App Store products/entitlements after the web game has initialized.
